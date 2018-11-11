@@ -1,0 +1,11 @@
+---
+name: k8s
+description: |
+  All the Kubernetes
+
+dependencies: []
+files:
+  - k8s/kube-apiserver
+  - k8s/kube-controller-manager
+  - k8s/kube-scheduler
+  - k8s/kubectl

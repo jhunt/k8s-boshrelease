@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+cp runc/runc  ${BOSH_INSTALL_TARGET}/bin
+cp runc/runsc ${BOSH_INSTALL_TARGET}/bin
+chmod 755 ${BOSH_INSTALL_TARGET}/bin/*

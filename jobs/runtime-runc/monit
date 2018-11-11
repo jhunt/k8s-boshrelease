@@ -1,0 +1,5 @@
+check process runtime-docker
+  with pidfile  /var/vcap/sys/run/k8s/runtime-docker.pid
+  start program "/var/vcap/jobs/runtime-docker/bin/runtime-docker start"
+  stop  program "/var/vcap/jobs/runtime-docker/bin/runtime-docker stop"
+  group vcap

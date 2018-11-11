@@ -1,0 +1,93 @@
+#!/bin/bash
+set -eu
+
+JOB=kubelet
+SIGTERM_FOR=15
+SIGKILL_FOR=5
+
+RUN_DIR=/var/vcap/sys/run/k8s
+LOG_DIR=/var/vcap/sys/log/k8s/$JOB
+JOB_DIR=/var/vcap/jobs/$JOB
+PIDFILE=$UN_DIR/$JOB.pid
+mkdir -p $LOG_DIR
+exec >>$LOG_DIR/$JOB.log 2>&1
+
+# set kube-* binaries in our path
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+
+case $1 in
+  start)
+    mkdir -p $RUN_DIR
+
+    # FIXME: wait for containerd to be up and running
+
+    echo "[$(date)] $JOB/$$: starting up..."
+    if [[ -f $PID_FILE ]]; then
+      PID=$(head -1 $PIDFILE)
+      if [[ -n "$PID" ]]; then
+        if [[ -e /proc/$PID ]]; then
+          echo "[$(date)] $JOB/$$: found pid file $PID_FILE, with pid '$PID' (which is running)"
+          exit 1
+        fi
+        echo "[$(date)] $JOB/$$: found (stale) pid file $PID_FILE, with pid '$PID' (which is defunct)"
+      fi
+      rm -f $PIDFILE
+    fi
+
+    echo $$ > $PIDFILE
+    exec kubelet \
+           --config=$JOB_DIR/etc/kubelet.yml \
+           --container-runtime=remote \
+           --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock \
+           --image-pull-progress-deadline=2m \
+           --kubeconfig=$JOB_DIR/etc/kubeconfig \
+           --network-plugin=cni \
+           --register-node=true \
+           --v=2
+    echo "[$(date)] $JOB/$$: exec failed!"
+    exit 42
+    ;;
+
+
+  stop)
+    echo "[$(date)] $JOB/$$: shutting down..."
+    if [[ -f $PID_FILE ]]; then
+      PID=$(head -1 $PIDFILE)
+      if [[ -n "$PID" ]]; then
+        if [[ -e /proc/$PID ]]; then
+          echo "[$(date)] $JOB/$$: found pid file $PID_FILE, with pid '$PID' (which is running)"
+          echo "[$(date)] $JOB/$$: sending SIGTERM for ${SIGTERM_FOR}s, followed by a SIGKILL..."
+          for i in $(seq 1 $(expr $SIGTERM_FOR \* 10)); do
+            kill -TERM $PID || true
+            if [[ ! -e /proc/$PID ]]; then
+              echo "[$(date)] $JOB/$$: pid $PID terminated (via SIGTERM)"
+              rm -f $PIDFILE
+              echo "[$(date)] $JOB/$$: shut down complete"
+              exit 0
+            fi
+            sleep 0.1
+          done
+
+          echo "[$(date)] $JOB/$$: pid $PID did not termiante (via SIGTERM) within ${SIGTERM_FOR}s; sending a SIGKILL and waiting ${SIGKILL_FOR}s..."
+          for i in $(seq 1 $(expr $SIGKILL_FOR \* 10)); do
+            kill -KILL $PID || true
+            if [[ ! -e /proc/$PID ]]; then
+              echo "[$(date)] $JOB/$$: pid $PID terminated (via SIGKILL)"
+              rm -f $PIDFILE
+              echo "[$(date)] $JOB/$$: shut down complete"
+              exit 0
+            fi
+            sleep 0.1
+          done
+          echo "[$(date)] $JOB/$$: pid $PID did not termiante (via SIGKILL) within ${SIGKILL_FOR}s; giving up."
+          exit 1
+        fi
+
+        echo "[$(date)] $JOB/$$: found (stale) pid file $PID_FILE, with pid '$PID' (which is defunct)"
+      fi
+      rm -f $PIDFILE
+    fi
+    echo "[$(date)] $JOB/$$: shut down complete"
+    exit 0
+    ;;
+esac

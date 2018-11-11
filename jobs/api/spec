@@ -1,0 +1,27 @@
+---
+name: api
+description: |
+  Component on the master that exposes the Kubernetes API. It is the
+  front-end for the Kubernetes control plane.
+
+  It is designed to scale horizontally – that is, it scales by deploying
+  more instances.
+
+packages:
+  - k8s
+
+provides:
+  - name: api
+    type: k8s-apiserver
+
+consumes:
+  - name: etcd
+    type: k8s-etcd
+
+templates:
+  bin/api: bin/api
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false

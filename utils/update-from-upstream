@@ -1,0 +1,30 @@
+#!/bin/bash
+set -eu
+
+VERSION=${VERSION:-1.12.0}
+
+##rm -rf tmp; mkdir tmp
+##for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
+##  curl -Lo tmp/$x  "https://storage.googleapis.com/kubernetes-release/release/v${VERSION}/bin/linux/amd64/${x}"
+##  bosh add-blob tmp/$x k8s/$x
+##done
+
+##what=containerd-1.2.0-rc.0.linux-amd64.tar.gz
+##curl -Lo tmp/${what} https://github.com/containerd/containerd/releases/download/v1.2.0-rc.0/${what}
+##bosh add-blob tmp/${what} containerd/${what}
+##
+##what=cni-plugins-amd64-v0.6.0.tgz
+##curl -Lo tmp/${what} https://github.com/containernetworking/plugins/releases/download/v0.6.0/${what}
+##bosh add-blob tmp/${what} containerd/${what}
+##
+##what=crictl-v1.12.0-linux-amd64.tar.gz
+##curl -Lo tmp/${what} https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.12.0/${what}
+##bosh add-blob tmp/${what} containerd/${what}
+
+##what=runc
+##curl -Lo tmp/${what} https://github.com/opencontainers/runc/releases/download/v1.0.0-rc5/runc.amd64
+##bosh add-blob tmp/${what} runtime-runc/${what}
+##
+#what=runsc
+#curl -Lo tmp/${what} https://storage.googleapis.com/kubernetes-the-hard-way/runsc-50c283b9f56bb7200938d9e207355f05f79f0d17
+#bosh add-blob tmp/${what} runtime-runc/${what}

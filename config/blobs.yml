@@ -1,0 +1,33 @@
+containerd/cni-plugins-amd64-v0.6.0.tgz:
+  size: 15385105
+  sha: d595d3ded6499a64e8dac02466e2f5f2ce257c9f
+containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz:
+  size: 28888838
+  sha: 085fbdd840a6853e67cba24f9ff098adf4312a12
+containerd/crictl-v1.12.0-linux-amd64.tar.gz:
+  size: 7411209
+  sha: 45a9c65cc52a13e76e07fbc64ddcf3b646cd8c82
+k8s/kube-apiserver:
+  size: 192766426
+  sha: eb4202a5bb50e9cf6c83579c722db98a782b1a02
+k8s/kube-controller-manager:
+  size: 162936572
+  sha: 0fe53225f0e00abf7879541719e5b185c313b540
+k8s/kube-proxy:
+  size: 50436059
+  sha: 91c3e6797e8494377bacab2877b3a7361fa5c44d
+k8s/kube-scheduler:
+  size: 57180560
+  sha: 30e558f44c7b3cb9483a55014338aacbd6c99771
+k8s/kubectl:
+  size: 57343669
+  sha: 85904f6caa295eaeef10e1b59a5e9f823e7b4825
+k8s/kubelet:
+  size: 176726400
+  sha: 2948b9afd0e8e3181d18b83f87533afd6e5f4970
+runtime-runc/runc:
+  size: 12269056
+  sha: e00757b42a19f1042411fbc33bcad2589c24cc31
+runtime-runc/runsc:
+  size: 17472381
+  sha: 6470e7362519aab8f6a297b224a92f4e14a2997e

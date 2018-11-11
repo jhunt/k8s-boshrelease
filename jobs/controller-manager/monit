@@ -1,0 +1,5 @@
+check process controller-manager
+  with pidfile  /var/vcap/sys/run/k8s/controller-manager.pid
+  start program "/var/vcap/jobs/controller-manager/bin/controller-manager start"
+  stop  program "/var/vcap/jobs/controller-manager/bin/controller-manager stop"
+  group vcap

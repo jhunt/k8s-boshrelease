@@ -1,0 +1,26 @@
+---
+name: kubelet
+description: |
+  An agent that runs on each node in the cluster. It makes sure that
+  containers are running in a pod.
+
+  The kubelet takes a set of PodSpecs that are provided through various
+  mechanisms and ensures that the containers described in those PodSpecs are
+  running and healthy. The kubelet doesn’t manage containers which were not
+  created by Kubernetes.
+
+packages:
+  - k8s
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+templates:
+  bin/kubelet:     bin/kubelet
+  etc/kubelet.yml: etc/kubelet.yml
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false

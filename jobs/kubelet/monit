@@ -1,0 +1,11 @@
+check process containerd
+  with pidfile  /var/vcap/sys/run/k8s/containerd.pid
+  start program "/var/vcap/jobs/kubelet/bin/containerd start"
+  stop  program "/var/vcap/jobs/kubelet/bin/containerd stop"
+  group vcap
+
+check process kubelet
+  with pidfile  /var/vcap/sys/run/k8s/kubelet.pid
+  start program "/var/vcap/jobs/kubelet/bin/kubelet start"
+  stop  program "/var/vcap/jobs/kubelet/bin/kubelet stop"
+  group vcap

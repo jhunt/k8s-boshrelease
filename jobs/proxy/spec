@@ -1,0 +1,20 @@
+---
+name: proxy
+description: |
+  kube-proxy enables the Kubernetes service abstraction by maintaining
+  network rules on the host and performing connection forwarding.
+
+packages:
+  - k8s
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+templates:
+  bin/proxy: bin/proxy
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false

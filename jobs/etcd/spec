@@ -1,0 +1,20 @@
+---
+name: etcd
+description: |
+  Consistent and highly-available key value store used as Kubernetes’
+  backing store for all cluster data.
+
+packages:
+  - k8s
+
+provides:
+  - name: etcd
+    type: k8s-etcd
+
+templates:
+  bin/etcd: bin/etcd
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false

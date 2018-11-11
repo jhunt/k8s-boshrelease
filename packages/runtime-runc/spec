@@ -1,0 +1,10 @@
+---
+name: runtime-runc
+description: |
+  Provides the Container Runtime for Kubernetes, leveraging
+  runc for normal containers and gVisor (runsc) for privileged.
+
+dependencies: []
+files:
+  - runtime-runc/runc
+  - runtime-runc/runsc
