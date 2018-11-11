@@ -6,7 +6,7 @@ authentication:
   webhook:
     enabled: true
   x509:
-    clientCAFile: "/var/vcap/jobs/kubelet/tls/ca.pem"
+    clientCAFile: "/var/vcap/jobs/kubelet/tls/ca/cert.pem"
 authorization:
   mode: Webhook
 clusterDomain: "cluster.local"

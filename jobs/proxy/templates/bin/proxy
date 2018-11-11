@@ -8,7 +8,8 @@ SIGKILL_FOR=5
 RUN_DIR=/var/vcap/sys/run/k8s
 LOG_DIR=/var/vcap/sys/log/k8s/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
-PIDFILE=$UN_DIR/$JOB.pid
+DAT_DIR=/var/vcap/data/k8s/$JOB
+PIDFILE=$RUN_DIR/$JOB.pid
 mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$JOB.log 2>&1
 
@@ -32,8 +33,27 @@ case $1 in
       rm -f $PIDFILE
     fi
 
+    echo "[$(date)] $JOB/$$: refreshing our kubeconfig..."
+    mkdir -p $DAT_DIR
+    kubectl config set-cluster "<%= link('api').p('cluster.name') %>" \
+        --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+        --embed-certs=true \
+        --server=https://<%= link('api').p('cluster.ip') %>:6443 \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-credentials system:kube-proxy \
+        --client-certificate=$JOB_DIR/tls/proxy/cert.pem \
+        --client-key=$JOB_DIR/tls/proxy/key.pem \
+        --embed-certs=true \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-context default \
+        --cluster=<%= link('api').p('cluster.name') %> \
+        --user=system:kube-proxy \
+        --kubeconfig=$DAT_DIR/kubeconfig
+
+    echo "[$(date)] $JOB/$$: starting up kube-proxy..."
     echo $$ > $PIDFILE
     exec kube-proxy \
+           --kubeconfig=$DAT_DIR/kubeconfig \
            --config=$JOB_DIR/etc/kube-proxy.yml
 
     echo "[$(date)] $JOB/$$: exec failed!"

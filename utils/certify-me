@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+type=$1
+where=$2
+
+if [[ -z $type || -z $where ]]; then
+  echo >&2 "USAGE: $0 TYPE DEST-DIR"
+  exit 1
+fi
+
+mkdir -p $where
+
+echo "populating $where/cert.pem with '$type' certificate..."
+cat >$where/cert.pem <<EOF
+<%= link('api').p('tls.${type}.certificate') %>
+EOF
+
+echo "populating $where/key.pem with '$type' key..."
+cat >$where/key.pem <<EIF
+<%= link('api').p('tls.${type}.key') %>
+EIF

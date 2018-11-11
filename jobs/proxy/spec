@@ -14,6 +14,11 @@ consumes:
 templates:
   bin/proxy: bin/proxy
 
+  tls/ca/cert.pem: tls/ca/cert.pem
+
+  tls/proxy/cert.pem: tls/proxy/cert.pem
+  tls/proxy/key.pem:  tls/proxy/key.pem
+
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.

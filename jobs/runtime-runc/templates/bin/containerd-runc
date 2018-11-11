@@ -8,7 +8,8 @@ SIGKILL_FOR=5
 RUN_DIR=/var/vcap/sys/run/k8s
 LOG_DIR=/var/vcap/sys/log/k8s/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
-PIDFILE=$UN_DIR/$JOB.pid
+DAT_DIR=/var/vcap/data/k8s/$JOB
+PIDFILE=$RUN_DIR/$JOB.pid
 mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$JOB.log 2>&1
 

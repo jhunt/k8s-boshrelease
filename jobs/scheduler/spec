@@ -19,6 +19,11 @@ consumes:
 templates:
   bin/scheduler: bin/scheduler
 
+  tls/ca/cert.pem: tls/ca/cert.pem
+
+  tls/scheduler/cert.pem: tls/scheduler/cert.pem
+  tls/scheduler/key.pem:  tls/scheduler/key.pem
+
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.

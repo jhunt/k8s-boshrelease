@@ -13,6 +13,21 @@ packages:
 provides:
   - name: api
     type: k8s-apiserver
+    properties:
+      - cluster.name
+      - cluster.ip
+      - tls.ca.certificate
+      - tls.ca.key
+      - tls.admin.certificate
+      - tls.admin.key
+      - tls.controller-manager.certificate
+      - tls.controller-manager.key
+      - tls.scheduler.certificate
+      - tls.scheduler.key
+      - tls.api.certificate
+      - tls.api.key
+      - tls.service-accounts.certificate
+      - tls.service-accounts.key
 
 consumes:
   - name: etcd
@@ -21,7 +36,142 @@ consumes:
 templates:
   bin/api: bin/api
 
+  tls/ca/cert.pem: tls/ca/cert.pem
+
+  tls/api/cert.pem: tls/api/cert.pem
+  tls/api/key.pem:  tls/api/key.pem
+
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+
+  cluster.name:
+    description: |
+      The name of this cluster.  Cluster names should be lower case, and may
+      only consist of alphanumeric characters, periods (.), hyphens (-) and
+      underscores (_).  They must start with a letter.
+    default: my-unnamed-k8s-cluster
+
+  cluster.ip:
+    description: A public IP for this cluster, for routing internal traffic.
+
+
+  encryption.key:
+    description: A random key to use for encrypting secrets and other data at-rest.
+
+
+  ######## ##        ######
+     ##    ##       ##    ##
+     ##    ##       ##
+     ##    ##        ######
+     ##    ##             ##
+     ##    ##       ##    ##
+     ##    ########  ######
+
+  tls.ca.certificate:
+    description: |
+      The X.509 Certificate Authority's certificate, in PEM format.
+
+      This certificate must be valid for the following key usages:
+        - Digital Signing
+        - Key Encipherment
+        - Server Auth (Extended)
+        - Client Auth (Extended)
+
+  tls.ca.key:
+    description: |
+      The X.509 Certificate Authority's RSA private key, in PEM format.
+
+      The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
+      job, in this BOSH release) in properly validated mutual TLS setups.
+
+  tls.admin.certificate:
+    description: |
+      The X.509 certificate for the Kubernetes administrator to use (in PEM
+      format), when connecting to the API server for management purposes.
+      This certificate must be valid for the CN `admin`.
+
+  tls.admin.key:
+    description: |
+      The RSA private key (in PEM format) for the administrator's X.509
+      certificate (tls.admin.certificate).
+
+  tls.controller-manager.certificate: # FIXME unused?
+    description: |
+      The Kubernetes Controller Manager's X.509 certificate, in PEM format.
+      This certificate must have a CN of `system:kube-controller-manager`, and
+      an O (organization) component of the same value.
+
+  tls.controller-manager.key: # FIXME unused?
+    description: |
+      The RSA private key (in PEM format) for the Controller Manager's X.509
+      certifcate (tls.controller-manager.certificate).
+
+  tls.scheduler.certificate:
+    description: |
+      The Kubernetes Scheduler's X.509 certificate, in PEM format.
+      This certificate must have a CN of `system:kube-scheduler`, and an
+      O (organization) component of the same value.
+
+  tls.scheduler.key:
+    description: |
+      The RSA private key (in PEM format) for the Scheduler's X.509
+      certifcate (tls.scheduler.certificate).
+
+  tls.api.certificate:
+    description: |
+      The X.509 certificate for the Kubernetes API (apiserver) component, in
+      PEM format.
+
+      This is the public face of the Kubernetes cluster.
+
+      This certificate must have a CN of `kubernetes`, and an O
+      (organization) value of `kubernetes` (as well), as well as the
+      following subject alternate names:
+
+        - 127.0.0.1 (IP)
+        - kubernetes (DNS)
+        - kubernetes.default (DNS)
+        - An (IP) alternate name for each master node private IP
+        - An (IP) alternate name for each master node public IP
+
+  tls.api.key:
+    description: |
+      The RSA private key (in PEM format) for the Kubernetes API
+      (tls.api.certificate).
+
+  tls.service-accounts.certificate: # FIXME unused?
+    description: |
+      The X.509 certificate for the Kubernetes Controller Manager to use
+      when signing service account tokens.  Must be in PEM format.
+
+      This certificate must have a CN of `service-accounts`, and an
+      O (oragnization) value of `kubernetes`.
+
+  tls.service-accounts.key:
+    description: |
+      The RSA private key (in PEM format) for the Controller Manager's
+      service account signing certificate (tls.service-accounts.certificate).
+
+  tls.proxy.certificate:
+    description: |
+      The Kubernetes (per-worker) Proxy's X.509 certificate, in PEM format.
+      This certificate must have a CN of `system:kube-proxy`, and an
+      O (organization) component of the same value.
+
+  tls.proxy.key:
+    description: |
+      The RSA private key (in PEM format) for the Proxy's X.509
+      certifcate (tls.proxy.certificate).
+
+  tls.kubelet.certificate:
+    description: |
+      The Kubernetes Kubelet X.509 certificate, in PEM format.
+      This certificate must have a CN of `system:node:...`, and an
+      O (organization) component of the `system:nodes`.
+
+  tls.kubelet.key:
+    description: |
+      The RSA private key (in PEM format) for the Kubelet's X.509
+      certifcate (tls.kubelet.certificate).

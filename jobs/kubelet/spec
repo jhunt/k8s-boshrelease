@@ -20,6 +20,11 @@ templates:
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
+  tls/ca/cert.pem: tls/ca/cert.pem
+
+  tls/kubelet/cert.pem: tls/kubelet/cert.pem
+  tls/kubelet/key.pem:  tls/kubelet/key.pem
+
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.

@@ -54,5 +54,5 @@ stemcells:
     version: latest
 
 releases:
-  - name:     k8s
+  - name:    k8s
     version: latest

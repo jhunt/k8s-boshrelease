@@ -21,15 +21,23 @@ description: |
     - Service Account & Token Controllers: Create default accounts and API
       access tokens for new namespaces.
 
-packages:
-  - k8s
-
 consumes:
   - name: api
     type: k8s-apiserver
 
 templates:
   bin/controller-manager: bin/controller-manager
+
+  tls/ca/cert.pem: tls/ca/cert.pem
+  tls/ca/key.pem:  tls/ca/key.pem
+
+  tls/controller-manager/cert.pem: tls/controller-manager/cert.pem
+  tls/controller-manager/key.pem:  tls/controller-manager/key.pem
+
+  tls/sa/key.pem:  tls/sa/key.pem
+
+packages:
+  - k8s
 
 properties:
   debug:
