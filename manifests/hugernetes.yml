@@ -1,0 +1,71 @@
+name: prodernetes
+
+instance_groups:
+  - name:      etcd
+    instances: 3
+    azs:       [z1,z2,z3]
+    vm_type:   default
+    stemcell:  default
+
+    persistent_disk_type: default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: etcd
+        release: k8s
+
+  - name:      control
+    instances: 3
+    azs:       [z1,z2,z3]
+    vm_type:   default
+    stemcell:  default
+
+    persistent_disk_type: default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: api
+        release: k8s
+      - name: controller-manager
+        release: k8s
+      - name: scheduler
+        release: k8s
+
+  - name:      node
+    instances: 5
+    azs:       [z1,z2,z3]
+    vm_type:   default
+    stemcell:  default
+
+    persistent_disk_type: default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: runtime-runc
+        release: k8s
+      - name: proxy
+        release: k8s
+      - name: kubelet
+        release: k8s
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: true
+  canary_watch_time: 1000-120000
+  update_watch_time: 1000-120000
+
+stemcells:
+  - alias:   default
+    os:      ubuntu-xenial
+    version: latest
+
+releases:
+  - name:     k8s
+    version: latest

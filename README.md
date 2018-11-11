@@ -20,6 +20,33 @@ I am aware of other efforts to BOSH-ify Kubernetes, like
 projects in any way, and if you find joy in using those projects,
 please continue using them.
 
+Deployments
+-----------
+
+This repository comes with some sample manifests to illustrate how
+one might configure a k8s deployment in the wild.
+
+  - **tinynetes** - A single-VM instance, all-in-one k8s
+    "cluster", suitable for experimentation or CI/CD.
+
+  - **labernetes** - A multi-node cluster of combined
+    master+worker nodes, suitable for shared lab exercises.
+
+  - **prodernetes** - A proper cluster with master and worker
+    nodes on separate VMs, allowing one to scale the workers
+    separately from the control plane.  All aspects of the control
+    plane are co-located (etcd, api, scheduler, and cmgr).
+    Suitable for (possibly) some real-world prod use.
+
+  - **hugernetes** - A REALLY BIG CLUSTER that splits the etcd
+    component out onto its own multi-node cluster, leaving the
+    control plane VMs to run api, scheduler, and the controller
+    manager.  Suitable for (possibly) some real-world prod use.
+
+These are found in the `manifests/` directory, and can be deployed
+without further pre-processing (no Spruce... yet).
+
+
 Contributing
 ------------
 
