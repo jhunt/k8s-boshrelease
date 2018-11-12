@@ -2,21 +2,27 @@
 set -e
 
 type=$1
-where=$2
+link=$2
+where=$3
 
-if [[ -z $type || -z $where ]]; then
-  echo >&2 "USAGE: $0 TYPE DEST-DIR"
+if [[ -z $type || -z $link || -z $where ]]; then
+  echo >&2 "USAGE: $0 TYPE LINK DEST-DIR"
   exit 1
 fi
 
 mkdir -p $where
 
+case $link in
+-) link= ;;
+*) link="link('$link')." ;;
+esac
+
 echo "populating $where/cert.pem with '$type' certificate..."
 cat >$where/cert.pem <<EOF
-<%= link('api').p('tls.${type}.certificate') %>
+<%= ${link}p('tls.${type}.certificate') %>
 EOF
 
 echo "populating $where/key.pem with '$type' key..."
 cat >$where/key.pem <<EIF
-<%= link('api').p('tls.${type}.key') %>
+<%= ${link}p('tls.${type}.key') %>
 EIF
