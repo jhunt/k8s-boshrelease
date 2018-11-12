@@ -4,7 +4,7 @@ instance_groups:
   - name:      k8s
     instances: 1
     azs:       [z1]
-    vm_type:   default
+    vm_type:   large
     stemcell:  default
 
     persistent_disk_type: default
@@ -39,7 +39,10 @@ instance_groups:
       - name: kubelet
         release: k8s
         properties:
-          pod-cidr: 10.200.250.0/24
+          networks:
+            pods:     10.200.250.0/24
+            services: 10.200.251.0/24
+            nodes:    10.200.192.0/24
 
       - name: jumpbox
         release: k8s
