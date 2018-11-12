@@ -51,6 +51,7 @@ case $1 in
         --cluster=<%= link('api').p('cluster.name') %> \
         --user=system:kube-proxy \
         --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
 
     echo "[$(date)] $BIN/$$: starting up kube-proxy..."
     echo $$ > $PIDFILE
