@@ -10,8 +10,8 @@ set -eu
     ## ##   ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ##   ###
      ###    ##     ## ######## #### ########  ##     ##    ##    ####  #######  ##    ##
 
-  p('cluster.name').match(/^[a-zA-Z][a-zA-Z0-9._-]*$/)
-    or raise 'cluster.name must be alphanumeric (no spaces are allowed)'
+  p('cluster.name').match(/^[a-zA-Z][a-zA-Z0-9._-]*$/) or
+    raise 'cluster.name must be alphanumeric (no spaces are allowed)'
 
 -%>
 
