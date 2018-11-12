@@ -60,6 +60,7 @@ case $1 in
            --initial-cluster <%= link('etcd').instances.map { |vm| "#{vm.name}-#{vm.id}=https://#{vm.address}:#{peer_port}" }.join(',') %> \
            --initial-cluster-state new \
            --data-dir=$DAT_DIR/etcd \
+           <% if p('debug') %>--debug <% end %>\
            --log-output stdout
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
