@@ -1,0 +1,25 @@
+---
+name: jumpbox
+description: |
+  This job provides helpful scripts and utilities for interacting,
+  administratively, with the Kubernetes cluster.  Notably, it comes with a
+  preconfigured envrc file for sourcing into bash.
+
+  This job is intended to be used from a `bosh ssh` session.
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+packages:
+  - k8s
+
+templates:
+  envrc: envrc
+
+  tls/ca/cert.pem: tls/ca/cert.pem
+
+  tls/admin/cert.pem: tls/admin/cert.pem
+  tls/admin/key.pem:  tls/admin/key.pem
+
+properties: {}
