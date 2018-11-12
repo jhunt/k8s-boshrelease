@@ -51,10 +51,12 @@ case $1 in
         --cluster=<%= link('api').p('cluster.name') %> \
         --user=system:kube-scheduler \
         --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
 
     echo "[$(date)] $BIN/$$: starting up kube-scheduler..."
     echo $$ > $PIDFILE
     exec kube-scheduler \
+           --kubeconfig=$DAT_DIR/kubeconfig \
            --config=$JOB_DIR/etc/scheduler.yml \
            --v=2
 
