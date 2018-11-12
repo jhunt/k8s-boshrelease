@@ -18,7 +18,7 @@ instance_groups:
         properties:
           cluster:
             name: tinynetes
-            ip: 127.0.0.127
+            ip: 127.0.0.1
           encryption:
             key: ((encryption-key1))
           tls:
