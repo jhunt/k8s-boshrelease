@@ -13,7 +13,6 @@ certs:
 	./utils/certify-me service-accounts - jobs/api/templates/tls/sa
 	./utils/certify-me api              - jobs/api/templates/tls/api
 	./utils/certify-me kubelet          - jobs/api/templates/tls/kubelet
-	./utils/certify-me etcd             - jobs/api/templates/tls/etcd
 	# controller manager
 	./utils/certify-me ca                 api jobs/controller-manager/templates/tls/ca
 	./utils/certify-me service-accounts   api jobs/controller-manager/templates/tls/sa
