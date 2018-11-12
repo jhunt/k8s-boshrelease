@@ -15,8 +15,9 @@ rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
 mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
-# set kube-* binaries in our path
-export PATH=$PATH:/var/vcap/packages/k8s/bin
+# set runc + containerd binaries in our path
+export PATH=$PATH:/var/vcap/packages/runtime-runc/bin
+export PATH=$PATH:/var/vcap/packages/containerd/bin
 
 case $1 in
   start)
