@@ -20,7 +20,7 @@ instance_groups:
             name: tinynetes
             ip: 127.0.0.127
           encryption:
-            key: ((encryption-key))
+            key: ((encryption-key1))
           tls:
             ca:
               certificate: ((tls-ca.certificate))
@@ -126,8 +126,11 @@ variables:
       common_name:  service-accounts
       organization: kubernetes
 
-  - name: encryption-key
+  - name: encryption-key1
     type: password
+    options:
+      length:          32
+      include_special: yes
 
 update:
   canaries: 1
