@@ -12,7 +12,8 @@ consumes:
     type: k8s-apiserver
 
 templates:
-  bin/proxy: bin/proxy
+  bin/proxy:          bin/proxy
+  etc/kube-proxy.yml: etc/kube-proxy.yml
 
   tls/ca/cert.pem: tls/ca/cert.pem
 
