@@ -25,24 +25,9 @@ instance_groups:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
-            api:
-              certificate: ((tls-api.certificate))
-              key:         ((tls-api.private_key))
-            controller-manager:
-              certificate: ((tls-controller-manager.certificate))
-              key:         ((tls-controller-manager.private_key))
-            scheduler:
-              certificate: ((tls-scheduler.certificate))
-              key:         ((tls-scheduler.private_key))
-            service-accounts:
-              certificate: ((tls-service-accounts.certificate))
-              key:         ((tls-service-accounts.private_key))
-            kubelet:
-              certificate: ((tls-kubelet.certificate))
-              key:         ((tls-kubelet.private_key))
-            proxy:
-              certificate: ((tls-proxy.certificate))
-              key:         ((tls-proxy.private_key))
+            admin:
+              certificate: ((tls-admin.certificate))
+              key:         ((tls-admin.private_key))
 
       - name: etcd
         release: k8s
@@ -53,7 +38,11 @@ instance_groups:
         release: k8s
       - name: kubelet
         release: k8s
+        properties:
+          pod-cidr: 10.200.250.0/24
 
+      - name: jumpbox
+        release: k8s
       - name: status-of-etcd
         release: k8s
 
@@ -69,61 +58,6 @@ variables:
     options:
       ca: tls-ca
       common_name: admin
-
-  - name: tls-api
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  kubernetes
-      organization: kubernetes
-      alternative_names:
-        - kubernetes.default
-        - 127.0.0.1
-        - 10.45.45.101
-        - 10.45.45.102
-        - 10.45.45.103
-        - 10.92.92.101
-        - 10.92.92.102
-        - 10.92.92.103
-
-  - name: tls-kubelet
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  system:node:node
-      organization: system:nodes
-      alternative_names:
-        - 127.0.0.1
-        - 10.45.45.10
-        - 10.92.92.10
-
-  - name: tls-controller-manager
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  system:kube-controller-manager
-      organization: system:kube-controller-manager
-
-  - name: tls-proxy
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  system:kube-proxy
-      organization: system:node-proxier
-
-  - name: tls-scheduler
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  system:kube-scheduler
-      organization: system:kube-scheduler
-
-  - name: tls-service-accounts
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name:  service-accounts
-      organization: kubernetes
 
   - name: encryption-key1
     type: password
