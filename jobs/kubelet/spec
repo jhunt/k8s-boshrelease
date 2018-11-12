@@ -9,6 +9,10 @@ description: |
   running and healthy. The kubelet doesn’t manage containers which were not
   created by Kubernetes.
 
+  Kubelets also run kube-proxy, enabling the Kubernetes service abstraction
+  by maintaining network rules on the host and performing connection
+  forwarding.
+
 packages:
   - k8s
 
@@ -17,13 +21,15 @@ consumes:
     type: k8s-apiserver
 
 templates:
+  bin/pre-start:   bin/pre-start
+  tls/ca/cert.pem: tls/ca/cert.pem
+  tls/ca/key.pem:  tls/ca/key.pem
+
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
-  tls/ca/cert.pem: tls/ca/cert.pem
-
-  tls/kubelet/cert.pem: tls/kubelet/cert.pem
-  tls/kubelet/key.pem:  tls/kubelet/key.pem
+  bin/proxy:          bin/proxy
+  etc/kube-proxy.yml: etc/kube-proxy.yml
 
 properties:
   debug:

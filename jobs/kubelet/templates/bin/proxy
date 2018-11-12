@@ -1,18 +1,17 @@
 #!/bin/bash
 set -eu
 
-JOB=proxy
+JOB=kubelet
 BIN=proxy
 SIGTERM_FOR=15
 SIGKILL_FOR=5
 
-RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
 DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
-rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
-mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
 # set kube-* binaries in our path
@@ -43,8 +42,8 @@ case $1 in
         --server=https://<%= link('api').p('cluster.ip') %>:6443 \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config set-credentials system:kube-proxy \
-        --client-certificate=$JOB_DIR/tls/proxy/cert.pem \
-        --client-key=$JOB_DIR/tls/proxy/key.pem \
+        --client-certificate=$CERTS_DIR/proxy/cert.pem \
+        --client-key=$CERTS_DIR/proxy/key.pem \
         --embed-certs=true \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config set-context default \

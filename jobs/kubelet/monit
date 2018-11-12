@@ -1,5 +1,11 @@
 check process kubelet
-  with pidfile  /var/vcap/sys/run/k8s/kubelet.pid
+  with pidfile  /var/vcap/sys/run/kubelet/kubelet.pid
   start program "/var/vcap/jobs/kubelet/bin/kubelet start"
   stop  program "/var/vcap/jobs/kubelet/bin/kubelet stop"
+  group vcap
+
+check process proxy
+  with pidfile  /var/vcap/sys/run/kubelet/proxy.pid
+  start program "/var/vcap/jobs/kubelet/bin/proxy start"
+  stop  program "/var/vcap/jobs/kubelet/bin/proxy stop"
   group vcap
