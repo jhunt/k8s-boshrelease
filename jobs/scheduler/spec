@@ -17,7 +17,8 @@ consumes:
     type: k8s-apiserver
 
 templates:
-  bin/scheduler: bin/scheduler
+  bin/scheduler:     bin/scheduler
+  etc/scheduler.yml: etc/scheduler.yml
 
   tls/ca/cert.pem: tls/ca/cert.pem
 
