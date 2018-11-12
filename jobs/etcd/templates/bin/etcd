@@ -37,7 +37,7 @@ case $1 in
 
     echo $$ > $PIDFILE
     exec etcd \
-           --name ${ETCD_NAME} \
+           --name "<%= spec.name %>-<%= spec.id %>"  \
            --cert-file=$JOB_DIR/tls/etcd/cert.pem \
            --key-file=$JOB_DIR/tls/etcd/key.pem \
            --peer-cert-file=$JOB_DIR/tls/etcd/cert.pem \
