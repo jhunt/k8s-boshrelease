@@ -1,5 +1,11 @@
 #!/bin/bash
 set -eu
+<%
+
+  port      = p('port').to_i
+  peer_port = port + 1
+
+-%>
 
 JOB=etcd
 BIN=etcd
@@ -15,8 +21,8 @@ rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
 mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
-# set kube-* binaries in our path
-export PATH=$PATH:/var/vcap/packages/k8s/bin
+# set etcd binaries in our path
+export PATH=$PATH:/var/vcap/packages/etcd/bin
 
 case $1 in
   start)
@@ -46,14 +52,15 @@ case $1 in
            --peer-trusted-ca-file=$JOB_DIR/tls/ca/cert.pem \
            --peer-client-cert-auth \
            --client-cert-auth \
-           --initial-advertise-peer-urls https://${INTERNAL_IP}:2380 \
-           --listen-peer-urls https://${INTERNAL_IP}:2380 \
-           --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \
-           --advertise-client-urls https://${INTERNAL_IP}:2379 \
+           --initial-advertise-peer-urls https://<%= spec.ip %>:<%= peer_port %> \
+           --listen-peer-urls https://<%= spec.ip %>:<%= peer_port %> \
+           --listen-client-urls https://<%= spec.ip %>:<%= port %>,https://127.0.0.1:<%= port %> \
+           --advertise-client-urls https://<%= spec.ip %>:<%= port %> \
            --initial-cluster-token etcd-cluster-0 \
-           --initial-cluster controller-0=https://10.240.0.10:2380,controller-1=https://10.240.0.11:2380,controller-2=https://10.240.0.12:2380 \
+           --initial-cluster <%= link('etcd').instances.map { |vm| "#{vm.name}-#{vm.id}=https://#{vm.address}:#{peer_port}" }.join(',') %> \
            --initial-cluster-state new \
-           --data-dir=/var/lib/etcd
+           --data-dir=$DAT_DIR/etcd \
+           --log-output stdout
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
     ;;

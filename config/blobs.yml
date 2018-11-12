@@ -7,6 +7,9 @@ containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz:
 containerd/crictl-v1.12.0-linux-amd64.tar.gz:
   size: 7411209
   sha: 45a9c65cc52a13e76e07fbc64ddcf3b646cd8c82
+etcd/etcd-v3.3.9-linux-amd64.tar.gz:
+  size: 11254519
+  sha: 47b708b774832b7e1edb89eafa755e47c8d70b50
 k8s/kube-apiserver:
   size: 192766426
   sha: eb4202a5bb50e9cf6c83579c722db98a782b1a02

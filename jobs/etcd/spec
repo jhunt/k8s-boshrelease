@@ -11,6 +11,8 @@ provides:
       - port
 
 consumes:
+  - name: etcd
+    type: k8s-etcd
   - name: api
     type: k8s-apiserver
 
@@ -23,7 +25,7 @@ templates:
   tls/etcd/key.pem:  tls/etcd/key.pem
 
 packages:
-  - k8s
+  - etcd
 
 properties:
   debug:
