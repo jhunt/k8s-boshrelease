@@ -15,7 +15,7 @@ SIGKILL_FOR=5
 RUN_DIR=/var/vcap/sys/run/k8s
 LOG_DIR=/var/vcap/sys/log/k8s
 JOB_DIR=/var/vcap/jobs/$JOB
-DAT_DIR=/var/vcap/data/k8s/$JOB
+DAT_DIR=/var/vcap/store/k8s/$JOB
 PIDFILE=$RUN_DIR/$JOB.pid
 rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
 mkdir -p $LOG_DIR
