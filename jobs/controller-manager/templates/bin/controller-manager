@@ -51,13 +51,14 @@ case $1 in
         --cluster=<%= link('api').p('cluster.name') %> \
         --user=system:kube-controller-manager \
         --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
 
     echo "[$(date)] $BIN/$$: starting up kube-controller-manager..."
     echo $$ > $PIDFILE
     exec kube-controller-manager \
            --address=0.0.0.0 \
            --cluster-cidr=10.200.0.0/16 \
-           --cluster-name=kubernetes \
+           --cluster-name=<%= link('api').p('cluster.name') %> \
            --cluster-signing-cert-file=$JOB_DIR/tls/ca/cert.pem \
            --cluster-signing-key-file=$JOB_DIR/tls/ca/key.pem \
            --kubeconfig=$DAT_DIR/kubeconfig \
