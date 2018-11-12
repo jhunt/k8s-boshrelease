@@ -13,7 +13,8 @@ certs:
 	# control
 	./utils/certify-me ca    - jobs/control/templates/tls/ca
 	# kubelet
-	./utils/certify-me ca  api jobs/kubelet/templates/tls/ca
+	./utils/certify-me ca     api jobs/kubelet/templates/tls/ca
+	./utils/certify-me admin  api jobs/kubelet/templates/tls/admin
 	# jumpbox
 	./utils/certify-me ca    api jobs/jumpbox/templates/tls/ca
 	./utils/certify-me admin api jobs/jumpbox/templates/tls/admin

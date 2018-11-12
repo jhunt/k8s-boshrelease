@@ -1,0 +1,57 @@
+#!/bin/bash
+set -eu
+exec 2>&1
+
+JOB=kubelet
+BIN=post-deploy
+JOB_DIR=/var/vcap/jobs/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
+DAT_DIR=/var/vcap/data/k8s
+
+# put kube-* in our path
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+
+echo "[$(date)] $BIN/$$: post-deploy starting up..."
+
+
+echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
+mkdir -p $DAT_DIR
+kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+    --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+    --embed-certs=true \
+    --server=https://127.0.0.1:6443 \
+    --kubeconfig=$DAT_DIR/admin.kubeconfig
+kubectl config set-credentials admin \
+    --client-certificate=$JOB_DIR/tls/admin/cert.pem \
+    --client-key=$JOB_DIR/tls/admin/key.pem \
+    --embed-certs=true \
+    --kubeconfig=$DAT_DIR/admin.kubeconfig
+kubectl config set-context default \
+    --cluster=<%= link('api').p('cluster.name') %> \
+    --user=admin \
+    --kubeconfig=$DAT_DIR/admin.kubeconfig
+kubectl config use-context default --kubeconfig=$DAT_DIR/admin.kubeconfig
+
+echo "[$(date)] $BIN/$$: refreshing our proxy kubeconfig..."
+mkdir -p $DAT_DIR
+kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+    --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+    --embed-certs=true \
+    --server=https://<%= link('api').p('cluster.ip') %>:6443 \
+    --kubeconfig=$DAT_DIR/proxy.kubeconfig
+kubectl config set-credentials system:kube-proxy \
+    --client-certificate=$CERTS_DIR/proxy/cert.pem \
+    --client-key=$CERTS_DIR/proxy/key.pem \
+    --embed-certs=true \
+    --kubeconfig=$DAT_DIR/proxy.kubeconfig
+kubectl config set-context default \
+    --cluster=<%= link('api').p('cluster.name') %> \
+    --user=system:kube-proxy \
+    --kubeconfig=$DAT_DIR/proxy.kubeconfig
+kubectl config use-context default --kubeconfig=$DAT_DIR/proxy.kubeconfig
+
+echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
+kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
+        apply -f $JOB_DIR/etc/kube-proxy.yml
+
+echo "[$(date)] $BIN/$$: complete."

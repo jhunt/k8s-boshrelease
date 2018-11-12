@@ -1,6 +1,145 @@
-kind: KubeProxyConfiguration
-apiVersion: kubeproxy.config.k8s.io/v1alpha1
-clientConnection:
-  kubeconfig: "/var/vcap/data/k8s/proxy/kubeconfig"
-mode: "iptables"
-clusterCIDR: "<%= p('pod-cidr') %>"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kube-proxy
+  namespace: kube-system
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: system:kube-proxy
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+subjects:
+  - kind: ServiceAccount
+    name: kube-proxy
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: system:node-proxier
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-proxy
+  namespace: kube-system
+data:
+  proxyConfig: |-
+    ---
+    apiVersion: kubeproxy.config.k8s.io/v1alpha1
+    bindAddress: "0.0.0.0"
+    clientConnection:
+      acceptContentTypes: ""
+      burst: 10
+      contentType: application/vnd.kubernetes.protobuf
+      kubeconfig: /etc/kubeconfig.yml
+      qps: 5
+    clusterCIDR: "<%= p('networks.pods') %>"
+    configSyncPeriod: 15m0s
+    conntrack:
+      max: 0:0
+      maxPerCore: 32768
+      min: 131072
+      tcpCloseWaitTimeout: 1h0m0s
+      tcpEstablishedTimeout: 24h0m0s
+    enableProfiling: false
+    healthzBindAddress: 0.0.0.0:10256
+    iptables:
+      masqueradeAll: false
+      masqueradeBit: 14
+      minSyncPeriod: 0s
+      syncPeriod: 30s
+    kind: KubeProxyConfiguration
+    metricsBindAddress: 127.0.0.1:10249
+    mode: "ipvs"
+    nodePortAddresses: ["<%= p('networks.nodes') %>"]
+    oomScoreAdj: -999
+    portRange: ""
+    resourceContainer: /kube-proxy
+    udpIdleTimeout: 250ms
+
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    k8s-app: kube-proxy
+    addonmanager.kubernetes.io/mode: Reconcile
+  name: kube-proxy
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: kube-proxy
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10%
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-proxy
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      tolerations:
+      - operator: Exists
+        effect: NoExecute
+      - operator: Exists
+        effect: NoSchedule
+      - key: CriticalAddonsOnly
+        operator: Exists
+      containers:
+      - name: kube-proxy
+        image: docker.io/whisperos/kube-proxy:1.12.2
+        command:
+        - /kube-proxy
+        args:
+        - --config=/etc/kube-proxy.yml
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /var/lib/iptables
+          name: var-iptables
+          readOnly: false
+        - mountPath: /etc/kube-proxy.yml
+          name: proxy-config
+          subPath: kube-proxy.yml
+        - mountPath: /etc/kubeconfig.yml
+          name: etc
+          readOnly: true
+        - mountPath: /run/xtables.lock
+          name: xtables-lock
+          readOnly: false
+        - mountPath: /lib/modules
+          name: lib-modules
+          readOnly: true
+      volumes:
+      - name: proxy-config
+        configMap:
+          name: kube-proxy
+          items:
+          - key: proxyConfig
+            path: kube-proxy.yml
+      - name: var-iptables
+        hostPath:
+          path: /var/lib/iptables
+      - name: xtables-lock
+        hostPath:
+          path: /run/xtables.lock
+          type: FileOrCreate
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: etc
+        hostPath:
+          path: /var/vcap/data/k8s/proxy.kubeconfig
+          type: File
+      serviceAccountName: kube-proxy

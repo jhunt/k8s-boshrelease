@@ -25,11 +25,15 @@ templates:
   tls/ca/cert.pem: tls/ca/cert.pem
   tls/ca/key.pem:  tls/ca/key.pem
 
+  tls/admin/cert.pem: tls/admin/cert.pem
+  tls/admin/key.pem:  tls/admin/key.pem
+
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
-  bin/proxy:          bin/proxy
   etc/kube-proxy.yml: etc/kube-proxy.yml
+
+  bin/post-deploy: bin/post-deploy
 
 properties:
   debug:
@@ -39,3 +43,17 @@ properties:
   pod-cidr:
     description: Range of network IPs to assign Pods inside of Kubernetes
     default: 10.0.0.0/20
+
+  networks.services:
+    description: |
+      Network CIDR range to use for Service IP allocation.
+      This must NOT overlap with networks.pods.
+
+  networks.pods:
+    description: |
+      Network CIDR range to use for Pod IP allocation.
+      This must NOT overlap with networks.services.
+
+  networks.nodes:
+    description: |
+      Network CIDR range that the Kubernetes nodes use.
