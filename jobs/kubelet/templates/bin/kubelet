@@ -37,6 +37,11 @@ case $1 in
       rm -f $PIDFILE
     fi
 
+    echo "[$(date)] $BIN/$$: turning off swap..."
+    swapoff -a
+    free
+    echo
+
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR
     kubectl config set-cluster "<%= link('api').p('cluster.name') %>" \
