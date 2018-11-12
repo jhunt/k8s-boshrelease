@@ -28,6 +28,10 @@ provides:
       - tls.api.key
       - tls.service-accounts.certificate
       - tls.service-accounts.key
+      - tls.proxy.certificate
+      - tls.proxy.key
+      - tls.kubelet.certificate
+      - tls.kubelet.key
 
 consumes:
   - name: etcd
