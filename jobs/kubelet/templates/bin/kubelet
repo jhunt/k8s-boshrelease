@@ -53,6 +53,8 @@ case $1 in
         --cluster=<%= link('api').p('cluster.name') %> \
         --user=system:nodes:node \
         --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
+    echo
 
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
