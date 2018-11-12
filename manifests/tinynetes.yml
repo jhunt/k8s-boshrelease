@@ -26,8 +26,8 @@ instance_groups:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
             admin:
-              certificate: ((tls-admin.certificate))
-              key:         ((tls-admin.private_key))
+              certificate: ((tls-admin1.certificate))
+              key:         ((tls-admin1.private_key))
 
       - name: etcd
         release: k8s
@@ -53,11 +53,12 @@ variables:
       is_ca: yes
       common_name: ca
 
-  - name: tls-admin
+  - name: tls-admin1
     type: certificate
     options:
       ca: tls-ca
       common_name: admin
+      organization: system:masters
 
   - name: encryption-key1
     type: password
