@@ -1,18 +1,17 @@
 #!/bin/bash
 set -eu
 
-JOB=scheduler
+JOB=control
 BIN=scheduler
 SIGTERM_FOR=15
 SIGKILL_FOR=5
 
-RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
-DAT_DIR=/var/vcap/data/k8s/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
+DAT_DIR=/var/vcap/data/k8s/$BIN
 PIDFILE=$RUN_DIR/$BIN.pid
-rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
-mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
 # set kube-* binaries in our path
@@ -37,18 +36,18 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR
-    kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+    kubectl config set-cluster <%= p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \
         --server=https://127.0.0.1:6443 \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config set-credentials system:kube-scheduler \
-        --client-certificate=$JOB_DIR/tls/scheduler/cert.pem \
-        --client-key=$JOB_DIR/tls/scheduler/key.pem \
+        --client-certificate=$CERTS_DIR/scheduler/cert.pem \
+        --client-key=$CERTS_DIR/scheduler/key.pem \
         --embed-certs=true \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config set-context default \
-        --cluster=<%= link('api').p('cluster.name') %> \
+        --cluster=<%= p('cluster.name') %> \
         --user=system:kube-scheduler \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig

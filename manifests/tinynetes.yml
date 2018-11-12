@@ -13,7 +13,7 @@ instance_groups:
       - name: default
 
     jobs:
-      - name: api
+      - name: control
         release: k8s
         properties:
           cluster:
@@ -46,10 +46,8 @@ instance_groups:
 
       - name: etcd
         release: k8s
-      - name: controller-manager
-        release: k8s
-      - name: scheduler
-        release: k8s
+        properties:
+          debug: yes
 
       - name: runtime-runc
         release: k8s

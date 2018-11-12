@@ -17,12 +17,11 @@ consumes:
     type: k8s-apiserver
 
 templates:
-  bin/etcd:          bin/etcd
-
+  bin/pre-start:     bin/pre-start
   tls/ca/cert.pem:   tls/ca/cert.pem
+  tls/ca/key.pem:    tls/ca/key.pem
 
-  tls/etcd/cert.pem: tls/etcd/cert.pem
-  tls/etcd/key.pem:  tls/etcd/key.pem
+  bin/etcd:          bin/etcd
 
 packages:
   - etcd

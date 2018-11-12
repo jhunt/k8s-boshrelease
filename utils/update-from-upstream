@@ -29,6 +29,14 @@ VERSION=${VERSION:-1.12.0}
 #curl -Lo tmp/${what} https://storage.googleapis.com/kubernetes-the-hard-way/runsc-50c283b9f56bb7200938d9e207355f05f79f0d17
 #bosh add-blob tmp/${what} runtime-runc/${what}
 
-what=etcd-v3.3.9-linux-amd64.tar.gz
-curl -Lo tmp/${what} https://github.com/coreos/etcd/releases/download/v3.3.9/${what}
-bosh add-blob tmp/${what} etcd/${what}
+#what=etcd-v3.3.9-linux-amd64.tar.gz
+#curl -Lo tmp/${what} https://github.com/coreos/etcd/releases/download/v3.3.9/${what}
+#bosh add-blob tmp/${what} etcd/${what}
+
+what=cfssl_linux-amd64
+curl -Lo tmp/${what} https://pkg.cfssl.org/R1.2/${what}
+bosh add-blob tmp/${what} cfssl/${what}
+
+what=cfssljson_linux-amd64
+curl -Lo tmp/${what} https://pkg.cfssl.org/R1.2/${what}
+bosh add-blob tmp/${what} cfssl/${what}

@@ -1,3 +1,9 @@
+cfssl/cfssl_linux-amd64:
+  size: 10376657
+  sha: 889d87f6814fbe8d6985713aca35e3be4c632afd
+cfssl/cfssljson_linux-amd64:
+  size: 2277873
+  sha: a9766e7eef71a39a5d2ca94061c8a6004fcdd524
 containerd/cni-plugins-amd64-v0.6.0.tgz:
   size: 15385105
   sha: d595d3ded6499a64e8dac02466e2f5f2ce257c9f

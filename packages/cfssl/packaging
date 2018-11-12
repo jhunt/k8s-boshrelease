@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+cp cfssl/cfssl_linux-amd64     ${BOSH_INSTALL_TARGET}/bin/cfssl
+cp cfssl/cfssljson_linux-amd64 ${BOSH_INSTALL_TARGET}/bin/cfssljson
+chmod 755 ${BOSH_INSTALL_TARGET}/bin/*

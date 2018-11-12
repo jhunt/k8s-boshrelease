@@ -1,0 +1,7 @@
+---
+name: cfssl
+
+dependencies: {]
+files:
+  - cfssl/cfssl_linux-amd64
+  - cfssl/cfssljson_linux-amd64

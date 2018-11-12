@@ -15,11 +15,7 @@ instance_groups:
     jobs:
       - name: etcd
         release: k8s
-      - name: api
-        release: k8s
-      - name: controller-manager
-        release: k8s
-      - name: scheduler
+      - name: control
         release: k8s
 
       - name: runtime-runc

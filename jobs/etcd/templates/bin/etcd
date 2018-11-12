@@ -12,13 +12,12 @@ BIN=etcd
 SIGTERM_FOR=15
 SIGKILL_FOR=5
 
-RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
 DAT_DIR=/var/vcap/store/k8s/$JOB
 PIDFILE=$RUN_DIR/$JOB.pid
-rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
-mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
 # set etcd binaries in our path
@@ -44,10 +43,10 @@ case $1 in
     echo $$ > $PIDFILE
     exec etcd \
            --name "<%= spec.name %>-<%= spec.id %>"  \
-           --cert-file=$JOB_DIR/tls/etcd/cert.pem \
-           --key-file=$JOB_DIR/tls/etcd/key.pem \
-           --peer-cert-file=$JOB_DIR/tls/etcd/cert.pem \
-           --peer-key-file=$JOB_DIR/tls/etcd/key.pem \
+           --cert-file=$CERTS_DIR/etcd/cert.pem \
+           --key-file=$CERTS_DIR/etcd/key.pem \
+           --peer-cert-file=$CERTS_DIR/etcd/cert.pem \
+           --peer-key-file=$CERTS_DIR/etcd/key.pem \
            --trusted-ca-file=$JOB_DIR/tls/ca/cert.pem \
            --peer-trusted-ca-file=$JOB_DIR/tls/ca/cert.pem \
            --peer-client-cert-auth \

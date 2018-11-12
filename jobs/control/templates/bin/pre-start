@@ -1,0 +1,100 @@
+#!/bin/bash
+set -eu
+exec 2>&1
+
+JOB=control
+BIN=pre-start
+JOB_DIR=/var/vcap/jobs/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
+TMP_DIR=/var/vcap/data/k8s/tmp/$JOB
+
+# put cfssl in our path
+export PATH=$PATH:/var/vcap/packages/cfssl/bin
+
+echo "[$(date)] $BIN/$$: regenerating certificates..."
+rm -rf $TMP_DIR
+mkdir -p $CERTS_DIR $TMP_DIR
+pushd $TMP_DIR 2>/dev/null 2>&1
+
+echo "[$(date)] $BIN/$$: configuring ca parameters"
+cat > ca.json <<EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "8760h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": ["signing", "key encipherment", "server auth", "client auth"],
+        "expiry": "8760h"
+      }
+    }
+  }
+}
+EOF
+cat ca.json
+echo
+
+gencert() {
+  cn=$1
+  o=$2
+  alts=$3
+  dest=$4
+
+  cat > cert.json <<EOF
+{
+  "CN": "$cn",
+  "names": [{"O": "$o"}],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}
+EOF
+  cfssl gencert \
+    -ca=$JOB_DIR/tls/ca/cert.pem \
+    -ca-key=$JOB_DIR/tls/ca/key.pem \
+    -config=ca.json \
+    -hostname=$alts \
+    -profile=kubernetes \
+    cert.json | \
+      cfssljson -bare out
+  mkdir -p $CERTS_DIR/$dest
+  mv out.pem     $CERTS_DIR/$dest/cert.pem
+  mv out-key.pem $CERTS_DIR/$dest/key.pem
+  echo ">> $CERTS_DIR/$dest/cert.pem"
+  openssl x509 -text -in $CERTS_DIR/$dest/cert.pem
+  echo
+}
+
+ID="system:node:$(hostname -s)"
+echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
+gencert "$ID" \
+        system:nodes \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %> \
+        api
+
+echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
+gencert system:kube-scheduler \
+        system:kube-scheduler \
+        127.0.0.1,kube-scheduler,kube-scheduler.default,<%= spec.ip %> \
+        scheduler
+
+echo "[$(date)] $BIN/$$: issuing the Controller Manager certificate"
+gencert system:kube-controller-manager \
+        system:kube-controller-manager \
+        127.0.0.1,kube-controller-manager,kube-controller-manager.default,<%= spec.ip %> \
+        controller-manager
+
+echo "[$(date)] $BIN/$$: issuing the Service Account token-signing certificate"
+gencert service-accounts \
+        service-accounts \
+        service-accounts \
+        service-accounts
+
+popd >/dev/null 2>&1
+
+echo "[$(date)] $BIN/$$: removing temporary directory $TMP_DIR..."
+rm -rf $TMP_DIR
+
+echo "[$(date)] $BIN/$$: complete."

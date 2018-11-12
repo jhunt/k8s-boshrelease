@@ -1,5 +1,0 @@
-check process api
-  with pidfile  /var/vcap/sys/run/k8s/api.pid
-  start program "/var/vcap/jobs/api/bin/api start"
-  stop  program "/var/vcap/jobs/api/bin/api stop"
-  group vcap

@@ -1,5 +1,0 @@
-check process proxy
-  with pidfile  /var/vcap/sys/run/k8s/proxy.pid
-  start program "/var/vcap/jobs/proxy/bin/proxy start"
-  stop  program "/var/vcap/jobs/proxy/bin/proxy stop"
-  group vcap

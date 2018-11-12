@@ -1,0 +1,139 @@
+---
+name: control
+description: |
+  The Kubernetes control plane, minus the etcd storage backend.
+  The control plane is designed to scale horizontally – that is, it scales
+  by deploying more instances.
+
+  This includes the following components:
+
+    - Kubernetes API Server (kube-apiserver)
+    - Controller Manager (kube-controller-manager)
+    - Scheduler (kube-scheduler)
+
+  The Controller Manager runs controllers.
+  Logically, each controller is a separate process, but to reduce
+  complexity, they are all compiled into a single binary and run in a single
+  process.
+
+  These controllers include:
+
+    - Node Controller: Responsible for noticing and responding when nodes go
+      down.
+
+    - Replication Controller: Responsible for maintaining the correct number
+      of pods for every replication controller object in the system.
+
+    - Endpoints Controller: Populates the Endpoints object (that is, joins
+      Services & Pods).
+
+    - Service Account & Token Controllers: Create default accounts and API
+      access tokens for new namespaces.
+
+  The Scheduler watches newly created pods that have no node
+  assigned, and selects a node for them to run on.
+
+  Factors taken into account for scheduling decisions include individual and
+  collective resource requirements, hardware/software/policy constraints,
+  affinity and anti-affinity specifications, data locality, inter-workload
+  interference and deadlines.
+
+packages:
+  - k8s
+  - cfssl
+
+provides:
+  - name: api
+    type: k8s-apiserver
+    properties:
+      - cluster.name
+      - cluster.ip
+      - tls.ca.certificate
+      - tls.ca.key
+      - tls.admin.certificate
+      - tls.admin.key
+
+consumes:
+  - name: etcd
+    type: k8s-etcd
+
+templates:
+  # certificates
+  bin/pre-start:   bin/pre-start
+  tls/ca/cert.pem: tls/ca/cert.pem
+  tls/ca/key.pem:  tls/ca/key.pem
+
+  # kube-apiserver
+  bin/api: bin/api
+  etc/encryption.yml: etc/encryption.yml
+
+  # kube-controller-manager
+  bin/controller-manager: bin/controller-manager
+
+  # kube-scheduler
+  bin/scheduler:     bin/scheduler
+  etc/scheduler.yml: etc/scheduler.yml
+
+properties:
+  debug.api:
+    description: Enables verbose debugging, suitable for troubleshooting the API Server.
+    default:     false
+
+  debug.controller-manager:
+    description: Enables verbose debugging, suitable for troubleshooting the Controller Manager.
+    default:     false
+
+  debug.scheduler:
+    description: Enables verbose debugging, suitable for troubleshooting the Scheduler.
+    default:     false
+
+  cluster.name:
+    description: |
+      The name of this cluster.  Cluster names should be lower case, and may
+      only consist of alphanumeric characters, periods (.), hyphens (-) and
+      underscores (_).  They must start with a letter.
+    default: my-unnamed-k8s-cluster
+
+  cluster.ip:
+    description: A public IP for this cluster, for routing internal traffic.
+
+
+  encryption.key:
+    description: A random key to use for encrypting secrets and other data at-rest.
+
+
+  ######## ##        ######
+     ##    ##       ##    ##
+     ##    ##       ##
+     ##    ##        ######
+     ##    ##             ##
+     ##    ##       ##    ##
+     ##    ########  ######
+
+  tls.ca.certificate:
+    description: |
+      The X.509 Certificate Authority's certificate, in PEM format.
+
+      This certificate must be valid for the following key usages:
+        - Digital Signing
+        - Key Encipherment
+        - Server Auth (Extended)
+        - Client Auth (Extended)
+
+  tls.ca.key:
+    description: |
+      The X.509 Certificate Authority's RSA private key, in PEM format.
+
+      The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
+      job, in this BOSH release) in properly validated mutual TLS setups.
+
+  tls.admin.certificate:
+    description: |
+      The X.509 certificate for the Kubernetes administrator to use (in PEM
+      format), when connecting to the API server for management purposes.
+      This certificate must be valid for the CN `admin`.
+
+  tls.admin.key:
+    description: |
+      The RSA private key (in PEM format) for the administrator's X.509
+      certificate (tls.admin.certificate).

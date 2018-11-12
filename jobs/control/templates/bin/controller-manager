@@ -1,32 +1,17 @@
 #!/bin/bash
 set -eu
-<%
 
-  ##     ##    ###    ##       #### ########     ###    ######## ####  #######  ##    ##
-  ##     ##   ## ##   ##        ##  ##     ##   ## ##      ##     ##  ##     ## ###   ##
-  ##     ##  ##   ##  ##        ##  ##     ##  ##   ##     ##     ##  ##     ## ####  ##
-  ##     ## ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ## ## ##
-   ##   ##  ######### ##        ##  ##     ## #########    ##     ##  ##     ## ##  ####
-    ## ##   ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ##   ###
-     ###    ##     ## ######## #### ########  ##     ##    ##    ####  #######  ##    ##
-
-  p('cluster.name').match(/^[a-zA-Z][a-zA-Z0-9._-]*$/) or
-    raise 'cluster.name must be alphanumeric (no spaces are allowed)'
-
--%>
-
-JOB=api
-BIN=api
+JOB=control
+BIN=controller-manager
 SIGTERM_FOR=15
 SIGKILL_FOR=5
 
-RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
+CERTS_DIR=/var/vcap/data/k8s/certs
 DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
-mkdir -p $LOG_DIR
-rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
 exec >>$LOG_DIR/$BIN.log 2>&1
 
 # set kube-* binaries in our path
@@ -49,37 +34,40 @@ case $1 in
       rm -f $PIDFILE
     fi
 
+    echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
+    mkdir -p $DAT_DIR
+    kubectl config set-cluster <%= p('cluster.name') %> \
+        --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+        --embed-certs=true \
+        --server=https://127.0.0.1:6443 \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-credentials system:kube-controller-manager \
+        --client-certificate=$CERTS_DIR/controller-manager/cert.pem \
+        --client-key=$CERTS_DIR/controller-manager/key.pem \
+        --embed-certs=true \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-context default \
+        --cluster=<%= p('cluster.name') %> \
+        --user=system:kube-controller-manager \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
+
+    echo "[$(date)] $BIN/$$: starting up kube-controller-manager..."
     echo $$ > $PIDFILE
-    exec kube-apiserver \
-           --advertise-address=<%= spec.ip %> \
-           --allow-privileged=true \
-           --apiserver-count=3 \
-           --audit-log-maxage=30 \
-           --audit-log-maxbackup=3 \
-           --audit-log-maxsize=100 \
-           --audit-log-path=$LOG_DIR/audit.log \
-           --authorization-mode=Node,RBAC \
-           --bind-address=0.0.0.0 \
-           --client-ca-file=$JOB_DIR/tls/ca/cert.pem \
-           --enable-admission-plugins=Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
-           --enable-swagger-ui=true \
-           --etcd-cafile=$JOB_DIR/tls/ca/cert.pem \
-           --etcd-certfile=$JOB_DIR/tls/api/cert.pem \
-           --etcd-keyfile=$JOB_DIR/tls/api/key.pem \
-           --etcd-servers=<%= link('etcd').instances.map { |vm| "https://#{vm.address}:#{link('etcd').p('port')}" }.join(',') %> \
-           --event-ttl=1h \
-           --experimental-encryption-provider-config=$JOB_DIR/etc/encryption.yml \
-           --kubelet-certificate-authority=$JOB_DIR/tls/ca/cert.pem \
-           --kubelet-client-certificate=$JOB_DIR/tls/kubelet/cert.pem \
-           --kubelet-client-key=$JOB_DIR/tls/kubelet/key.pem \
-           --kubelet-https=true \
-           --runtime-config=api/all \
-           --service-account-key-file=$JOB_DIR/tls/sa/key.pem \
+    exec kube-controller-manager \
+           --address=0.0.0.0 \
+           --cluster-cidr=10.200.0.0/16 \
+           --cluster-name=<%= p('cluster.name') %> \
+           --cluster-signing-cert-file=$JOB_DIR/tls/ca/cert.pem \
+           --cluster-signing-key-file=$JOB_DIR/tls/ca/key.pem \
+           --kubeconfig=$DAT_DIR/kubeconfig \
+           --leader-elect=true \
+           --root-ca-file=$JOB_DIR/tls/ca/cert.pem \
+           --service-account-private-key-file=$CERTS_DIR/service-accounts/key.pem \
            --service-cluster-ip-range=10.32.0.0/24 \
-           --service-node-port-range=30000-32767 \
-           --tls-cert-file=$JOB_DIR/tls/api/cert.pem \
-           --tls-private-key-file=$JOB_DIR/tls/api/key.pem \
+           --use-service-account-credentials=true \
            --v=2
+
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
     ;;
