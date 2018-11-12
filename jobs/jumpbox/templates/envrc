@@ -1,6 +1,7 @@
 # source me with `. /var/vcap/jobs/jumpbox/envrc`!
 
 export PATH=$PATH:/var/vcap/packages/k8s/bin
+export KUBECONFIG=/var/vcap/data/k8s/jumpbox/kubeconfig
 
 echo "setting up kubeconfig..."
 mkdir -p /var/vcap/data/k8s/jumpbox
@@ -8,16 +9,24 @@ kubectl config set-cluster <%= link('api').p('cluster.name') %> \
   --certificate-authority=/var/vcap/jobs/jumpbox/tls/ca/cert.pem \
   --embed-certs=true \
   --server=https://127.0.0.1:6443 \
-  --kubeconfig=/var/vcap/data/k8s/jumpbox/kubeconfig
+  --kubeconfig=$KUBECONFIG
+
 kubectl config set-credentials admin \
   --client-certificate=/var/vcap/jobs/jumpbox/tls/admin/cert.pem \
   --client-key=/var/vcap/jobs/jumpbox/tls/admin/key.pem \
   --embed-certs=true \
-  --kubeconfig=/var/vcap/data/k8s/jumpbox/kubeconfig
+  --kubeconfig=$KUBECONFIG
+
 kubectl config set-context default \
   --cluster=<%= link('api').p('cluster.name') %> \
-  --user=system:kube-admin \
-  --kubeconfig=/var/vcap/data/k8s/jumpbox/kubeconfig
-kubectl config use-context default \
-  --kubeconfig=/var/vcap/data/k8s/jumpbox/kubeconfig
+  --user=admin \
+  --kubeconfig=$KUBECONFIG
 
+kubectl config use-context default \
+  --kubeconfig=$KUBECONFIG
+
+echo
+echo "All done!"
+echo
+echo "You may now use kubectl at your leisure."
+echo
