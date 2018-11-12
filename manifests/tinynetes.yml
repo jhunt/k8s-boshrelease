@@ -58,6 +58,9 @@ instance_groups:
       - name: kubelet
         release: k8s
 
+      - name: status-of-etcd
+        release: k8s
+
 variables:
   - name: tls-ca
     type: certificate

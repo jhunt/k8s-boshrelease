@@ -1,0 +1,46 @@
+#!/bin/bash
+set -eu
+JOB_DIR=/var/vcap/jobs/status-of-etcd
+
+# set etcd binaries in our path
+export PATH=$PATH:/var/vcap/packages/etcd/bin
+
+echo "[$(date)] status-of-etcd starting up..."
+echo "[$(date)]   deployment: '<%= spec.deployment %>'"
+echo "[$(date)]   instance:   '<%= spec.name %>/<%= spec.id %>'"
+echo "[$(date)]   ip address: '<%= spec.ip %>'"
+echo "[$(date)]   bootstrap?:  <%= spec.bootstrap ? 'yes' : 'no' %>"
+echo
+
+echo "ETCD CA CERTIFICATE"
+echo "==================="
+openssl x509 -text -in $JOB_DIR/tls/ca/cert.pem
+echo
+echo
+
+echo "ETCD CERTIFICATE"
+echo "================"
+openssl x509 -text -in $JOB_DIR/tls/etcd/cert.pem
+echo
+echo
+
+echo "ETCD VERSION"
+echo "============"
+etcd --version
+echo
+echo
+
+echo "ETCD MEMBER LIST"
+echo "================"
+ETCDCTL_API=3 etcdctl member list \
+  --endpoints=https://127.0.0.1:<%= link('etcd').p('port') %> \
+  --cacert=$JOB_DIR/tls/ca/cert.pem \
+  --cert=$JOB_DIR/tls/etcd/cert.pem \
+  --key=$JOB_DIR/tls/etcd/key.pem
+echo
+echo
+
+echo
+echo
+echo "COMPLETE"
+exit 0

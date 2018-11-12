@@ -8,6 +8,9 @@ certs:
 	# etcd
 	./utils/certify-me ca  api jobs/etcd/templates/tls/ca
 	./utils/certify-me api api jobs/etcd/templates/tls/etcd
+	# status-of-etcd
+	./utils/certify-me ca  api jobs/status-of-etcd/templates/tls/ca
+	./utils/certify-me api api jobs/status-of-etcd/templates/tls/etcd
 	# api
 	./utils/certify-me ca               - jobs/api/templates/tls/ca
 	./utils/certify-me service-accounts - jobs/api/templates/tls/sa
