@@ -37,7 +37,7 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR
-    kubectl config set-cluster "<%= link('api').p('cluster.name') %>" \
+    kubectl config set-cluster <%= link('api').p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \
         --server=https://127.0.0.1:6443 \
