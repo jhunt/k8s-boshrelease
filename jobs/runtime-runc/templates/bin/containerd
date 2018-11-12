@@ -44,7 +44,7 @@ case $1 in
     ulimit -u unlimited  # num processes
 
     echo $$ > $PIDFILE
-    exec containerd
+    exec containerd --config $JOB_DIR/etc/containerd.toml
 
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
