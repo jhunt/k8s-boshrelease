@@ -1,0 +1,28 @@
+<%
+
+  require 'base64'
+
+
+  ##     ##    ###    ##       #### ########     ###    ######## ####  #######  ##    ##
+  ##     ##   ## ##   ##        ##  ##     ##   ## ##      ##     ##  ##     ## ###   ##
+  ##     ##  ##   ##  ##        ##  ##     ##  ##   ##     ##     ##  ##     ## ####  ##
+  ##     ## ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ## ## ##
+   ##   ##  ######### ##        ##  ##     ## #########    ##     ##  ##     ## ##  ####
+    ## ##   ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ##   ###
+     ###    ##     ## ######## #### ########  ##     ##    ##    ####  #######  ##    ##
+
+  p('encryption.key').size == 32 or
+    raise 'encryption.key must be exactly 32 bytes long'
+
+-%>
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: <%= Base64.encode64(p('encryption.key')) %>
+      - identity: {}

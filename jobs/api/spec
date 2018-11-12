@@ -40,10 +40,16 @@ consumes:
 templates:
   bin/api: bin/api
 
+  etc/encryption.yml: etc/encryption.yml
+
   tls/ca/cert.pem: tls/ca/cert.pem
 
   tls/api/cert.pem: tls/api/cert.pem
   tls/api/key.pem:  tls/api/key.pem
+
+  tls/kubelet/cert.pem: tls/kubelet/cert.pem
+
+  tls/sa/key.pem: tls/sa/key.pem
 
 properties:
   debug:
