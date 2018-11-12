@@ -6,13 +6,11 @@ BIN=containerd
 SIGTERM_FOR=15
 SIGKILL_FOR=5
 
-RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s
+RUN_DIR=/var/vcap/sys/run/$JOB
+LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
 DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
-rmdir /var/vcap/sys/log/$JOB >/dev/null 2>&1 || true
-mkdir -p $LOG_DIR
 exec >>$LOG_DIR/$BIN.log 2>&1
 
 # set runc + containerd binaries in our path
@@ -21,7 +19,7 @@ export PATH=$PATH:/var/vcap/packages/containerd/bin
 
 case $1 in
   start)
-    mkdir -p $RUN_DIR
+    mkdir -p $RUN_DIR $DAT_DIR
 
     echo "[$(date)] $BIN/$$: starting up..."
     if [[ -f $PIDFILE ]]; then
