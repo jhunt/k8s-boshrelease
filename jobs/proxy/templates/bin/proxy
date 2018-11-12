@@ -7,7 +7,7 @@ SIGTERM_FOR=15
 SIGKILL_FOR=5
 
 RUN_DIR=/var/vcap/sys/run/k8s
-LOG_DIR=/var/vcap/sys/log/k8s/$JOB
+LOG_DIR=/var/vcap/sys/log/k8s
 JOB_DIR=/var/vcap/jobs/$JOB
 DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
