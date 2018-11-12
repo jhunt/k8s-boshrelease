@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eu
+CERTS_DIR=/var/vcap/data/k8s/certs
 JOB_DIR=/var/vcap/jobs/status-of-etcd
 
 # set etcd binaries in our path
@@ -20,7 +21,7 @@ echo
 
 echo "ETCD CERTIFICATE"
 echo "================"
-openssl x509 -text -in $JOB_DIR/tls/etcd/cert.pem
+openssl x509 -text -in $CERTS_DIR/etcd/cert.pem
 echo
 echo
 
