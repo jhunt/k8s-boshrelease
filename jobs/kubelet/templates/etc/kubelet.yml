@@ -12,7 +12,7 @@ authorization:
 clusterDomain: "cluster.local"
 clusterDNS:
   - "10.32.0.10"
-podCIDR: "${POD_CIDR}"
+podCIDR: "<%= p('pod-cidr') %>"
 resolvConf: "/run/systemd/resolve/resolv.conf"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/vcap/data/k8s/certs/kubelet/cert.pem"

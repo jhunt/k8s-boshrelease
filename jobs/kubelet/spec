@@ -35,3 +35,7 @@ properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+
+  pod-cidr:
+    description: Range of network IPs to assign Pods inside of Kubernetes
+    default: 10.0.0.0/20
