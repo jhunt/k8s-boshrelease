@@ -9,7 +9,7 @@ packages:
   - runtime-runc
 
 templates:
-  bin/containerd-runc: bin/containerd-runc
+  bin/containerd: bin/containerd
 
   etc/containerd.toml:            etc/containerd.toml
   etc/cni/net.d/10-bridge.conf:   etc/cni/net.d/10-bridge.conf

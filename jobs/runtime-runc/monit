@@ -1,5 +1,5 @@
-check process containerd
+check process containerd-runc
   with pidfile  /var/vcap/sys/run/k8s/containerd.pid
-  start program "/var/vcap/jobs/kubelet/bin/containerd start"
-  stop  program "/var/vcap/jobs/kubelet/bin/containerd stop"
+  start program "/var/vcap/jobs/runtime-runc/bin/containerd start"
+  stop  program "/var/vcap/jobs/runtime-runc/bin/containerd stop"
   group vcap
