@@ -35,6 +35,24 @@ case $1 in
       rm -f $PIDFILE
     fi
 
+    echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
+    mkdir -p $DAT_DIR
+    kubectl config set-cluster "<%= link('api').p('cluster.name') %>" \
+        --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+        --embed-certs=true \
+        --server=https://127.0.0.1:6443 \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-credentials system:kube-scheduler \
+        --client-certificate=$JOB_DIR/tls/scheduler/cert.pem \
+        --client-key=$JOB_DIR/tls/scheduler/key.pem \
+        --embed-certs=true \
+        --kubeconfig=$DAT_DIR/kubeconfig
+    kubectl config set-context default \
+        --cluster=<%= link('api').p('cluster.name') %> \
+        --user=system:kube-scheduler \
+        --kubeconfig=$DAT_DIR/kubeconfig
+
+    echo "[$(date)] $BIN/$$: starting up kube-scheduler..."
     echo $$ > $PIDFILE
     exec kube-scheduler \
            --config=$JOB_DIR/etc/scheduler.yml \
