@@ -71,13 +71,13 @@ ID="system:node:$(hostname -s)"
 echo "[$(date)] $BIN/$$: issuing the Kubelet certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,<%= spec.ip %> \
+        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
         kubelet
 
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
 gencert system:kube-proxy \
         system:kube-proxy \
-        127.0.0.1,kube-proxy,kube-proxy.default,<%= spec.ip %> \
+        127.0.0.1,kube-proxy,kube-proxy.default,<%= spec.ip %>,$(hostname -s) \
         proxy
 
 popd >/dev/null 2>&1

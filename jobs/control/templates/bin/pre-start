@@ -71,7 +71,7 @@ ID="system:node:$(hostname -s)"
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %> \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s) \
         api
 
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
