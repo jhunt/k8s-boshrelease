@@ -76,7 +76,7 @@ gencert "$ID" \
 
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
 gencert system:kube-proxy \
-        system:kube-proxy \
+        system:node-proxier \
         127.0.0.1,kube-proxy,kube-proxy.default,<%= spec.ip %>,$(hostname -s) \
         proxy
 
