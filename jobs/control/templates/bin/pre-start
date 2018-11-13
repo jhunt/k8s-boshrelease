@@ -83,13 +83,13 @@ gencert kubelet-client \
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
 gencert system:kube-scheduler \
         system:kube-scheduler \
-        127.0.0.1,kube-scheduler,kube-scheduler.default,<%= spec.ip %> \
+        system:kube-scheduler \
         scheduler
 
 echo "[$(date)] $BIN/$$: issuing the Controller Manager certificate"
 gencert system:kube-controller-manager \
         system:kube-controller-manager \
-        127.0.0.1,kube-controller-manager,kube-controller-manager.default,<%= spec.ip %> \
+        system:kube-controller-manager \
         controller-manager
 
 echo "[$(date)] $BIN/$$: issuing the Service Account token-signing certificate"
