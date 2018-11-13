@@ -71,7 +71,7 @@ ID="system:node:$(hostname -s)"
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s) \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s),<%= p('cluster.ip') %> \
         api
 
 echo "[$(date)] $BIN/$$: issuing the API -> Kubelet client certificate"
