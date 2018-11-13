@@ -52,6 +52,6 @@ kubectl config use-context default --kubeconfig=$DAT_DIR/proxy.kubeconfig
 
 echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/etc/kube-proxy.yml
+        apply -f $JOB_DIR/etc/in-k8s/kube-proxy.yml
 
 echo "[$(date)] $BIN/$$: complete."

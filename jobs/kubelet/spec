@@ -31,7 +31,7 @@ templates:
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
-  etc/kube-proxy.yml: etc/kube-proxy.yml
+  etc/in-k8s/kube-proxy.yml: etc/in-k8s/kube-proxy.yml
 
   bin/post-deploy: bin/post-deploy
 
