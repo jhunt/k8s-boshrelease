@@ -41,7 +41,7 @@ data:
     clusterCIDR: "<%= p('networks.pods') %>"
     configSyncPeriod: 15m0s
     conntrack:
-      max: 0:0
+      max: 0
       maxPerCore: 32768
       min: 131072
       tcpCloseWaitTimeout: 1h0m0s
