@@ -172,8 +172,6 @@ Subject:  /cn=system:node:${HOSTNAME}/o=system:nodes
 Key Type: RSA
 Strength: 2048-bit
 SANs:
-  - kubernetes
-  - kubernetes.default
   - ${INTERNAL_IP}
   - 127.0.0.1
 ```
@@ -187,9 +185,7 @@ on the `etcd` VM; operators are not responsible for its
 configuration.
 
 We add `127.0.0.1` to the list of subject alternate names so that
-operators on the BOSH etcd VM can curl locally, and so that the
-`status-of-etcd` errand (which is colocated there) can do
-likewise.
+operators on the BOSH etcd VM can curl locally.
 
 Since etcd is only ever access directly by the API servers, there
 is no need to list any public IP addresses in the SANs; in fact,
@@ -412,6 +408,9 @@ implementation.
 
 3. Does etcd need anything special in the subject, or does it
    just need SANs for its IP addresses (including loopback)?
+
+   **ANSWER**: no, it does not.  The pre-starts for etcd have been
+   updated to drop the extra subject alternate names.
 
 4. Do we need to list the IP / hostname of the BOSH VM in the
    kube-proxy certificates, if we are running it as a DaemonSet

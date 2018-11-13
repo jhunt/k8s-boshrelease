@@ -37,14 +37,12 @@ echo
 
 gencert() {
   cn=$1
-  o=$2
-  alts=$3
-  dest=$4
+  alts=$2
+  dest=$3
 
   cat > cert.json <<EOF
 {
   "CN": "$cn",
-  "names": [{"O": "$o"}],
   "key": {
     "algo": "rsa",
     "size": 2048
@@ -67,11 +65,9 @@ EOF
   echo
 }
 
-ID="system:node:$(hostname -s)"
-echo "[$(date)] $BIN/$$: issuing the etcd server certificate for [$ID]"
-gencert "$ID" \
-        system:nodes \
-        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %> \
+echo "[$(date)] $BIN/$$: issuing the etcd server certificate for etcd"
+gencert etcd \
+        127.0.0.1,<%= spec.ip %> \
         etcd
 
 popd >/dev/null 2>&1
