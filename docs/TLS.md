@@ -86,6 +86,20 @@ The CA certificate requires the following key usage extensions:
 These are defined more normatively in [RFC 5280][rfc5280],
 sections 4.2.1.3 and 4.2.1.12.
 
+To generate the Certificate Authority in `safe`:
+
+```
+$ safe x509 issue --ca \
+    --ttl 10y \
+    --subject /cn=kubernetes-ca/o=kubernetes
+    --key-usage digital_signature \
+    --key-usage key_encipherment \
+    --key-usage server_auth \
+    --key-usage client_auth \
+    --name kubernetes \
+    secret/path/to/your/ca
+```
+
 
 
 Administrative Client Certificate
@@ -106,6 +120,17 @@ Subject:  /cn=admin/o=system:masters
 Key Type: RSA
 Strength: 2048- or 4096-bit
 SANs:     (none)
+```
+
+To generate this certficate in `safe`:
+
+```
+$ safe x509 issue \
+    --signed-by secret/path/to/your/ca \
+    --ttl 10y \
+    --subject /cn=admin/o=system:masters \
+    --name admin
+    secret/path/to/your/admin/cert
 ```
 
 
