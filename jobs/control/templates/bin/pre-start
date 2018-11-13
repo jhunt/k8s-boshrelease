@@ -74,6 +74,12 @@ gencert "$ID" \
         127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s) \
         api
 
+echo "[$(date)] $BIN/$$: issuing the API -> Kubelet client certificate"
+gencert kubelet-client \
+        system:masters \
+        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
+        kubelet-client
+
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
 gencert system:kube-scheduler \
         system:kube-scheduler \

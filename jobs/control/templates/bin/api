@@ -68,8 +68,8 @@ case $1 in
            --event-ttl=1h \
            --experimental-encryption-provider-config=$JOB_DIR/etc/encryption.yml \
            --kubelet-certificate-authority=$JOB_DIR/tls/ca/cert.pem \
-           --kubelet-client-certificate=$CERTS_DIR/api/cert.pem \
-           --kubelet-client-key=$CERTS_DIR/api/key.pem \
+           --kubelet-client-certificate=$CERTS_DIR/kubelet-client/cert.pem \
+           --kubelet-client-key=$CERTS_DIR/kubelet-client/key.pem \
            --kubelet-https=true \
            --runtime-config=api/all \
            --service-account-key-file=$CERTS_DIR/service-accounts/key.pem \
