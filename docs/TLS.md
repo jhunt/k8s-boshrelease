@@ -81,7 +81,7 @@ The CA certificate requires the following key usage extensions:
     identity of a component acting as a server.
 
   - `clientAuth` - The CA certificate can be used to prove the
-    identity of a component acting as a server.
+    identity of a component acting as a client.
 
 These are defined more normatively in [RFC 5280][rfc5280],
 sections 4.2.1.3 and 4.2.1.12.
@@ -110,7 +110,7 @@ SANs:     (none)
 
 
 
-Atuomaton Client Certificate
+Automaton Client Certificate
 ----------------------------
 
 Like the _Administrative Client Certificate_, the Automaton Client
