@@ -48,6 +48,9 @@ provides:
     properties:
       - cluster.name
       - cluster.ip
+      - networks.pods
+      - networks.services
+      - networks.nodes
       - tls.ca.certificate
       - tls.ca.key
 
@@ -102,6 +105,20 @@ properties:
 
   encryption.key:
     description: A random key to use for encrypting secrets and other data at-rest.
+
+  networks.services:
+    description: |
+      Network CIDR range to use for Service IP allocation.
+      This must NOT overlap with networks.pods.
+
+  networks.pods:
+    description: |
+      Network CIDR range to use for Pod IP allocation.
+      This must NOT overlap with networks.services.
+
+  networks.nodes:
+    description: |
+      Network CIDR range that the Kubernetes nodes use.
 
 
   ######## ##        ######

@@ -32,21 +32,3 @@ properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
-
-  pod-cidr:
-    description: Range of network IPs to assign Pods inside of Kubernetes
-    default: 10.0.0.0/20
-
-  networks.services:
-    description: |
-      Network CIDR range to use for Service IP allocation.
-      This must NOT overlap with networks.pods.
-
-  networks.pods:
-    description: |
-      Network CIDR range to use for Pod IP allocation.
-      This must NOT overlap with networks.services.
-
-  networks.nodes:
-    description: |
-      Network CIDR range that the Kubernetes nodes use.

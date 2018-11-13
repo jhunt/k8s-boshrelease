@@ -12,7 +12,7 @@ authorization:
 clusterDomain: "cluster.local"
 clusterDNS:
   - "10.32.0.10"
-podCIDR: "<%= p('networks.pods') %>"
+podCIDR: "<%= link('api').p('networks.pods') %>"
 resolvConf: "/etc/resolv.conf"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/vcap/data/k8s/certs/kubelet/cert.pem"
