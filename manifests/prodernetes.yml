@@ -1,7 +1,7 @@
 name: prodernetes
 
 instance_groups:
-  - name:      master
+  - name:      control
     instances: 3
     azs:       [z1,z2,z3]
     vm_type:   default
@@ -18,7 +18,7 @@ instance_groups:
       - name: control
         release: k8s
 
-  - name:      worker
+  - name:      node
     instances: 5
     azs:       [z1,z2,z3]
     vm_type:   default

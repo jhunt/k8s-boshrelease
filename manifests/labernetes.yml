@@ -1,7 +1,7 @@
 name: labernetes
 
 instance_groups:
-  - name:      node
+  - name:      k8s
     instances: 3
     azs:       [z1,z2,z3]
     vm_type:   default
