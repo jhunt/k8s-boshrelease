@@ -13,3 +13,4 @@ releases/**/*.tgz
 *#
 #*
 tmp
+*.kubeconfig
