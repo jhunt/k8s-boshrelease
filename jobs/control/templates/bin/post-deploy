@@ -2,7 +2,7 @@
 set -eu
 exec 2>&1
 
-JOB=kubelet
+JOB=control
 BIN=post-deploy
 JOB_DIR=/var/vcap/jobs/$JOB
 CERTS_DIR=/var/vcap/data/k8s/certs
@@ -13,6 +13,10 @@ export PATH=$PATH:/var/vcap/packages/k8s/bin
 
 echo "[$(date)] $BIN/$$: post-deploy starting up..."
 
+<% if !spec.bootstrap %>
+echo "[$(date)] $BIN/$$: not bootstrap node; nothing to do."
+exit 0
+<% end %>
 
 echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
 mkdir -p $DAT_DIR
@@ -22,8 +26,8 @@ kubectl config set-cluster <%= link('api').p('cluster.name') %> \
     --server=https://127.0.0.1:6443 \
     --kubeconfig=$DAT_DIR/admin.kubeconfig
 kubectl config set-credentials admin \
-    --client-certificate=$JOB_DIR/tls/admin/cert.pem \
-    --client-key=$JOB_DIR/tls/admin/key.pem \
+    --client-certificate=$CERTS_DIR/automaton/cert.pem \
+    --client-key=$CERTS_DIR/automaton/key.pem \
     --embed-certs=true \
     --kubeconfig=$DAT_DIR/admin.kubeconfig
 kubectl config set-context default \

@@ -50,8 +50,6 @@ provides:
       - cluster.ip
       - tls.ca.certificate
       - tls.ca.key
-      - tls.admin.certificate
-      - tls.admin.key
 
 consumes:
   - name: etcd
@@ -62,6 +60,10 @@ templates:
   bin/pre-start:   bin/pre-start
   tls/ca/cert.pem: tls/ca/cert.pem
   tls/ca/key.pem:  tls/ca/key.pem
+
+  # kube-in-kube
+  bin/post-deploy:   bin/post-deploy
+  k8s/kube-proxy.yml: k8s/kube-proxy.yml
 
   # kube-apiserver
   bin/api: bin/api
@@ -126,14 +128,3 @@ properties:
 
       The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
       job, in this BOSH release) in properly validated mutual TLS setups.
-
-  tls.admin.certificate:
-    description: |
-      The X.509 certificate for the Kubernetes administrator to use (in PEM
-      format), when connecting to the API server for management purposes.
-      This certificate must be valid for the CN `admin`.
-
-  tls.admin.key:
-    description: |
-      The RSA private key (in PEM format) for the administrator's X.509
-      certificate (tls.admin.certificate).

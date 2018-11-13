@@ -13,13 +13,11 @@ consumes:
 
 packages:
   - k8s
+  - cfssl
 
 templates:
   envrc: envrc
 
   tls/ca/cert.pem: tls/ca/cert.pem
-
-  tls/admin/cert.pem: tls/admin/cert.pem
-  tls/admin/key.pem:  tls/admin/key.pem
 
 properties: {}

@@ -25,9 +25,6 @@ instance_groups:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
-            admin:
-              certificate: ((tls-admin1.certificate))
-              key:         ((tls-admin1.private_key))
 
       - name: etcd
         release: k8s
@@ -46,8 +43,6 @@ instance_groups:
 
       - name: jumpbox
         release: k8s
-      - name: status-of-etcd
-        release: k8s
 
 variables:
   - name: tls-ca
@@ -55,13 +50,6 @@ variables:
     options:
       is_ca: yes
       common_name: ca
-
-  - name: tls-admin1
-    type: certificate
-    options:
-      ca: tls-ca
-      common_name: admin
-      organization: system:masters
 
   - name: encryption-key1
     type: password

@@ -25,15 +25,8 @@ templates:
   tls/ca/cert.pem: tls/ca/cert.pem
   tls/ca/key.pem:  tls/ca/key.pem
 
-  tls/admin/cert.pem: tls/admin/cert.pem
-  tls/admin/key.pem:  tls/admin/key.pem
-
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
-
-  etc/in-k8s/kube-proxy.yml: etc/in-k8s/kube-proxy.yml
-
-  bin/post-deploy: bin/post-deploy
 
 properties:
   debug:

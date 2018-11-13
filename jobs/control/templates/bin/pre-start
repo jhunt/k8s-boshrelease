@@ -67,6 +67,12 @@ EOF
   echo
 }
 
+echo "[$(date)] $BIN/$$: issuing the Automaton Client certificate"
+gencert automaton \
+        system:masters \
+        system:masters \
+        automaton
+
 ID="system:node:$(hostname -s)"
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
@@ -97,6 +103,12 @@ gencert service-accounts \
         service-accounts \
         service-accounts \
         service-accounts
+
+echo "[$(date)] $BIN/$$: issuing the Proxy certificate"
+gencert system:kube-proxy \
+        system:node-proxier \
+        system:kube-proxy \
+        proxy
 
 popd >/dev/null 2>&1
 

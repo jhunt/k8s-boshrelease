@@ -1,7 +1,49 @@
 # source me with `. /var/vcap/jobs/jumpbox/envrc`!
 
 export PATH=$PATH:/var/vcap/packages/k8s/bin
-export KUBECONFIG=/var/vcap/data/k8s/jumpbox/kubeconfig
+export PATH=$PATH:/var/vcap/packages/cfssl/bin
+export DAT_DIR=/var/vcap/data/k8s/jumpbox
+export KUBECONFIG=$DAT_DIR/kubeconfig
+
+mkdir -p $DAT_DIR
+pushd $DAT_DIR >/dev/null 2>&1
+
+echo "generating certificate..."
+cat > ca.json <<EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "8760h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": ["signing", "key encipherment", "server auth", "client auth"],
+        "expiry": "8760h"
+      }
+    }
+  }
+}
+EOF
+
+cat > cert.json <<EOF
+{
+  "CN": "jumpbox",
+  "names": [{"O": "system:masters"}],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}
+EOF
+  cfssl gencert \
+    -ca=$JOB_DIR/tls/ca/cert.pem \
+    -ca-key=$JOB_DIR/tls/ca/key.pem \
+    -config=ca.json \
+    -profile=kubernetes \
+    cert.json | \
+      cfssljson -bare jumpbox
+}
+popd >/dev/null 2>&1
 
 echo "setting up kubeconfig..."
 mkdir -p /var/vcap/data/k8s/jumpbox
@@ -12,8 +54,8 @@ kubectl config set-cluster <%= link('api').p('cluster.name') %> \
   --kubeconfig=$KUBECONFIG
 
 kubectl config set-credentials admin \
-  --client-certificate=/var/vcap/jobs/jumpbox/tls/admin/cert.pem \
-  --client-key=/var/vcap/jobs/jumpbox/tls/admin/key.pem \
+  --client-certificate=$DAT_DIR/jumpbox.pem \
+  --client-key=$DAT_DIR/jumpbox-key.pem \
   --embed-certs=true \
   --kubeconfig=$KUBECONFIG
 

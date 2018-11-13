@@ -74,12 +74,6 @@ gencert "$ID" \
         127.0.0.1,<%= spec.ip %>,$(hostname -s) \
         kubelet
 
-echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
-gencert system:kube-proxy \
-        system:node-proxier \
-        system:kube-proxy \
-        proxy
-
 popd >/dev/null 2>&1
 
 echo "[$(date)] $BIN/$$: removing temporary directory $TMP_DIR..."
