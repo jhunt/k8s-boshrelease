@@ -91,10 +91,10 @@ sections 4.2.1.3 and 4.2.1.12.
 Administrative Client Certificate
 ---------------------------------
 
-Authentication and Authorization (collectively called "RBAC") is
-configured _inside_ of Kubernetes once it is up and running.
-However, you have to have a place to start from, in order to
-reconfigure RBAC parameters.
+[Authentication and Authorization][rbac] (collectively called
+"RBAC") is configured _inside_ of Kubernetes once it is up and
+running.  However, you have to have a place to start from, in
+order to reconfigure RBAC parameters.
 
 The Administrative Client Certificate is implicitly trusted as a
 `cluster-admin` (i.e. a super user) account.  The certificate
@@ -414,4 +414,6 @@ implementation.
 
 
 
-[kdocs]: https://kubernetes.io
+[kdocs]:   https://kubernetes.io/docs/setup/certificates
+[rbac]:    https://kubernetes.io/docs/reference/access-authn-authz/rbac
+[rfc5280]: https://tools.ietf.org/html/rfc5280
