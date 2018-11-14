@@ -29,8 +29,12 @@ one might configure a k8s deployment in the wild.
   - **tinynetes** - A single-VM instance, all-in-one k8s
     "cluster", suitable for experimentation or CI/CD.
 
+    <img src="docs/images/tinynetes.png">
+
   - **labernetes** - A multi-node cluster of combined
     master+worker nodes, suitable for shared lab exercises.
+
+    <img src="docs/images/labernetes.png">
 
   - **prodernetes** - A proper cluster with master and worker
     nodes on separate VMs, allowing one to scale the workers
@@ -38,10 +42,14 @@ one might configure a k8s deployment in the wild.
     plane are co-located (etcd, api, scheduler, and cmgr).
     Suitable for (possibly) some real-world prod use.
 
+    <img src="docs/images/prodernetes.png">
+
   - **hugernetes** - A REALLY BIG CLUSTER that splits the etcd
     component out onto its own multi-node cluster, leaving the
     control plane VMs to run api, scheduler, and the controller
     manager.  Suitable for (possibly) some real-world prod use.
+
+    <img src="docs/images/hugernetes.png">
 
 These are found in the `manifests/` directory, and can be deployed
 without further pre-processing (no Spruce... yet).
