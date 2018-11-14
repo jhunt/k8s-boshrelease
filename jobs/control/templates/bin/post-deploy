@@ -18,6 +18,32 @@ echo "[$(date)] $BIN/$$: not bootstrap node; nothing to do."
 exit 0
 <% end %>
 
+clusterok() {
+  status=$(curl -sf http://localhost:8080/healthz)
+  test "s'${status}" = "s'ok"
+}
+
+echo "[$(date)] $BIN/$$: waiting up to <%= p('coalesce') %> seconds for cluster to coalesce..."
+timer=<%= p('coalesce').to_i * 10 %>
+dsec=0
+while ! clusterok; do
+  echo -n '.'
+  if [[ $timer -lt 1 ]]; then
+    echo
+    echo "[$(date)] $BIN/$$: cluster did not coalesce within <%= p('coalesce') %> seconds"
+    echo "[$(date)] $BIN/$$: \`curl -v http://localhost:8080/healthz\` said:"
+    curl -v http://localhost:8080/healthz
+    echo "[$(date)] $BIN/$$: TERMINATING"
+    exit 1
+  fi
+
+  timer=$((timer - 1))
+  dsec=$((dsec + 1))
+  sleep 0.1
+done
+echo
+echo "[$(date)] $BIN/$$: cluster coalesced in $(((dsec + 5) / 10)) seconds!"
+
 echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
 mkdir -p $DAT_DIR
 kubectl config set-cluster <%= p('cluster.name') %> \

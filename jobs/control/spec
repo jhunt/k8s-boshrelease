@@ -102,6 +102,9 @@ properties:
   cluster.ip:
     description: A public IP for this cluster, for routing internal traffic.
 
+  coalesce:
+    description: How long (in seconds) to wait for the Kubernetes cluster to coalesce into a functioning unit.
+    default: 300
 
   encryption.key:
     description: A random key to use for encrypting secrets and other data at-rest.
