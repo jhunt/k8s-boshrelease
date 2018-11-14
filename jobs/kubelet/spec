@@ -9,10 +9,6 @@ description: |
   running and healthy. The kubelet doesn’t manage containers which were not
   created by Kubernetes.
 
-  Kubelets also run kube-proxy, enabling the Kubernetes service abstraction
-  by maintaining network rules on the host and performing connection
-  forwarding.
-
 packages:
   - k8s
 
