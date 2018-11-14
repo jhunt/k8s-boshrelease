@@ -25,6 +25,7 @@ templates:
 
 packages:
   - etcd
+  - cfssl
 
 properties:
   debug:
