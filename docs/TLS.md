@@ -406,15 +406,15 @@ implementation.
 2. Is there any increase in security posture by using a separate
    etcd CA (perhaps signed by the Kubernetes CA, perhaps not)?
 
-3. Does etcd need anything special in the subject, or does it
-   just need SANs for its IP addresses (including loopback)?
+3. ~Does etcd need anything special in the subject, or does it
+   just need SANs for its IP addresses (including loopback)?~
 
    **ANSWER**: no, it does not.  The pre-starts for etcd have been
    updated to drop the extra subject alternate names.
 
-4. Do we need to list the IP / hostname of the BOSH VM in the
+4. ~Do we need to list the IP / hostname of the BOSH VM in the
    kube-proxy certificates, if we are running it as a DaemonSet
-   _inside_ of Kubernetes?  Shouldn't `kube-proxy.*` be enough?
+   _inside_ of Kubernetes?  Shouldn't `kube-proxy.*` be enough?~
 
    **ANSWER**: no, we do not.  Nor do we have to do it for
    Controller Manager, or Scheduler.  We now just add the SAN for
