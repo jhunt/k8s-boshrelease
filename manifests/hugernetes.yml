@@ -1,10 +1,10 @@
-name: prodernetes
+name: hugernetes
 
 instance_groups:
   - name:      etcd
     instances: 3
     azs:       [z1,z2,z3]
-    vm_type:   default
+    vm_type:   large
     stemcell:  default
 
     persistent_disk_type: default
@@ -19,7 +19,7 @@ instance_groups:
   - name:      control
     instances: 3
     azs:       [z1,z2,z3]
-    vm_type:   default
+    vm_type:   large
     stemcell:  default
 
     persistent_disk_type: default
@@ -30,11 +30,28 @@ instance_groups:
     jobs:
       - name: control
         release: k8s
+        properties:
+          cluster:
+            name: hugernetes
+            ip: 127.0.0.1
+          networks:
+            pods:     10.200.250.0/24
+            services: 10.200.251.0/24
+            nodes:    10.200.192.0/24
+          encryption:
+            key: ((encryption-key))
+          tls:
+            ca:
+              certificate: ((tls-ca.certificate))
+              key:         ((tls-ca.private_key))
+
+      - name: jumpbox
+        release: k8s
 
   - name:      node
     instances: 5
     azs:       [z1,z2,z3]
-    vm_type:   default
+    vm_type:   large
     stemcell:  default
 
     persistent_disk_type: default
@@ -47,6 +64,19 @@ instance_groups:
         release: k8s
       - name: kubelet
         release: k8s
+
+variables:
+  - name: tls-ca
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: ca
+
+  - name: encryption-key
+    type: password
+    options:
+      length: 32
+      include_special: yes
 
 update:
   canaries: 1
