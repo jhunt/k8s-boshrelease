@@ -19,6 +19,7 @@ templates:
   envrc: envrc
 
   tls/ca/cert.pem: tls/ca/cert.pem
+  tls/ca/key.pem:  tls/ca/key.pem
 
 properties: {}
 

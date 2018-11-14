@@ -3,6 +3,7 @@
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
 export DAT_DIR=/var/vcap/data/k8s/jumpbox
+export JOB_DIR=/var/vcap/jobs/jumpbox
 export KUBECONFIG=$DAT_DIR/kubeconfig
 
 mkdir -p $DAT_DIR
@@ -42,13 +43,13 @@ EOF
     -profile=kubernetes \
     cert.json | \
       cfssljson -bare jumpbox
-}
+
 popd >/dev/null 2>&1
 
 echo "setting up kubeconfig..."
 mkdir -p /var/vcap/data/k8s/jumpbox
 kubectl config set-cluster <%= link('api').p('cluster.name') %> \
-  --certificate-authority=/var/vcap/jobs/jumpbox/tls/ca/cert.pem \
+  --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
   --embed-certs=true \
   --server=https://127.0.0.1:6443 \
   --kubeconfig=$KUBECONFIG
