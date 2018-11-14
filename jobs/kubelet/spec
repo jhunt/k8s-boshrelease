@@ -11,6 +11,7 @@ description: |
 
 packages:
   - k8s
+  - cfssl
 
 consumes:
   - name: api
