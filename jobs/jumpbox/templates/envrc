@@ -1,4 +1,15 @@
 # source me with `. /var/vcap/jobs/jumpbox/envrc`!
+<%
+
+  apiserver = link('api').p('cluster.ip')
+  if apiserver.empty?
+    apiserver = link('api').instances.first.address
+  end
+  if apiserver.empty?
+    raise "Unable to determine what hostname / fqdn / ip to talk to k8s apiserver via.  Do you need to set the \`cluster.ip' property?"
+  end
+
+-%>
 
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
@@ -51,7 +62,7 @@ mkdir -p /var/vcap/data/k8s/jumpbox
 kubectl config set-cluster <%= link('api').p('cluster.name') %> \
   --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
   --embed-certs=true \
-  --server=https://127.0.0.1:6443 \
+  --server=https://<%= apiserver %>:6443 \
   --kubeconfig=$KUBECONFIG
 
 kubectl config set-credentials admin \
