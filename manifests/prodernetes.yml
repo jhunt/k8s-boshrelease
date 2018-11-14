@@ -20,7 +20,6 @@ instance_groups:
         properties:
           cluster:
             name: prodernetes
-            ip: 127.0.0.1
           networks:
             pods:     10.200.250.0/24
             services: 10.200.251.0/24
