@@ -101,6 +101,7 @@ properties:
 
   cluster.ip:
     description: A public IP for this cluster, for routing internal traffic.
+    default: ''
 
   coalesce:
     description: How long (in seconds) to wait for the Kubernetes cluster to coalesce into a functioning unit.

@@ -67,7 +67,7 @@ mkdir -p $DAT_DIR
 kubectl config set-cluster <%= p('cluster.name') %> \
     --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
     --embed-certs=true \
-    --server=https://<%= p('cluster.ip') %>:6443 \
+    --server=https://<%= spec.ip %>:6443 \
     --kubeconfig=$DAT_DIR/proxy.kubeconfig
 kubectl config set-credentials system:kube-proxy \
     --client-certificate=$CERTS_DIR/proxy/cert.pem \
