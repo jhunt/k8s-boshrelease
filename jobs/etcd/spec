@@ -34,3 +34,5 @@ properties:
   port:
     description: TCP port to bind etcd processes to.
     default:     2379
+
+# vim:ft=yaml

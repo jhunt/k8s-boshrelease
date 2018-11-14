@@ -19,3 +19,5 @@ properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+
+# vim:ft=yaml

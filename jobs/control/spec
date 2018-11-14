@@ -148,3 +148,5 @@ properties:
 
       The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
       job, in this BOSH release) in properly validated mutual TLS setups.
+
+# vim:ft=yaml

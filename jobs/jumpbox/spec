@@ -21,3 +21,5 @@ templates:
   tls/ca/cert.pem: tls/ca/cert.pem
 
 properties: {}
+
+# vim:ft=yaml
