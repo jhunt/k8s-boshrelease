@@ -34,6 +34,42 @@ k8s/kubectl:
 k8s/kubelet:
   size: 176726400
   sha: 2948b9afd0e8e3181d18b83f87533afd6e5f4970
+nfs-trusty-debs/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb:
+  size: 126342
+  sha: c91f6872e804274d2b615f4f3ead979f176adba3
+nfs-trusty-debs/libkeyutils1_1.5.6-1_amd64.deb:
+  size: 7318
+  sha: 9f38a6d5d43c2d70a031034668f4989cc9c5eb56
+nfs-trusty-debs/libnfsidmap2_0.25-5_amd64.deb:
+  size: 32182
+  sha: f28b7370542daaf81cefb44d9057fa9b3fb43064
+nfs-trusty-debs/nfs-common_1.2.8-6ubuntu1.2_amd64.deb:
+  size: 180760
+  sha: ce61f57dd64fa9fd908798677d23a91a375bc60c
+nfs-trusty-debs/nfs-kernel-server_1.2.8-6ubuntu1.2_amd64.deb:
+  size: 85826
+  sha: 1ef96876212fb4ce6e3ebb3e18d9ec2d2d9ceb48
+nfs-trusty-debs/rpcbind_0.2.1-2ubuntu2.2_amd64.deb:
+  size: 37056
+  sha: 80b3254778e8d0ab0ba0a594fcdab44730552bdb
+nfs-xenial-debs/keyutils_1.5.9-8ubuntu1_amd64.deb:
+  size: 47054
+  sha: ec2e96e73feb5215605c9f0254cad05d9cc5688a
+nfs-xenial-debs/libevent-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb:
+  size: 114014
+  sha: 57d69f44f3e058e48a7b79595d36076eb21f5942
+nfs-xenial-debs/libnfsidmap2_0.25-5_amd64.deb:
+  size: 32182
+  sha: f28b7370542daaf81cefb44d9057fa9b3fb43064
+nfs-xenial-debs/nfs-common_1.2.8-9ubuntu12_amd64.deb:
+  size: 184538
+  sha: 2977e5a1e86615e268cc518f04c9dd2cc832b263
+nfs-xenial-debs/nfs-kernel-server_1.2.8-9ubuntu12_amd64.deb:
+  size: 87962
+  sha: d5c57c7b7e8ab0fa5ab7c343aa2a039916a9814d
+nfs-xenial-debs/rpcbind_0.2.3-0.2_amd64.deb:
+  size: 40252
+  sha: 8fa58cfcb1862c6d337d10496fada5f1a6e94a03
 runtime-runc/runc:
   size: 12269056
   sha: e00757b42a19f1042411fbc33bcad2589c24cc31

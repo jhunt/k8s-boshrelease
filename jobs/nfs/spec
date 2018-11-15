@@ -1,0 +1,17 @@
+---
+name: nfs
+description: |
+  This job enables NFS support on the VM, allowing Kubernetes to
+  take advantage of exported NFS storage for shared volumes.
+
+  It only installs the Debian/Ubuntu kernel- and user-space packages,
+  and sets up rpcbind / idmap; it does NOT configure any exports.
+
+packages:
+  - nfs-debs
+
+templates:
+  bin/pre-start: bin/pre-start
+  bin/post-stop: bin/post-stop
+
+properties: {}

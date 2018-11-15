@@ -36,6 +36,8 @@ instance_groups:
         release: k8s
       - name: kubelet
         release: k8s
+      - name: nfs
+        release: k8s
 
       - name: jumpbox
         release: k8s

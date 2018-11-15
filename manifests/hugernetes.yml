@@ -64,6 +64,9 @@ instance_groups:
       - name: kubelet
         release: k8s
 
+      - name: nfs
+        release: k8s
+
 variables:
   - name: tls-ca
     type: certificate

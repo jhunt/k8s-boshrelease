@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+exec 2>&1
+
+echo "[$(date)] $$: shutting down NFS..."
+/etc/init.d/nfs-kernel-server stop
+echo "[$(date)] $$: complete."

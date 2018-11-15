@@ -1,0 +1,46 @@
+#!/bin/bash
+set -eu
+exec 2>&1
+echo "[$(date)] $$: pre-start script starting up"
+
+inst() {
+  echo " - checking for $2 ..."
+  dpkg -s $2 >/dev/null || dpkg --force-confdef -i /var/vcap/packages/nfs-debs/nfs-$1-debs/$3
+}
+
+codename=$(lsb_release -sc)
+case "$codename" in
+trusty)
+  echo "[$(date)] $$: installing NFS packages"
+  (
+    flock -x 200
+    inst $codename rpcbind           rpcbind_0.2.1-2ubuntu2.2_amd64.deb
+    inst $codename keyutils          libkeyutils1_1.5.6-1_amd64.deb
+    inst $codename libevent-2.0-5    libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb
+    inst $codename libnfsidmap2      libnfsidmap2_0.25-5_amd64.deb
+    inst $codename nfs-common        nfs-common_1.2.8-6ubuntu1.2_amd64.deb
+    inst $codename nfs-kernel-server nfs-kernel-server_1.2.8-6ubuntu1.2_amd64.deb
+  ) 200>/var/vcap/data/dpkg.lock
+  ;;
+xenial)
+  echo "[$(date)] $$: installing NFS packages"
+  (
+    flock -x 200
+    inst $codename rpcbind           rpcbind_0.2.3-0.2_amd64.deb
+    inst $codename keyutils          keyutils_1.5.9-8ubuntu1_amd64.deb
+    inst $codename libevent-2.0-5    libevent-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb
+    inst $codename libnfsidmap2      libnfsidmap2_0.25-5_amd64.deb
+    inst $codename nfs-common        nfs-common_1.2.8-9ubuntu12_amd64.deb
+    inst $codename nfs-kernel-server nfs-kernel-server_1.2.8-9ubuntu12_amd64.deb
+  ) 200>/var/vcap/data/dpkg.lock
+  ;;
+*)
+  echo "This version of the BOSH Stemcell ($codename) is not supported!"
+  lsb_release --all | sed -e 's/^/  /'
+  exit 1
+  ;;
+esac
+
+echo "[$(date)] $$: starting up NFS..."
+/etc/init.d/nfs-kernel-server start
+echo "[$(date)] $$: complete."

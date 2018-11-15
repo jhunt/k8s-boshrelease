@@ -1,0 +1,19 @@
+---
+name: nfs-debs
+dependencies: []
+files:
+  - nfs-trusty-debs/libkeyutils1_1.5.6-1_amd64.deb
+  - nfs-trusty-debs/rpcbind_0.2.1-2ubuntu2.2_amd64.deb
+  - nfs-trusty-debs/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb
+  - nfs-trusty-debs/libnfsidmap2_0.25-5_amd64.deb
+  - nfs-trusty-debs/nfs-common_1.2.8-6ubuntu1.2_amd64.deb
+  - nfs-trusty-debs/nfs-kernel-server_1.2.8-6ubuntu1.2_amd64.deb
+
+  # xenial
+  - nfs-xenial-debs/rpcbind_0.2.3-0.2_amd64.deb
+  - nfs-xenial-debs/keyutils_1.5.9-8ubuntu1_amd64.deb
+  - nfs-xenial-debs/libevent-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb
+  - nfs-xenial-debs/libnfsidmap2_0.25-5_amd64.deb
+  - nfs-xenial-debs/nfs-common_1.2.8-9ubuntu12_amd64.deb
+  - nfs-xenial-debs/nfs-kernel-server_1.2.8-9ubuntu12_amd64.deb
+
