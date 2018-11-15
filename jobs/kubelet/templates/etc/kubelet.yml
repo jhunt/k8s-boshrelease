@@ -1,3 +1,4 @@
+---
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 authentication:
@@ -6,14 +7,15 @@ authentication:
   webhook:
     enabled: true
   x509:
-    clientCAFile: "/var/vcap/jobs/kubelet/tls/ca/cert.pem"
+    clientCAFile: /var/vcap/jobs/kubelet/tls/ca/cert.pem
 authorization:
   mode: Webhook
-clusterDomain: "cluster.local"
+clusterDomain: cluster.local
+staticPodPath: /var/vcap/jobs/kubelet/pods
 clusterDNS:
-  - "10.32.0.10"
-podCIDR: "<%= link('api').p('networks.pods') %>"
-resolvConf: "/etc/resolv.conf"
-runtimeRequestTimeout: "15m"
-tlsCertFile: "/var/vcap/data/k8s/certs/kubelet/cert.pem"
-tlsPrivateKeyFile: "/var/vcap/data/k8s/certs/kubelet/key.pem"
+  - 10.32.0.10
+podCIDR: <%= link('api').p('networks.pods') %>
+resolvConf: /etc/resolv.conf
+runtimeRequestTimeout: 15m
+tlsCertFile: /var/vcap/data/k8s/certs/kubelet/cert.pem
+tlsPrivateKeyFile: /var/vcap/data/k8s/certs/kubelet/key.pem

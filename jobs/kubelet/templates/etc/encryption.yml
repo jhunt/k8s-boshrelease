@@ -11,7 +11,8 @@
     ## ##   ##     ## ##        ##  ##     ## ##     ##    ##     ##  ##     ## ##   ###
      ###    ##     ## ######## #### ########  ##     ##    ##    ####  #######  ##    ##
 
-  p('encryption.key').size == 32 or
+  key = link('api').p('encryption.key', '')
+  key.size == 32 or
     raise 'encryption.key must be exactly 32 bytes long'
 
 -%>
@@ -24,5 +25,5 @@ resources:
       - aescbc:
           keys:
             - name: key1
-              secret: <%= Base64.encode64(p('encryption.key')) %>
+              secret: <%= Base64.encode64(key) %>
       - identity: {}

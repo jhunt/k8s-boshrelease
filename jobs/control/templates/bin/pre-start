@@ -6,14 +6,17 @@ JOB=control
 BIN=pre-start
 JOB_DIR=/var/vcap/jobs/$JOB
 CERTS_DIR=/var/vcap/data/k8s/certs
+KCFG_DIR=/var/vcap/data/k8s/kubeconfig
 TMP_DIR=/var/vcap/data/k8s/tmp/$JOB
 
+# put kubectl in our path
+export PATH=$PATH:/var/vcap/packages/k8s/bin
 # put cfssl in our path
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
 
 echo "[$(date)] $BIN/$$: regenerating certificates..."
 rm -rf $TMP_DIR
-mkdir -p $CERTS_DIR $TMP_DIR
+mkdir -p $CERTS_DIR $KCFG_DIR $TMP_DIR
 pushd $TMP_DIR 2>/dev/null 2>&1
 
 echo "[$(date)] $BIN/$$: configuring ca parameters"
@@ -74,6 +77,12 @@ gencert automaton \
         automaton
 
 ID="system:node:$(hostname -s)"
+echo "[$(date)] $BIN/$$: issuing the Kubelet certificate for [$ID]"
+gencert "$ID" \
+        system:nodes \
+        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
+        kubelet
+
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
@@ -114,5 +123,38 @@ popd >/dev/null 2>&1
 
 echo "[$(date)] $BIN/$$: removing temporary directory $TMP_DIR..."
 rm -rf $TMP_DIR
+
+configkube() {
+  user=$1
+  kind=$2
+  cert=$CERTS_DIR/$kind
+
+  echo "[$(date)] $BIN/$$: creating kubeconfig for ${kind} (as ${user})"
+  echo "[$(date)] $BIN/$$: using certificate $cert/*.pem..."
+
+  kubectl config set-cluster <%= p('cluster.name') %> \
+    --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+    --embed-certs=true \
+    --server=https://127.0.0.1:6443 \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config set-credentials $user \
+    --client-certificate=$cert/cert.pem \
+    --client-key=$cert/key.pem \
+    --embed-certs=true \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config set-context default \
+    --cluster=<%= p('cluster.name') %> \
+    --user=$user \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config use-context default \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+}
+
+echo "[$(date)] $BIN/$$: setting up kubeconfig(s)..."
+configkube system:kube-scheduler scheduler
+configkube system:nodes:node     kubelet
 
 echo "[$(date)] $BIN/$$: complete."

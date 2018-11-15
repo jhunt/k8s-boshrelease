@@ -1,6 +1,0 @@
----
-name: etcd
-
-dependencies: []
-files:
-  - etcd/etcd-v3.3.9-linux-amd64.tar.gz

@@ -1,0 +1,98 @@
+<%
+pods = {}
+p('pods').each { |pod| pods[pod.to_s] = true }
+-%>
+<% if pods['apiserver'] %>
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+
+spec:
+  hostNetwork: true
+  containers:
+    - name: kube-apiserver
+      image: <%= link('api').p('images.k8s') %>
+      command:
+        - /kube-apiserver
+        - --advertise-address=<%= spec.ip %>
+        - --allow-privileged=true
+        - --apiserver-count=3
+        - --audit-log-maxage=30
+        - --audit-log-maxbackup=3
+        - --audit-log-maxsize=100
+        - --authorization-mode=Node,RBAC
+        - --bind-address=0.0.0.0
+        - --client-ca-file=/ca/cert.pem
+        - --enable-admission-plugins=Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+        - --enable-swagger-ui=true
+        - --etcd-cafile=/ca/cert.pem
+        - --etcd-certfile=/data/certs/api/cert.pem
+        - --etcd-keyfile=/data/certs/api/key.pem
+        - --etcd-servers=<%= link('etcd').instances.map { |vm| "https://#{vm.address}:#{link('etcd').p('port')}" }.join(',') %>
+        - --event-ttl=1h
+        - --experimental-encryption-provider-config=/etc/k8s/encryption.yml
+        - --kubelet-certificate-authority=/ca/cert.pem
+        - --kubelet-client-certificate=/data/certs/kubelet-client/cert.pem
+        - --kubelet-client-key=/data/certs/kubelet-client/key.pem
+        - --kubelet-https=true
+        - --runtime-config=api/all
+        - --service-account-key-file=/data/certs/service-accounts/key.pem
+        - --service-cluster-ip-range=10.32.0.0/24
+        - --service-node-port-range=30000-32767
+        - --tls-cert-file=/data/certs/api/cert.pem
+        - --tls-private-key-file=/data/certs/api/key.pem
+        - --v=2
+
+      ports:
+        - name: https
+          hostPort: 443
+          containerPort: 443
+
+        - name: local
+          hostPort: 8080
+          containerPort: 8080
+
+      volumeMounts:
+        - name: ca
+          mountPath: /ca
+          readOnly: true
+
+        - name: etc
+          mountPath: /etc/k8s
+          readOnly: true
+
+        - name: data
+          mountPath: /data
+          readOnly: true
+
+      livenessProbe:
+        initialDelaySeconds: 15
+        timeoutSeconds: 5
+        httpGet:
+          scheme: HTTP
+          host:   127.0.0.1
+          port:   8080
+          path:   /healthz?exclude=etcd
+
+      readinessProbe:
+        timeoutSeconds: 5
+        httpGet:
+          scheme: HTTP
+          host:   127.0.0.1
+          port:   8080
+          path:   /healthz
+
+  volumes:
+    - name: etc
+      hostPath:
+        path: /var/vcap/jobs/kubelet/etc
+    - name: ca
+      hostPath:
+        path: /var/vcap/jobs/kubelet/tls/ca
+    - name: data
+      hostPath:
+        path: /var/vcap/data/k8s
+<% end %>

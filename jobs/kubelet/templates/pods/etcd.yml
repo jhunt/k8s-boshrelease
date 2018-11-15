@@ -1,0 +1,79 @@
+<%
+pods = {}
+p('pods').each { |pod| pods[pod.to_s] = true }
+-%>
+<% if pods['etcd'] %>
+<%
+
+  port      = link('etcd').p('port').to_i
+  peer_port = port + 1
+
+-%>
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: etcd
+  namespace: kube-system
+
+spec:
+  hostNetwork: true
+  containers:
+    - name: etcd
+      image: <%= link('api').p('images.k8s') %>
+      command:
+        - /etcd
+        - --name=<%= spec.name %>-<%= spec.id %>
+        - --cert-file=/certs/etcd/cert.pem
+        - --key-file=/certs/etcd/key.pem
+        - --peer-cert-file=/certs/etcd/cert.pem
+        - --peer-key-file=/certs/etcd/key.pem
+        - --trusted-ca-file=/ca/cert.pem
+        - --peer-trusted-ca-file=/ca/cert.pem
+        - --peer-client-cert-auth
+        - --client-cert-auth
+        - --initial-advertise-peer-urls=https://<%= spec.ip %>:<%= peer_port %>
+        - --listen-peer-urls=https://<%= spec.ip %>:<%= peer_port %>
+        - --listen-client-urls=https://<%= spec.ip %>:<%= port %>,https://127.0.0.1:<%= port %>
+        - --advertise-client-urls=https://<%= spec.ip %>:<%= port %>
+        - --initial-cluster-token=etcd-cluster-0
+        - --initial-cluster=<%= link('etcd').instances.map { |vm| "#{vm.name}-#{vm.id}=https://#{vm.address}:#{peer_port}" }.join(',') %>
+        - --initial-cluster-state=new
+        - --data-dir=/data
+        - --log-output=stdout
+
+      volumeMounts:
+        - name: ca
+          mountPath: /ca
+          readOnly: true
+
+        - name: certs
+          mountPath: /certs
+          readOnly: true
+
+        - name: data
+          mountPath: /data
+          readOnly: false
+
+      livenessProbe:
+        initialDelaySeconds: 15
+        timeoutSeconds: 5
+        httpGet:
+          scheme: HTTPS
+          host:   127.0.0.1
+          port:   <%= port %>
+          path:   /health
+
+  volumes:
+    - name: ca
+      hostPath:
+        path: /var/vcap/jobs/kubelet/tls/ca
+
+    - name: certs
+      hostPath:
+        path: /var/vcap/data/k8s/certs
+
+    - name: data
+      hostPath:
+        path: /var/vcap/data/k8s/etcd
+<% end %>

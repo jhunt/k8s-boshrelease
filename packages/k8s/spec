@@ -1,15 +1,9 @@
 ---
 name: k8s
 description: |
-  All the Kubernetes
+  Kubelet and Kubectl (other components are images)
 
 dependencies: []
 files:
   - k8s/kubectl
-
-  - k8s/kube-apiserver
-  - k8s/kube-controller-manager
-  - k8s/kube-scheduler
-
   - k8s/kubelet
-  - k8s/kube-proxy

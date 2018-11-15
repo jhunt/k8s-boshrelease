@@ -10,28 +10,10 @@ provides:
     properties:
       - port
 
-consumes:
-  - name: etcd
-    type: k8s-etcd
-  - name: api
-    type: k8s-apiserver
-
-templates:
-  bin/pre-start:     bin/pre-start
-  tls/ca/cert.pem:   tls/ca/cert.pem
-  tls/ca/key.pem:    tls/ca/key.pem
-
-  bin/etcd:          bin/etcd
-
-packages:
-  - etcd
-  - cfssl
+templates: {}
+packages: []
 
 properties:
-  debug:
-    description: Enables verbose debugging, suitable for troubleshooting.
-    default:     false
-
   port:
     description: TCP port to bind etcd processes to.
     default:     2379

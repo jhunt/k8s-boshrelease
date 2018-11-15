@@ -16,18 +16,36 @@ packages:
 consumes:
   - name: api
     type: k8s-apiserver
+  - name: etcd
+    type: k8s-etcd
 
 templates:
   bin/pre-start:   bin/pre-start
   tls/ca/cert.pem: tls/ca/cert.pem
   tls/ca/key.pem:  tls/ca/key.pem
 
-  bin/kubelet:     bin/kubelet
-  etc/kubelet.yml: etc/kubelet.yml
+  bin/kubelet:                 bin/kubelet
+  etc/kubelet.yml:             etc/kubelet.yml
+  etc/encryption.yml:          etc/encryption.yml
+  pods/etcd.yml:               pods/etcd.yml
+  pods/apiserver.yml:          pods/apiserver.yml
+  pods/scheduler.yml:          pods/scheduler.yml
+  pods/controller-manager.yml: pods/controller-manager.yml
 
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+
+  pods:
+    description: |
+      A list of the static pods to include on this kubelet.  Must be one of:
+
+        - etcd
+        - apiserver
+        - scheduler
+        - controller-manager
+
+    default: []
 
 # vim:ft=yaml

@@ -21,6 +21,7 @@ RUN_DIR=/var/vcap/sys/run/$JOB
 LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
 CERTS_DIR=/var/vcap/data/k8s/certs
+ETCD_DATA_DIR=/var/vcap/data/k8s/etcd
 DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
 exec >>$LOG_DIR/$BIN.log 2>&1
@@ -30,7 +31,7 @@ export PATH=$PATH:/var/vcap/packages/k8s/bin
 
 case $1 in
   start)
-    mkdir -p $RUN_DIR
+    mkdir -p $RUN_DIR $DAT_DIR $ETCD_DATA_DIR
 
     # FIXME: wait for containerd to be up and running
 
@@ -53,7 +54,6 @@ case $1 in
     echo
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
-    mkdir -p $DAT_DIR
     kubectl config set-cluster <%= link('api').p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \

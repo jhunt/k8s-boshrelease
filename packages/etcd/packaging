@@ -1,6 +1,0 @@
-#!/bin/bash
-set -eu
-
-mkdir -p ${BOSH_INSTALL_TARGET}/bin
-tar -xf etcd/etcd-v3.3.9-linux-amd64.tar.gz
-mv etcd-v3.3.9-linux-amd64/etcd* ${BOSH_INSTALL_TARGET}/bin

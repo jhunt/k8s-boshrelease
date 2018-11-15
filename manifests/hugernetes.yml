@@ -16,6 +16,15 @@ instance_groups:
       - name: etcd
         release: k8s
 
+      - name: runtime-runc
+        release: k8s
+
+      - name: kubelet
+        release: k8s
+        properties:
+          pods:
+            - etcd
+
   - name:      control
     instances: 3
     azs:       [z1,z2,z3]
@@ -44,6 +53,17 @@ instance_groups:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
 
+      - name: runtime-runc
+        release: k8s
+
+      - name: kubelet
+        release: k8s
+        properties:
+          pods:
+            - apiserver
+            - scheduler
+            - controller-manager
+
       - name: jumpbox
         release: k8s
 
@@ -61,6 +81,7 @@ instance_groups:
     jobs:
       - name: runtime-runc
         release: k8s
+
       - name: kubelet
         release: k8s
 

@@ -48,9 +48,12 @@ provides:
     properties:
       - cluster.name
       - cluster.ip
+      - encryption.key
       - networks.pods
       - networks.services
       - networks.nodes
+      - images.k8s
+      - images.proxy
       - tls.ca.certificate
       - tls.ca.key
 
@@ -65,19 +68,8 @@ templates:
   tls/ca/key.pem:  tls/ca/key.pem
 
   # kube-in-kube
-  bin/post-deploy:   bin/post-deploy
+  bin/post-deploy:    bin/post-deploy
   k8s/kube-proxy.yml: k8s/kube-proxy.yml
-
-  # kube-apiserver
-  bin/api: bin/api
-  etc/encryption.yml: etc/encryption.yml
-
-  # kube-controller-manager
-  bin/controller-manager: bin/controller-manager
-
-  # kube-scheduler
-  bin/scheduler:     bin/scheduler
-  etc/scheduler.yml: etc/scheduler.yml
 
 properties:
   debug.api:
@@ -124,14 +116,13 @@ properties:
     description: |
       Network CIDR range that the Kubernetes nodes use.
 
+  images.k8s:
+    description: The full name of the all-in-one control plane image, which might be in a private registry.
+    default:     docker.io/huntprod/k8s-bosh-kitchen-sink:1.12.0
 
-  ######## ##        ######
-     ##    ##       ##    ##
-     ##    ##       ##
-     ##    ##        ######
-     ##    ##             ##
-     ##    ##       ##    ##
-     ##    ########  ######
+  images.proxy:
+    description: The full name of the kube-proxy image, which might be in a private registry.
+    default:     docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
 
   tls.ca.certificate:
     description: |

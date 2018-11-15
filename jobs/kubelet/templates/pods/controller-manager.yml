@@ -1,0 +1,56 @@
+<%
+pods = {}
+p('pods').each { |pod| pods[pod.to_s] = true }
+-%>
+<% if pods['controller-manager'] %>
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: kube-controller-manager
+  namespace: kube-system
+
+spec:
+  hostNetwork: true
+  containers:
+    - name: kube-controller-manager
+      image: <%= link('api').p('images.k8s') %>
+      command:
+        - /kube-controller-manager
+        - --address=0.0.0.0
+        - --cluster-cidr=10.200.0.0/16
+        - --cluster-signing-cert-file=/ca/cert.pem
+        - --cluster-signing-key-file=/ca/key.pem
+        - --kubeconfig=/data/kubeconfig/controller-manager.kubeconfig
+        - --leader-elect=true
+        - --root-ca-file=/ca/cert.pem
+        - --service-account-private-key-file=/data/certs/service-accounts/key.pem
+        - --service-cluster-ip-range=10.32.0.0/24
+        - --use-service-account-credentials=true
+        - --v=2
+
+      volumeMounts:
+        - name: ca
+          mountPath: /ca
+          readOnly: true
+        - name: data
+          mountPath: /data
+          readOnly: true
+
+      livenessProbe:
+        initialDelaySeconds: 15
+        timeoutSeconds: 5
+        httpGet:
+          scheme: HTTP
+          host:   127.0.0.1
+          port:   10252
+          path:   /healthz
+
+  volumes:
+    - name: ca
+      hostPath:
+        path: /var/vcap/jobs/control/tls/ca
+    - name: data
+      hostPath:
+        path: /var/vcap/data/k8s
+<% end %>

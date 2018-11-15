@@ -1,39 +1,17 @@
 #!/bin/bash
 set -eu
 exec 2>&1
+<%
+pods = {}
+p('pods').each { |pod| pods[pod.to_s] = true }
+-%>
 
 JOB=kubelet
 BIN=pre-start
 JOB_DIR=/var/vcap/jobs/$JOB
 CERTS_DIR=/var/vcap/data/k8s/certs
+KCFG_DIR=/var/vcap/data/k8s/kubeconfig
 TMP_DIR=/var/vcap/data/k8s/tmp/$JOB
-
-# put cfssl in our path
-export PATH=$PATH:/var/vcap/packages/cfssl/bin
-
-echo "[$(date)] $BIN/$$: regenerating certificates..."
-rm -rf $TMP_DIR
-mkdir -p $CERTS_DIR $TMP_DIR
-pushd $TMP_DIR 2>/dev/null 2>&1
-
-echo "[$(date)] $BIN/$$: configuring ca parameters"
-cat > ca.json <<EOF
-{
-  "signing": {
-    "default": {
-      "expiry": "8760h"
-    },
-    "profiles": {
-      "kubernetes": {
-        "usages": ["signing", "key encipherment", "server auth", "client auth"],
-        "expiry": "8760h"
-      }
-    }
-  }
-}
-EOF
-cat ca.json
-echo
 
 gencert() {
   cn=$1
@@ -67,12 +45,122 @@ EOF
   echo
 }
 
+configkube() {
+  user=$1
+  kind=$2
+  cert=$CERTS_DIR/$kind
+
+  echo "[$(date)] $BIN/$$: creating kubeconfig for ${kind} (as ${user})"
+  echo "[$(date)] $BIN/$$: using certificate $cert/*.pem..."
+
+  kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+    --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+    --embed-certs=true \
+    --server=https://127.0.0.1:6443 \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config set-credentials $user \
+    --client-certificate=$cert/cert.pem \
+    --client-key=$cert/key.pem \
+    --embed-certs=true \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config set-context default \
+    --cluster=<%= link('api').p('cluster.name') %> \
+    --user=$user \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+
+  kubectl config use-context default \
+    --kubeconfig=$KCFG_DIR/$kind.kubeconfig
+}
+
+# put kubectl in our path
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+# put cfssl in our path
+export PATH=$PATH:/var/vcap/packages/cfssl/bin
+
+echo "[$(date)] $BIN/$$: regenerating certificates..."
+rm -rf $TMP_DIR
+mkdir -p $CERTS_DIR $TMP_DIR
+pushd $TMP_DIR 2>/dev/null 2>&1
+
+echo "[$(date)] $BIN/$$: configuring ca parameters"
+cat > ca.json <<EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "8760h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": ["signing", "key encipherment", "server auth", "client auth"],
+        "expiry": "8760h"
+      }
+    }
+  }
+}
+EOF
+cat ca.json
+echo
+
 ID="system:node:$(hostname -s)"
 echo "[$(date)] $BIN/$$: issuing the Kubelet certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
         127.0.0.1,<%= spec.ip %>,$(hostname -s) \
         kubelet
+
+configkube system:nodes:node \
+           kubelet
+
+<% if pods['etcd'] %>
+gencert etcd \
+        etcd \
+        127.0.0.1,<%= spec.ip %> \
+        etcd
+<% end %>
+
+<% if pods['apiserver'] %>
+echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
+gencert "$ID" \
+        system:nodes \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s)<% if !link('api').p('cluster.ip').empty? %>,<%= link('api').p('cluster.ip') %><% end %> \
+        api
+
+echo "[$(date)] $BIN/$$: issuing the API -> Kubelet client certificate"
+gencert kubelet-client \
+        system:masters \
+        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
+        kubelet-client
+<% end %>
+
+<% if pods['scheduler'] %>
+echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"
+gencert system:kube-scheduler \
+        system:kube-scheduler \
+        system:kube-scheduler \
+        scheduler
+
+configkube system:kube-scheduler \
+           scheduler
+<% end %>
+
+<% if pods['controller-manager'] %>
+echo "[$(date)] $BIN/$$: issuing the Controller Manager certificate"
+gencert system:kube-controller-manager \
+        system:kube-controller-manager \
+        system:kube-controller-manager \
+        controller-manager
+
+echo "[$(date)] $BIN/$$: issuing the Service Account token-signing certificate"
+gencert service-accounts \
+        service-accounts \
+        service-accounts \
+        service-accounts
+
+configkube system:kube-controller-manager \
+           controller-manager
+<% end %>
 
 popd >/dev/null 2>&1
 

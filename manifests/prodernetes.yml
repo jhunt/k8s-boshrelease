@@ -15,6 +15,7 @@ instance_groups:
     jobs:
       - name: etcd
         release: k8s
+
       - name: control
         release: k8s
         properties:
@@ -30,6 +31,18 @@ instance_groups:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
+
+      - name: runtime-runc
+        release: k8s
+
+      - name: kubelet
+        release: k8s
+        properties:
+          pods:
+            - etcd
+            - apiserver
+            - scheduler
+            - controller-manager
 
       - name: jumpbox
         release: k8s
@@ -48,6 +61,7 @@ instance_groups:
     jobs:
       - name: runtime-runc
         release: k8s
+
       - name: kubelet
         release: k8s
 
