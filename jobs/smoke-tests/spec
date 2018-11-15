@@ -1,0 +1,49 @@
+---
+name: smoke-tests
+description: |
+  Runs a lightweight tests against the Kubernetes cluster, using a
+  bespoke test container image for validating the scheduling, log
+  retrieval, and arbitrary process execution.
+
+  For air-gapped environments, the test container can be relocated
+  to an internal registry, or built entirely from scratch.  Just
+  override the `images.smoke-test` property accordingly.
+
+packages:
+  - k8s
+  - cfssl
+  - jq
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+templates:
+  bin/run: bin/run
+
+  tls/ca/cert.pem: tls/ca/cert.pem
+  tls/ca/key.pem:  tls/ca/key.pem
+
+properties:
+  timeout.deploy:
+    description: How long (in seconds) to wait for the test replica set to deploy a pod.
+    default: 20
+
+  timeout.startup:
+    description: How long (in seconds) to wait for the test pod to boot up.
+    default: 90
+
+  image:
+    description: |
+      Where to pull the k8s BOSH release Docker image for smoke tests.
+      If you need to run in an air-gapped network, or just want to inspect the contents
+      of your components manually, you can rebuild this image and push it into a private
+      registry.
+    default: docker.io/huntprod/k8s-bosh-smoke-test:1.12.0
+
+  namespace.prefix:
+    description: |
+      The smoke-test errand does its work inside of a single Kubernetes
+      namespace, which gets created anew on each run, and torn down after.
+      You can set a prefix for the automatically generated named here.
+    default: smoke-tests

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+  echo "[$(date)] I am ALIVE"
+  sleep 1
+done

@@ -8,6 +8,10 @@ packages:
   - containerd
   - runtime-runc
 
+consumes:
+  - name: api
+    type: k8s-apiserver
+
 templates:
   bin/containerd: bin/containerd
 

@@ -41,6 +41,8 @@ instance_groups:
 
       - name: jumpbox
         release: k8s
+      - name: smoke-tests
+        release: k8s
 
 variables:
   - name: tls-ca

@@ -13,6 +13,7 @@
 
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
+export PATH=$PATH:/var/vcap/packages/jq/bin
 export DAT_DIR=/var/vcap/data/k8s/jumpbox
 export JOB_DIR=/var/vcap/jobs/jumpbox
 export KUBECONFIG=$DAT_DIR/kubeconfig

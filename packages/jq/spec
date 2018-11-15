@@ -1,0 +1,6 @@
+---
+name: jq
+
+dependencies: []
+files:
+  - jq/jq

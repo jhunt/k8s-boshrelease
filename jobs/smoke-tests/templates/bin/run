@@ -1,0 +1,226 @@
+#!/bin/bash
+set -eu
+
+<%
+
+  apiserver = link('api').p('cluster.ip')
+  if apiserver.empty?
+    apiserver = link('api').instances.first.address
+  end
+  if apiserver.empty?
+    raise "Unable to determine what hostname / fqdn / ip to talk to k8s apiserver via.  Do you need to set the \`cluster.ip' property?"
+  end
+
+-%>
+
+export JOB_DIR=/var/vcap/jobs/smoke-tests
+
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+export PATH=$PATH:/var/vcap/packages/cfssl/bin
+export PATH=$PATH:/var/vcap/packages/jq/bin
+
+WORKSPACE=$(mktemp -d smoke-tests.XXXXXX)
+trap "rm -rf $WORKSPACE" INT TERM QUIT EXIT
+
+echo "K8S/BOSH SMOKE TESTS"
+echo "===================="
+echo
+echo "generating client certificate..."
+cd $WORKSPACE >/dev/null 2>&1
+cat > ca.json <<EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "8760h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": ["signing", "key encipherment", "server auth", "client auth"],
+        "expiry": "8760h"
+      }
+    }
+  }
+}
+EOF
+cat > cert.json <<EOF
+{
+  "CN": "smoke-tests",
+  "names": [{"O": "system:masters"}],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}
+EOF
+  cfssl gencert \
+    -ca=$JOB_DIR/tls/ca/cert.pem \
+    -ca-key=$JOB_DIR/tls/ca/key.pem \
+    -config=ca.json \
+    -profile=kubernetes \
+    cert.json | \
+      cfssljson -bare smoke-tests
+
+echo "setting up kubeconfig..."
+export KUBECONFIG=$WORKSPACE/kubeconfig
+kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+  --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+  --embed-certs=true \
+  --server=https://<%= apiserver %>:6443 \
+  --kubeconfig=$KUBECONFIG
+
+kubectl config set-credentials smoke-tests \
+  --client-certificate=smoke-tests.pem \
+  --client-key=smoke-tests-key.pem \
+  --embed-certs=true \
+  --kubeconfig=$KUBECONFIG
+
+kubectl config set-context default \
+  --cluster=<%= link('api').p('cluster.name') %> \
+  --user=smoke-tests \
+  --kubeconfig=$KUBECONFIG
+
+kubectl config use-context default \
+  --kubeconfig=$KUBECONFIG
+
+echo ; echo ; echo
+echo "RUNNING SMOKE TESTS"
+echo "==================="
+echo
+kubectl config view
+echo
+echo
+
+NAMESPACE="<%= p('namespace.prefix') %>-$(date +%Y%m%d-%H%M%S)"
+echo
+echo ">> creating namespace '$NAMESPACE'"
+cat > ns.yml <<EOF
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: $NAMESPACE
+EOF
+kubectl apply -f ns.yml
+
+echo
+echo ">> creating the test replica set"
+cat > rs.yml <<EOF
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: smoke-tests
+  labels:
+    type: smoke-tests
+    namespace: $NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: smoke-tests
+  template:
+    metadata:
+      labels:
+        type: smoke-tests
+    spec:
+      containers:
+        - name: smoke-tests
+          image: <%= p('image') %>
+EOF
+kubectl -n "$NAMESPACE" apply -f rs.yml
+
+echo
+echo ">> waiting for the replica set to coalesce"
+echo -n "   ..."
+timer=<%= p('timeout.deploy') %>
+while [[ -z $(kubectl -n "$NAMESPACE" get pod -o json | jq -r '.items[].metadata.name') ]]; do
+  echo -n '.'
+  if [[ $timer -lt 1 ]]; then
+    echo
+    echo
+    echo "   smoke test replica set did not deploy a pod within <%= p('timeout.deploy') %> seconds"
+    echo
+    echo "   pod list was:"
+    echo "-----------------------------------------------"
+    kubectl -n "$NAMESPACE" get pod
+    echo "-----------------------------------------------"
+    echo ; echo ; echo
+    echo "SMOKE TESTS FAILED"
+    exit 1
+  fi
+
+  time=$((timer + 1))
+  sleep 1
+done
+echo
+
+POD_NAME=$(kubectl -n "$NAMESPACE" get pod -o json | jq -r '.items[].metadata.name')
+echo "   namespace: '$NAMESPACE'"
+echo "   pod name:  '$POD_NAME'"
+echo -n "   ..."
+timer=<%= p('timeout.startup') %>
+while [[ $(kubectl -n "$NAMESPACE" get pod -o json $POD_NAME | jq -r '.status.containerStatuses[0].ready') != "true" ]]; do
+  echo -n '.'
+  if [[ $timer -lt 1 ]]; then
+    echo
+    echo
+    echo "   smoke test replica set did not become ready within <%= p('timeout.startup') %> seconds"
+    echo
+    echo "   pod status was:"
+    echo "-----------------------------------------------"
+    kubectl -n "$NAMESPACE" get pod -o json $POD_NAME
+    echo "-----------------------------------------------"
+    echo ; echo ; echo
+    echo "SMOKE TESTS FAILED"
+    exit 1
+  fi
+
+  timer=$((timer - 1))
+  sleep 1
+done
+echo
+
+echo
+echo ">> checking the test pod's log stream"
+if ! kubectl -n "$NAMESPACE" logs $POD_NAME 2>/dev/null | grep 'I am ALIVE'; then
+  echo "   log stream did not contain the string 'I am ALIVE', as was expected."
+  echo
+  echo "   log stream was:"
+  echo "-----------------------------------------------"
+  kubectl -n "$NAMESPACE" logs $POD_NAME
+  echo "-----------------------------------------------"
+
+  echo ; echo ; echo
+  echo "SMOKE TESTS FAILED"
+  exit 1
+fi
+
+echo
+echo ">> executing the one-off test inside of the pod"
+kubectl -n "$NAMESPACE" exec -it $POD_NAME /test/once >out 2>&1
+if ! grep 'I can EXEC' out; then
+  echo
+  echo "   execution failed.  output did not contain the string 'I can EXEC', as was expected."
+  echo
+  echo "   exec output was:"
+  echo "-----------------------------------------------"
+  cat out
+  echo "-----------------------------------------------"
+
+  echo ; echo ; echo
+  echo "SMOKE TESTS FAILED"
+  exit 1
+fi
+
+echo
+echo ">> deleting the replica set"
+kubectl -n "$NAMESPACE" delete -f rs.yml --wait
+
+echo
+echo ">> cleaning up the namespace"
+kubectl delete -f ns.yml --wait
+
+echo
+echo "SUCCESS"
+echo
+exit 0

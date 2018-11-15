@@ -14,6 +14,7 @@ consumes:
 packages:
   - k8s
   - cfssl
+  - jq
 
 templates:
   envrc: envrc
