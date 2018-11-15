@@ -5,4 +5,4 @@ dependencies: []
 files:
   - containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz
   - containerd/crictl-v1.12.0-linux-amd64.tar.gz
-  - containerd/cni-plugins-amd64-v0.6.0.tgz
+  - containerd/cni-plugins-amd64-v0.7.4.tgz

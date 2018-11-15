@@ -7,6 +7,9 @@ cfssl/cfssljson_linux-amd64:
 containerd/cni-plugins-amd64-v0.6.0.tgz:
   size: 15385105
   sha: d595d3ded6499a64e8dac02466e2f5f2ce257c9f
+containerd/cni-plugins-amd64-v0.7.4.tgz:
+  size: 17108774
+  sha: 1830ee323cfd360615a6c9efc0ff28c622a6f087
 containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz:
   size: 28888838
   sha: 085fbdd840a6853e67cba24f9ff098adf4312a12
