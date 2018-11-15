@@ -98,7 +98,7 @@ spec:
         operator: Exists
       containers:
       - name: kube-proxy
-        image: docker.io/whisperos/kube-proxy:1.12.2
+        image: <%= p('images.kube-proxy') %>
         command:
         - /kube-proxy
         args:
