@@ -1,84 +1,112 @@
 cfssl/cfssl_linux-amd64:
   size: 10376657
+  object_id: 5ee062eb-b51c-4f9c-4790-f2dd075130a5
   sha: 889d87f6814fbe8d6985713aca35e3be4c632afd
 cfssl/cfssljson_linux-amd64:
   size: 2277873
+  object_id: b67600f7-c1b2-4fe9-5d02-b7c09a37fc1f
   sha: a9766e7eef71a39a5d2ca94061c8a6004fcdd524
 containerd/cni-plugins-amd64-v0.6.0.tgz:
   size: 15385105
+  object_id: 2411b613-75e5-4fbf-5359-c124da576741
   sha: d595d3ded6499a64e8dac02466e2f5f2ce257c9f
 containerd/cni-plugins-amd64-v0.7.4.tgz:
   size: 17108774
+  object_id: fc82c730-0009-4d54-451c-8ca2ab020f2f
   sha: 1830ee323cfd360615a6c9efc0ff28c622a6f087
 containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz:
   size: 28888838
+  object_id: c0a5f196-421c-465d-7f00-5ff15a2b00a1
   sha: 085fbdd840a6853e67cba24f9ff098adf4312a12
 containerd/crictl-v1.12.0-linux-amd64.tar.gz:
   size: 7411209
+  object_id: 7ce8b775-cec2-4d62-5fdb-181a39050606
   sha: 45a9c65cc52a13e76e07fbc64ddcf3b646cd8c82
 etcd/etcd-v3.3.9-linux-amd64.tar.gz:
   size: 11254519
+  object_id: 8984528c-bb87-4c31-5672-cb314a566f8e
   sha: 47b708b774832b7e1edb89eafa755e47c8d70b50
 jq/jq:
   size: 3953824
+  object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
   size: 192766426
+  object_id: 5bee7d5c-c3fa-408d-7bb9-fe3add0c6efa
   sha: eb4202a5bb50e9cf6c83579c722db98a782b1a02
 k8s/kube-controller-manager:
   size: 162936572
+  object_id: 05156e6f-65be-456d-4842-64d99bb00bd8
   sha: 0fe53225f0e00abf7879541719e5b185c313b540
 k8s/kube-proxy:
   size: 50436059
+  object_id: 12030142-e7b7-4529-5848-e6d23f20cd6f
   sha: 91c3e6797e8494377bacab2877b3a7361fa5c44d
 k8s/kube-scheduler:
   size: 57180560
+  object_id: c6c7a435-5c68-4be4-52c7-8b38e2731e20
   sha: 30e558f44c7b3cb9483a55014338aacbd6c99771
 k8s/kubectl:
   size: 57343669
+  object_id: fe5bd6e1-e985-4d10-7e84-372ac148cda1
   sha: 85904f6caa295eaeef10e1b59a5e9f823e7b4825
 k8s/kubelet:
   size: 176726400
+  object_id: 376f6529-7840-4f9c-62b2-ea0f8c0cb137
   sha: 2948b9afd0e8e3181d18b83f87533afd6e5f4970
 nfs-trusty-debs/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb:
   size: 126342
+  object_id: 690fc181-a47d-44cd-4382-0f75814d968c
   sha: c91f6872e804274d2b615f4f3ead979f176adba3
 nfs-trusty-debs/libkeyutils1_1.5.6-1_amd64.deb:
   size: 7318
+  object_id: c389a7b3-3c51-4951-67c3-b939a53fcf33
   sha: 9f38a6d5d43c2d70a031034668f4989cc9c5eb56
 nfs-trusty-debs/libnfsidmap2_0.25-5_amd64.deb:
   size: 32182
+  object_id: dd7a1589-2968-4ffe-7743-2cc730c77c16
   sha: f28b7370542daaf81cefb44d9057fa9b3fb43064
 nfs-trusty-debs/nfs-common_1.2.8-6ubuntu1.2_amd64.deb:
   size: 180760
+  object_id: ee7c6bd8-d07b-48db-405c-b41cbe73f63b
   sha: ce61f57dd64fa9fd908798677d23a91a375bc60c
 nfs-trusty-debs/nfs-kernel-server_1.2.8-6ubuntu1.2_amd64.deb:
   size: 85826
+  object_id: 7d19fa6e-ae6e-46bc-56cd-b7996623da87
   sha: 1ef96876212fb4ce6e3ebb3e18d9ec2d2d9ceb48
 nfs-trusty-debs/rpcbind_0.2.1-2ubuntu2.2_amd64.deb:
   size: 37056
+  object_id: 76d8b0a3-8454-4ab9-4465-0dad6b871d55
   sha: 80b3254778e8d0ab0ba0a594fcdab44730552bdb
 nfs-xenial-debs/keyutils_1.5.9-8ubuntu1_amd64.deb:
   size: 47054
+  object_id: 1b3d7cdc-c46b-40e8-65f5-f2d411eb283e
   sha: ec2e96e73feb5215605c9f0254cad05d9cc5688a
 nfs-xenial-debs/libevent-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb:
   size: 114014
+  object_id: eaa1f693-3633-4e7d-4cd0-8661515430a0
   sha: 57d69f44f3e058e48a7b79595d36076eb21f5942
 nfs-xenial-debs/libnfsidmap2_0.25-5_amd64.deb:
   size: 32182
+  object_id: 269a9f44-9683-49d3-6b44-e61ff94568aa
   sha: f28b7370542daaf81cefb44d9057fa9b3fb43064
 nfs-xenial-debs/nfs-common_1.2.8-9ubuntu12_amd64.deb:
   size: 184538
+  object_id: be3b81f0-621b-4bdf-7892-b568cb0f135a
   sha: 2977e5a1e86615e268cc518f04c9dd2cc832b263
 nfs-xenial-debs/nfs-kernel-server_1.2.8-9ubuntu12_amd64.deb:
   size: 87962
+  object_id: 0fa52d66-22b0-4532-4266-e71d1eb2cccf
   sha: d5c57c7b7e8ab0fa5ab7c343aa2a039916a9814d
 nfs-xenial-debs/rpcbind_0.2.3-0.2_amd64.deb:
   size: 40252
+  object_id: 1922b993-b271-41e7-5ef6-ee21474ad105
   sha: 8fa58cfcb1862c6d337d10496fada5f1a6e94a03
 runtime-runc/runc:
   size: 12269056
+  object_id: b0065088-6a07-4aab-4706-f256bc0357f5
   sha: e00757b42a19f1042411fbc33bcad2589c24cc31
 runtime-runc/runsc:
   size: 17472381
+  object_id: c78897f1-97cf-4109-62bd-1f1881680b55
   sha: 6470e7362519aab8f6a297b224a92f4e14a2997e

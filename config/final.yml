@@ -1,1 +1,6 @@
-name: k8s
+---
+blobstore:
+  provider: s3
+  options:
+    bucket_name: k8s-boshrelease
+final_name: k8s
