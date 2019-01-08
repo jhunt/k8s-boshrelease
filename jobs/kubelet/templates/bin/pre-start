@@ -67,11 +67,11 @@ EOF
   echo
 }
 
-ID="system:node:$(hostname -s)"
+ID="system:node:<%= spec.id %>.k8s"
 echo "[$(date)] $BIN/$$: issuing the Kubelet certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
+        127.0.0.1,<%= spec.ip %>,<%= spec.id %>.k8s \
         kubelet
 
 popd >/dev/null 2>&1

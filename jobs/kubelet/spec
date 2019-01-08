@@ -25,6 +25,8 @@ templates:
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
+  dns/aliases.json: dns/aliases.json
+
 properties:
   debug:
     description: Enables verbose debugging, suitable for troubleshooting.

@@ -73,17 +73,17 @@ gencert automaton \
         system:masters \
         automaton
 
-ID="system:node:$(hostname -s)"
+ID="system:node:<%= spec.id %>.k8s"
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,$(hostname -s)<% if !p('cluster.ip').empty? %>,<%= p('cluster.ip') %><% end %> \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,<%= spec.id %>.k8s<% if !p('cluster.ip').empty? %>,<%= p('cluster.ip') %><% end %> \
         api
 
 echo "[$(date)] $BIN/$$: issuing the API -> Kubelet client certificate"
 gencert kubelet-client \
         system:masters \
-        127.0.0.1,<%= spec.ip %>,$(hostname -s) \
+        127.0.0.1,<%= spec.ip %>,<%= spec.id %>.k8s \
         kubelet-client
 
 echo "[$(date)] $BIN/$$: issuing the Scheduler certificate"

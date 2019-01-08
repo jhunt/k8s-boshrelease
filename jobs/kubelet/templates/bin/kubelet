@@ -81,6 +81,7 @@ case $1 in
            --kubeconfig=$DAT_DIR/kubeconfig \
            --network-plugin=cni \
            --register-node=true \
+           --hostname-override=<%= spec.id %>.k8s \
            --v=2
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
