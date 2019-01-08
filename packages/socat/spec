@@ -1,0 +1,6 @@
+---
+name: socat
+
+dependencies: []
+files:
+  - socat/socat-1.7.3.2.tar.bz2

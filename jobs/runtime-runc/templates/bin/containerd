@@ -16,6 +16,7 @@ exec >>$LOG_DIR/$BIN.log 2>&1
 # set runc + containerd binaries in our path
 export PATH=$PATH:/var/vcap/packages/runtime-runc/bin
 export PATH=$PATH:/var/vcap/packages/containerd/bin
+export PATH=$PATH:/var/vcap/packages/socat/bin
 
 case $1 in
   start)

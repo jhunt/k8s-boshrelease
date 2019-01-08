@@ -110,3 +110,7 @@ runtime-runc/runsc:
   size: 17472381
   object_id: c78897f1-97cf-4109-62bd-1f1881680b55
   sha: 6470e7362519aab8f6a297b224a92f4e14a2997e
+socat/socat-1.7.3.2.tar.bz2:
+  size: 493324
+  object_id: 4e7d984f-039a-4c19-56b5-5c2255408de6
+  sha: 94e0003607fc1bf3af534f70831cf70bb944ab5d
