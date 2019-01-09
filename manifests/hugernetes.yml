@@ -4,10 +4,13 @@ instance_groups:
   - name:      etcd
     instances: 3
     azs:       [z1,z2,z3]
-    vm_type:   large
-    stemcell:  default
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 20_000
+    persistent_disk: 20_000
 
-    persistent_disk_type: default
+    stemcell:  default
 
     networks:
       - name: default
