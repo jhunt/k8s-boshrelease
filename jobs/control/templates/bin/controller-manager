@@ -64,7 +64,7 @@ case $1 in
            --leader-elect=true \
            --root-ca-file=$JOB_DIR/tls/ca/cert.pem \
            --service-account-private-key-file=$CERTS_DIR/service-accounts/key.pem \
-           --service-cluster-ip-range=10.32.0.0/24 \
+           --service-cluster-ip-range=<%= p('networks.services') %> \
            --use-service-account-credentials=true \
            --v=2
 

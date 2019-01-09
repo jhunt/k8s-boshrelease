@@ -73,7 +73,7 @@ case $1 in
            --kubelet-https=true \
            --runtime-config=api/all \
            --service-account-key-file=$CERTS_DIR/service-accounts/cert.pem \
-           --service-cluster-ip-range=10.32.0.0/24 \
+           --service-cluster-ip-range=<%= p('networks.services') %> \
            --service-node-port-range=30000-32767 \
            --tls-cert-file=$CERTS_DIR/api/cert.pem \
            --tls-private-key-file=$CERTS_DIR/api/key.pem \
