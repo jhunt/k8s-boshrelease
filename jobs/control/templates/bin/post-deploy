@@ -13,11 +13,6 @@ export PATH=$PATH:/var/vcap/packages/k8s/bin
 
 echo "[$(date)] $BIN/$$: post-deploy starting up..."
 
-<% if !spec.bootstrap %>
-echo "[$(date)] $BIN/$$: not bootstrap node; nothing to do."
-exit 0
-<% end %>
-
 clusterok() {
   status=$(curl -sf http://localhost:8080/healthz)
   test "s'${status}" = "s'ok"
@@ -80,8 +75,12 @@ kubectl config set-context default \
     --kubeconfig=$DAT_DIR/proxy.kubeconfig
 kubectl config use-context default --kubeconfig=$DAT_DIR/proxy.kubeconfig
 
+<% if !spec.bootstrap %>
+echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
+<% else %>
 echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
         apply -f $JOB_DIR/k8s/kube-proxy.yml
+<% end %>
 
 echo "[$(date)] $BIN/$$: complete."
