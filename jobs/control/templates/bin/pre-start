@@ -77,7 +77,7 @@ ID="system:node:<%= spec.id %>.k8s"
 echo "[$(date)] $BIN/$$: issuing the API Server certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,<%= spec.id %>.k8s<% if !p('cluster.ip').empty? %>,<%= p('cluster.ip') %><% end %> \
+        127.0.0.1,kubernetes,kubernetes.default,<%= spec.ip %>,10.200.251.1,<%= spec.id %>.k8s<% if !p('cluster.ip').empty? %>,<%= p('cluster.ip') %><% end %> \
         api
 
 echo "[$(date)] $BIN/$$: issuing the API -> Kubelet client certificate"

@@ -63,7 +63,7 @@ case $1 in
            --kubeconfig=$DAT_DIR/kubeconfig \
            --leader-elect=true \
            --root-ca-file=$JOB_DIR/tls/ca/cert.pem \
-           --service-account-private-key-file=$CERTS_DIR/service-accounts/key.pem \
+           --service-account-private-key-file=$JOB_DIR/tls/sa/key.pem \
            --service-cluster-ip-range=<%= p('networks.services') %> \
            --use-service-account-credentials=true \
            --v=2

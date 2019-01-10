@@ -59,7 +59,7 @@ case $1 in
            --authorization-mode=Node,RBAC \
            --bind-address=0.0.0.0 \
            --client-ca-file=$JOB_DIR/tls/ca/cert.pem \
-           --enable-admission-plugins=Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
+           --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
            --enable-swagger-ui=true \
            --etcd-cafile=$JOB_DIR/tls/ca/cert.pem \
            --etcd-certfile=$CERTS_DIR/api/cert.pem \
@@ -72,7 +72,7 @@ case $1 in
            --kubelet-client-key=$CERTS_DIR/kubelet-client/key.pem \
            --kubelet-https=true \
            --runtime-config=api/all \
-           --service-account-key-file=$CERTS_DIR/service-accounts/cert.pem \
+           --service-account-key-file=$JOB_DIR/tls/sa/cert.pem \
            --service-cluster-ip-range=<%= p('networks.services') %> \
            --service-node-port-range=30000-32767 \
            --tls-cert-file=$CERTS_DIR/api/cert.pem \

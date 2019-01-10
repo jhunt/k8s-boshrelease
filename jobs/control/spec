@@ -64,6 +64,9 @@ templates:
   tls/ca/cert.pem: tls/ca/cert.pem
   tls/ca/key.pem:  tls/ca/key.pem
 
+  tls/sa/cert.pem: tls/sa/cert.pem
+  tls/sa/key.pem:  tls/sa/key.pem
+
   # kube-in-kube
   bin/post-deploy:   bin/post-deploy
   k8s/kube-proxy.yml: k8s/kube-proxy.yml
@@ -145,6 +148,20 @@ properties:
   tls.ca.key:
     description: |
       The X.509 Certificate Authority's RSA private key, in PEM format.
+
+      The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
+      job, in this BOSH release) in properly validated mutual TLS setups.
+
+  tls.sa.certificate:
+    description: |
+      An X.509 certificate in PEM format.
+
+      This certificate is used in authenticating service accounts. CN or SAN
+      can be operator's choosing (it does not matter).
+
+  tls.sa.key:
+    description: |
+      The service account's X.509 private key, in PEM format.
 
       The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
       job, in this BOSH release) in properly validated mutual TLS setups.
