@@ -1,0 +1,1 @@
+<% require 'yaml' %><%= p('apiserver.audit-policy', {}).to_yaml %>
