@@ -83,4 +83,8 @@ kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
         apply -f $JOB_DIR/k8s/kube-proxy.yml
 <% end %>
 
+echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
+kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
+        apply -f $JOB_DIR/k8s/kube-dns.yml
+
 echo "[$(date)] $BIN/$$: complete."

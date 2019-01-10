@@ -48,6 +48,8 @@ provides:
     properties:
       - cluster.name
       - cluster.ip
+      - cluster.dns
+      - cluster.domain
       - networks.pods
       - networks.services
       - networks.nodes
@@ -67,8 +69,9 @@ templates:
   tls/sa/key.pem:  tls/sa/key.pem
 
   # kube-in-kube
-  bin/post-deploy:   bin/post-deploy
+  bin/post-deploy:    bin/post-deploy
   k8s/kube-proxy.yml: k8s/kube-proxy.yml
+  k8s/kube-dns.yml:   k8s/kube-dns.yml
 
   # kube-apiserver
   bin/api:              bin/api
@@ -105,6 +108,18 @@ properties:
   cluster.ip:
     description: A public IP for this cluster, for routing internal traffic.
     default: ''
+
+  cluster.dns:
+    description: |
+      A Service IP address (in networks.services) to host Core DNS services on.
+
+      This cannot be changed after a successful deployment, because Kubernetes does not
+      allow services to change their clusterIP values after initial application of
+      the service spec definition.  Choose wisely.
+
+  cluster.domain:
+    description: The global DNS suffix for this Kubernetes cluster.
+    default: k8s.(deployment).local
 
   coalesce:
     description: How long (in seconds) to wait for the Kubernetes cluster to coalesce into a functioning unit.
