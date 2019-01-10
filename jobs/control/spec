@@ -150,6 +150,11 @@ properties:
       registry.
     default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
 
+  apiserver.additional-sans:
+    description: |
+      A list of extra X.509 subject alternate names to add into the API server certificate.
+    default: []
+
   apiserver.audit-policy:
     description: |
       A YAML audit policy for the Kubernetes API server to use for audit logging.
