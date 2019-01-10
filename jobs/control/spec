@@ -156,14 +156,19 @@ properties:
     description: |
       An X.509 certificate in PEM format.
 
-      This certificate is used in authenticating service accounts. CN or SAN
-      can be operator's choosing (it does not matter).
+      This certificate is used by the Kubernetes apiserver component to validate
+      Bearer tokens generated using the corresponding private key (tls.sa.key),
+      by the controller-manager.
+
+      It does not participate in PKI, or mutual TLS, and therefore does not
+      have any specific CN / SAN requirements, and need not be signed by any
+      Certificate Authority.
 
   tls.sa.key:
     description: |
-      The service account's X.509 private key, in PEM format.
+      An RSA private key, in PEM format.
 
-      The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
-      job, in this BOSH release) in properly validated mutual TLS setups.
+      This key is used by the controller-manager to sign generated Bearer tokens,
+      so that the apiserver can validate them (using tls.sa.certificate).
 
 # vim:ft=yaml

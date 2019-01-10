@@ -98,12 +98,6 @@ gencert system:kube-controller-manager \
         system:kube-controller-manager \
         controller-manager
 
-echo "[$(date)] $BIN/$$: issuing the Service Account token-signing certificate"
-gencert service-accounts \
-        service-accounts \
-        service-accounts \
-        service-accounts
-
 echo "[$(date)] $BIN/$$: issuing the Proxy certificate"
 gencert system:kube-proxy \
         system:node-proxier \
