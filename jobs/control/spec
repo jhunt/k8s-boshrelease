@@ -128,12 +128,12 @@ properties:
       Network CIDR range that the Kubernetes nodes use.
 
   images.kube-proxy:
-     description: |
-       Where to pull the k8s BOSH release Docker image for kube-proxy.
-       If you need to run in an air-gapped network, or just want to inspect the contents
-       of your components manually, you can rebuild this image and push it into a private
-       registry.
-     default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
+    description: |
+      Where to pull the k8s BOSH release Docker image for kube-proxy.
+      If you need to run in an air-gapped network, or just want to inspect the contents
+      of your components manually, you can rebuild this image and push it into a private
+      registry.
+    default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
 
   tls.ca.certificate:
     description: |
