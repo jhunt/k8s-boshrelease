@@ -32,4 +32,14 @@ properties:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
 
+  kubelet.flags:
+    description: |
+      A list of additional flags to pass to the kubelet daemon.  These flags are
+      appended to the command-line after the hard-coded default flags.  Use this option
+      with caution; it has the possibility to horribly break your deployment.
+
+      Each item in the list should have a single key (the flag, minus the trailing `--`)
+      whose value will be used as the flag value.
+    default: []
+
 # vim:ft=yaml

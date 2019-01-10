@@ -135,6 +135,36 @@ properties:
       registry.
     default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
 
+  apiserver.flags:
+    description: |
+      A list of additional flags to pass to the kube-apiserver daemon.  These flags are
+      appended to the command-line after the hard-coded default flags.  Use this option
+      with caution; it has the possibility to horribly break your deployment.
+
+      Each item in the list should have a single key (the flag, minus the trailing `--`)
+      whose value will be used as the flag value.
+    default: []
+
+  controller-manager.flags:
+    description: |
+      A list of additional flags to pass to the kube-controller-manager.  These flags are
+      appended to the command-line after the hard-coded default flags.  Use this option
+      with caution; it has the possibility to horribly break your deployment.
+
+      Each item in the list should have a single key (the flag, minus the trailing `--`)
+      whose value will be used as the flag value.
+    default: []
+
+  scheduler.flags:
+    description: |
+      A list of additional flags to pass to the kube-scheduler.  These flags are
+      appended to the command-line after the hard-coded default flags.  Use this option
+      with caution; it has the possibility to horribly break your deployment.
+
+      Each item in the list should have a single key (the flag, minus the trailing `--`)
+      whose value will be used as the flag value.
+    default: []
+
   tls.ca.certificate:
     description: |
       The X.509 Certificate Authority's certificate, in PEM format.

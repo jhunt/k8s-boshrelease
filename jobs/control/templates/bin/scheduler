@@ -57,7 +57,7 @@ case $1 in
     exec kube-scheduler \
            --kubeconfig=$DAT_DIR/kubeconfig \
            --config=$JOB_DIR/etc/scheduler.yml \
-           --v=2
+           --v=2 <% p('scheduler.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
 
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42

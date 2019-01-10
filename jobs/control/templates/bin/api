@@ -77,7 +77,7 @@ case $1 in
            --service-node-port-range=30000-32767 \
            --tls-cert-file=$CERTS_DIR/api/cert.pem \
            --tls-private-key-file=$CERTS_DIR/api/key.pem \
-           --v=2
+           --v=2 <% p('apiserver.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42
     ;;
