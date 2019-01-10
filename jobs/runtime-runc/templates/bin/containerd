@@ -10,6 +10,7 @@ RUN_DIR=/var/vcap/sys/run/$JOB
 LOG_DIR=/var/vcap/sys/log/$JOB
 JOB_DIR=/var/vcap/jobs/$JOB
 DAT_DIR=/var/vcap/data/k8s/$JOB
+STO_DIR=/var/vcap/store/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
 exec >>$LOG_DIR/$BIN.log 2>&1
 
@@ -20,7 +21,7 @@ export PATH=$PATH:/var/vcap/packages/socat/bin
 
 case $1 in
   start)
-    mkdir -p $RUN_DIR $DAT_DIR
+    mkdir -p $RUN_DIR $DAT_DIR $STO_DIR
 
     echo "[$(date)] $BIN/$$: starting up..."
     if [[ -f $PIDFILE ]]; then
@@ -45,7 +46,7 @@ case $1 in
     ulimit -u unlimited  # num processes
 
     echo $$ > $PIDFILE
-    exec containerd --config $JOB_DIR/etc/containerd.toml
+    exec containerd --config $JOB_DIR/etc/containerd.toml --root $STO_DIR
 
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42

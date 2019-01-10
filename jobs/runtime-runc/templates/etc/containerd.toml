@@ -17,3 +17,9 @@
     [plugins.cri.cni]
       conf_dir = "/var/vcap/jobs/runtime-runc/etc/cni/net.d"
       bin_dir = "/var/vcap/packages/containerd/bin"
+
+
+# persistent data location
+root = "/var/vcap/store/k8s/runtime-runc"
+# runtime state information (MUST be ephemeral; cannot persist between reboots)
+state = "/var/vcap/data/k8s/runtime-runc"
