@@ -1,0 +1,8 @@
+set -exu
+
+mkdir -p utillocal ${BOSH_INSTALL_TARGET}/bin
+dpkg -x cni/util-linux*.deb utillocal/
+
+cp utillocal/usr/bin/nsenter ${BOSH_INSTALL_TARGET}/bin
+
+chmod +x ${BOSH_INSTALL_TARGET}/bin/*

@@ -23,6 +23,8 @@ instance_groups:
         properties:
           cluster:
             name: prodernetes
+            ip: 127.0.0.1
+            dns: 127.0.0.1
           networks:
             pods:     10.200.250.0/24
             services: 10.200.251.0/24
@@ -33,6 +35,9 @@ instance_groups:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
+            sa:
+              certificate: ((tls-sa.certificate))
+              key:         ((tls-sa.private_key))
 
       - name: jumpbox
         release: k8s
@@ -64,7 +69,11 @@ variables:
     options:
       is_ca: yes
       common_name: ca
-
+  - name: tls-sa
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: sa
   - name: encryption-key
     type: password
     options:

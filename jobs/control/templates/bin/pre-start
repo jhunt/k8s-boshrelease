@@ -5,7 +5,7 @@ exec 2>&1
 <%
 
   # check stuff
-  if !IPAddr.new(p('networks.services')).include?(IPAddr.new(p('cluster.ip')))
+  if !p('cluster.ip').empty? && !IPAddr.new(p('networks.services')).include?(IPAddr.new(p('cluster.ip')))
     raise "The external cluster.ip (#{p('cluster.ip')}) is not in the networks.services range (#{p('networks.services')})"
   end
 

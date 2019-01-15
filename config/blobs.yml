@@ -6,6 +6,12 @@ cfssl/cfssljson_linux-amd64:
   size: 2277873
   object_id: b67600f7-c1b2-4fe9-5d02-b7c09a37fc1f
   sha: a9766e7eef71a39a5d2ca94061c8a6004fcdd524
+cni/cni-plugins-amd64-v0.7.1.tgz:
+  size: 17108856
+  sha: fb29e20401d3e9598a1d8e8d7992970a36de5e05
+cni/util-linux_2.27.1-6ubuntu3_amd64.deb:
+  size: 847730
+  sha: 568f62cb031608ab09ba1e3c2121e9e8b92dcae4
 containerd/cni-plugins-amd64-v0.6.0.tgz:
   size: 15385105
   object_id: 2411b613-75e5-4fbf-5359-c124da576741
@@ -26,6 +32,12 @@ etcd/etcd-v3.3.9-linux-amd64.tar.gz:
   size: 11254519
   object_id: 8984528c-bb87-4c31-5672-cb314a566f8e
   sha: 47b708b774832b7e1edb89eafa755e47c8d70b50
+etcdctl-3.3.9:
+  size: 15809280
+  sha: ecaea05f7cded188a83e5ef3eeeddecd286453ae
+flannel-v0.10.0-linux-amd64.tar.gz:
+  size: 9706487
+  sha: 9d19a56847d6aad207671a349eddd85de87ba560
 jq/jq:
   size: 3953824
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64

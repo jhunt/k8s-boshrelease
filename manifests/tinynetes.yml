@@ -1,4 +1,4 @@
-name: tinynetes
+name: alexnetes
 
 instance_groups:
   - name:      k8s
@@ -21,19 +21,25 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          apiserver:
+            additional-sans:
+            - 10.200.252.1
           cluster:
             name: tinynetes
-            ip: 127.0.0.1
+            dns: 10.200.252.2
           networks:
-            nodes:    10.200.192.128/26
-            pods:     10.200.192.64/26
-            services: 10.200.192.0/26
+            nodes:    10.200.248.0/24
+            pods:     10.200.249.0/24
+            services: 10.200.252.0/24
           encryption:
             key: ((encryption-key))
           tls:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
+            sa:
+              certificate: ((tls-sa.certificate))
+              key:         ((tls-sa.private_key))
 
       - name: runtime-runc
         release: k8s
@@ -53,7 +59,11 @@ variables:
     options:
       is_ca: yes
       common_name: ca
-
+  - name: tls-sa
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: sa
   - name: encryption-key
     type: password
     options:
