@@ -2,6 +2,23 @@
 set -eu
 exec 2>&1
 
+<%
+
+valid_components = { "flannel"    => true, 
+                     "kube-proxy" => true,
+                     "kube-dns"   => true }
+
+default_components = [ "flannel", "kube-proxy", "kube-dns"]
+
+components = p('kubernetes.components', default_components)
+
+components.each do |component|
+    if !valid_components.has_key? component
+        raise "Kubernetes component '#{component}' is not valid; must be one of #{valid_components.keys.sort.join(', ')}"
+    end
+end
+%> 
+
 JOB=control
 BIN=post-deploy
 JOB_DIR=/var/vcap/jobs/$JOB
@@ -78,13 +95,13 @@ kubectl config use-context default --kubeconfig=$DAT_DIR/proxy.kubeconfig
 <% if !spec.bootstrap %>
 echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
 <% else %>
-echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
+
+<% components.each do |component| %>
+
+echo "[$(date)] $BIN/$$: applying <%= component %> configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/k8s/kube-proxy.yml
+        apply -f $JOB_DIR/k8s/<%= component %>.yml
 <% end %>
 
-echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
-kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/k8s/kube-dns.yml
-
+<% end %>
 echo "[$(date)] $BIN/$$: complete."

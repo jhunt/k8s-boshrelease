@@ -72,6 +72,7 @@ templates:
   bin/post-deploy:    bin/post-deploy
   k8s/kube-proxy.yml: k8s/kube-proxy.yml
   k8s/kube-dns.yml:   k8s/kube-dns.yml
+  k8s/flannel.yml:    k8s/flannel.yml
 
   # kube-apiserver
   bin/api:              bin/api
@@ -97,6 +98,9 @@ properties:
   debug.scheduler:
     description: Enables verbose debugging, suitable for troubleshooting the Scheduler.
     default:     false
+
+  kubernetes.components:
+    description: Add various post-deploy components to the Kubernetes cluster.
 
   cluster.name:
     description: |

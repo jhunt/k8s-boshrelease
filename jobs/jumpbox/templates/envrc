@@ -17,6 +17,8 @@ export PATH=$PATH:/var/vcap/packages/jq/bin
 export DAT_DIR=/var/vcap/data/k8s/jumpbox
 export JOB_DIR=/var/vcap/jobs/jumpbox
 export KUBECONFIG=$DAT_DIR/kubeconfig
+alias k=kubectl
+alias kga="kubectl get all --all-namespaces -o wide"
 
 mkdir -p $DAT_DIR
 pushd $DAT_DIR >/dev/null 2>&1

@@ -16,20 +16,21 @@ instance_groups:
       - name: default
 
     jobs:
-      - name: flanneld
-        release: k8s
       - name: etcd
         release: k8s
       - name: control
         release: k8s
         properties:
+          apiserver:
+            additional-sans:
+            - 10.200.208.1
           cluster:
             name: labernetes
-            dns: 10.200.251.1
+            dns: 10.200.208.2
           networks:
-            pods:     10.200.250.0/24
-            services: 10.200.251.0/24
-            nodes:    10.200.192.0/24
+            pods:     10.200.204.0/22
+            services: 10.200.208.0/22
+            nodes:    10.200.212.0/22
           encryption:
             key: ((encryption-key))
           tls:

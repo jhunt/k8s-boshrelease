@@ -42,6 +42,13 @@ case $1 in
     # load the overlayfs kmod
     /sbin/modprobe overlay
 
+    # networking
+    /sbin/modprobe br_netfilter
+    sysctl net.bridge.bridge-nf-call-iptables=1
+    mkdir -p /dev/net
+    mknod /dev/net/tun c 10 200 || true
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
     ulimit -n 1048576    # open files
     ulimit -u unlimited  # num processes
 

@@ -1,5 +1,0 @@
----
-name: cni
-
-files:
-- cni/util-linux_2.27.1-6ubuntu3_amd64.deb
