@@ -32,6 +32,16 @@ properties:
     description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
 
+  apiserver:
+    default: '127.0.0.1:6443'
+    description: |
+      How to find the Kubernetes API server for reporting in as a node in the cluster.
+      By default, the API server is expected to be running on loopback, but you can set
+      this property to an "ip:port" of an external endpoint (i.e., a load balancer).
+
+      Note: for large, highly-available clusters, where the kubelets are not necessarily
+      co-located with the API server nodes, you *must* set this property.
+
   kubelet.flags:
     description: |
       A list of additional flags to pass to the kubelet daemon.  These flags are

@@ -1,16 +1,5 @@
 #!/bin/bash
 set -eu
-<%
-
-  apiserver = link('api').p('cluster.ip')
-  if apiserver.empty?
-    apiserver = link('api').instances.first.address
-  end
-  if apiserver.empty?
-    raise "Unable to determine what hostname / fqdn / ip to talk to k8s apiserver via.  Do you need to set the \`cluster.ip' property?"
-  end
-
--%>
 
 JOB=kubelet
 BIN=kubelet
@@ -57,7 +46,7 @@ case $1 in
     kubectl config set-cluster <%= link('api').p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \
-        --server=https://<%= apiserver %>:6443 \
+        --server=https://<%= p('apiserver') %> \
         --kubeconfig=$DAT_DIR/kubeconfig
     kubectl config set-credentials system:nodes:node \
         --client-certificate=$CERTS_DIR/kubelet/cert.pem \
