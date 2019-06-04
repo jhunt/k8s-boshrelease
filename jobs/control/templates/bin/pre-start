@@ -2,18 +2,6 @@
 set -eu
 exec 2>&1
 
-<%
-
-  ip = p('cluster.ip')
-  net = p('networks.services')
-  if ip && ip != ""
-    if !IPAddr.new(net).include?(IPAddr.new(ip))
-      raise "The external cluster.ip (#{ip}) is not in the networks.services range (#{net})"
-    end
-  end
-
-%>
-
 JOB=control
 BIN=pre-start
 JOB_DIR=/var/vcap/jobs/$JOB
