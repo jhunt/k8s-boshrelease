@@ -23,7 +23,6 @@ instance_groups:
         properties:
           cluster:
             name: tinynetes
-            ip: 127.0.0.1
           networks:
             nodes:    10.200.192.128/26
             pods:     10.200.192.64/26

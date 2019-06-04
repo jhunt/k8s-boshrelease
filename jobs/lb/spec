@@ -1,0 +1,113 @@
+---
+name: lb
+description: |
+  A TCP-level load balancer, for highly-available cluster topologies.
+  This is a general-purpose bit of infrastructure, which can be used
+  wherever you need to put multiple instances of a single service
+  (like the API server, or etcd) behind a single network address, and
+  lack IaaS support for automatic load balancing.
+
+packages:
+  - haproxy
+
+templates:
+  bin/haproxy:      bin/haproxy
+  etc/haproxy.conf: etc/haproxy.conf
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false
+
+  autoconfigure:
+    description: |
+      How backend autoconfiguration is done.  This job optionally consumes one of
+      several links to determine the BOSH-assigned IP addresses of various components
+      of a Kubernetes deployment.
+
+      Valid values are:
+
+        - "static" (the default), which will require a list of backend node
+          IPs in the `backend.ips` manifest property
+
+        - "etcd", which will consume a BOSH link named 'etcd' to find node IPs.
+
+        - "api", which will consume a BOSH link named 'api' to find node IPs.
+
+  backend.ips:
+    description: |
+      A list of that (static) backend IPs that this load balancer should balance traffic
+      for.  These addresses must be specified without any ports, schemes, protocols, or
+      network masks.  DNS names are strongly discouraged.
+
+      This property is only checked if `autoconfigure` is set to "static" (the default),
+      in which case it is required to be both present and non-empty.
+
+  backend.port:
+    description: |
+      The TCP port to route traffic to, for static autoconfiguration.  As a consequence,
+      this job can only load-balance nodes that are all binding the same public TCP port.
+
+      This property is only checked if `autoconfigure` is set to "static" (the default),
+      in which case it is required.  Otherwise, it is ignored.
+
+  port:
+    description: |
+      The TCP port to bind the front-end (listening) end of the load balancer to.
+      This property is required, and due to the flexible nature of the job (via the
+      `autoconfigure` property), no sane default can be assumed.
+
+  vrrp.ip:
+    description: |
+      An IPv4 address to manage among multiple instances of this job, as a single
+      composite "router", using the Virtual Router Redundancy Protocol (VRRP).  This
+      address should be unattached to any other network point of presence.  Notably, it
+      must not be the primary IP of any member of the load balancer cluster.
+
+      If this property is not set, VRRP will not be enabled.
+
+  vrrp.id:
+    default: auto
+    description: |
+      A unique (among other VRRP router sets) ID that identifies this router set in
+      the local LAN segment.  VRRP IDs are numeric.  If set to the string "auto"
+      (the default), BOSH will use a pre-configured default ID based on the value of
+      the `autoconfigure` property (2 for "static", 3 for "etcd", and 4 for "api").
+
+      This field is ignored if `vrrp.ip` is not set.
+
+  haproxy.maxconn:
+    default: 4096
+    description: |
+      The maximum number of concurrent client connections allowed by haproxy, on a
+      per-process basis.  The load balancer will stop accepting new connections once
+      this limit has been reached, until other clients disconnect.
+
+  haproxy.timeout.connect:
+    default: 500ms
+    description: |
+      Maximum amount of time to wait for a half-opened connection to the load balancer
+      to finish connecting.
+
+      Valid suffixes are "s" (seconds), "ms" (milliseconds), and "us" (microseconds).
+      Without a suffix, "ms" is assumed.
+
+  haproxy.timeout.queue:
+    default: 2s
+    description: |
+      How long will incoming client connections queue in the "accept" phase of the
+      TCP handshake, awaiting a slot in the connection table to free up.
+
+      Valid suffixes are "s" (seconds), "ms" (milliseconds), and "us" (microseconds).
+      Without a suffix, "ms" is assumed.
+
+  haproxy.timeout.client:
+    default: 30s
+    description: |
+      Maximum amount of time a client can remain inactive (without sending any data)
+      before the load balancer disconnects it.
+
+      Valid suffixes are "s" (seconds), "ms" (milliseconds), and "us" (microseconds).
+      Without a suffix, "ms" is assumed.
+
+# vim:ft=yaml

@@ -1,0 +1,5 @@
+check process haproxy
+  with pidfile  /var/vcap/sys/run/lb/haproxy.pid
+  start program "/var/vcap/jobs/lb/bin/haproxy start"
+  stop  program "/var/vcap/jobs/lb/bin/haproxy stop"
+  group vcap
