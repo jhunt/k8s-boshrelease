@@ -3,3 +3,11 @@ check process haproxy
   start program "/var/vcap/jobs/lb/bin/haproxy start"
   stop  program "/var/vcap/jobs/lb/bin/haproxy stop"
   group vcap
+<% if_p('vrrp.ip') do %>
+
+check process keepalived
+  with pidfile  /var/vcap/sys/run/lb/keepalived.pid
+  start program "/var/vcap/jobs/lb/bin/keepalived start"
+  stop  program "/var/vcap/jobs/lb/bin/keepalived stop"
+  group vcap
+<% end %>

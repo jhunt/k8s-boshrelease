@@ -1,0 +1,6 @@
+---
+name: keepalived
+
+dependencies: []
+files:
+  - lb/keepalived-2.0.16.tar.gz

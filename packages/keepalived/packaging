@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu
+
+CPUS=$(grep -c ^processor /proc/cpuinfo)
+
+tar -xzf lb/keepalived-2.0.16.tar.gz
+cd keepalived-2.0.16
+./configure --prefix ${BOSH_INSTALL_TARGET}
+make -j$CPUS
+make install

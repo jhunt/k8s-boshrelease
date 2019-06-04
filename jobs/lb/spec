@@ -9,10 +9,21 @@ description: |
 
 packages:
   - haproxy
+  - keepalived
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+  - name: etcd
+    type: k8s-etcd
 
 templates:
   bin/haproxy:      bin/haproxy
   etc/haproxy.conf: etc/haproxy.conf
+
+  bin/keepalived:      bin/keepalived
+  etc/keepalived.conf: etc/keepalived.conf
 
 properties:
   debug:
@@ -59,10 +70,11 @@ properties:
 
   vrrp.ip:
     description: |
-      An IPv4 address to manage among multiple instances of this job, as a single
-      composite "router", using the Virtual Router Redundancy Protocol (VRRP).  This
-      address should be unattached to any other network point of presence.  Notably, it
-      must not be the primary IP of any member of the load balancer cluster.
+      An IPv4 address (and netmask!) to manage among multiple instances of this job, as
+      a single composite "router", using the Virtual Router Redundancy Protocol (VRRP).
+      This address should be unattached to any other network point of presence.
+
+      Notably, it must not be the primary IP of any member of the load balancer cluster.
 
       If this property is not set, VRRP will not be enabled.
 
