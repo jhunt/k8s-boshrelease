@@ -204,12 +204,13 @@ properties:
     description: |
       The X.509 Certificate Authority's RSA private key, in PEM format.
 
-      The signing key is necessary to auto-enroll k8s nodes (the `kubelet`
-      job, in this BOSH release) in properly validated mutual TLS setups.
+      The certificate authority's signing key is necessary to auto-enroll k8s
+      nodes (the `kubelet` job, in this BOSH release) in properly validated
+      mutual TLS setups.
 
   tls.sa.certificate:
     description: |
-      An X.509 certificate in PEM format.
+      The X.509 Signing Authority's certificate, in PEM format.
 
       This certificate is used by the Kubernetes apiserver component to validate
       Bearer tokens generated using the corresponding private key (tls.sa.key),
@@ -221,7 +222,7 @@ properties:
 
   tls.sa.key:
     description: |
-      An RSA private key, in PEM format.
+      The X.509 Signing Authority's RSA private key, in PEM format.
 
       This key is used by the controller-manager to sign generated Bearer tokens,
       so that the apiserver can validate them (using tls.sa.certificate).
