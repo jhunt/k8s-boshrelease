@@ -79,11 +79,13 @@ variables:
     options:
       is_ca: yes
       common_name: ca
+
   - name: tls-sa
     type: certificate
     options:
       is_ca: yes
       common_name: sa
+
   - name: encryption-key
     type: password
     options:

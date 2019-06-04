@@ -33,6 +33,9 @@ instance_groups:
             ca:
               certificate: ((tls-ca.certificate))
               key:         ((tls-ca.private_key))
+            sa:
+              certificate: ((tls-sa.certificate))
+              key:         ((tls-sa.private_key))
 
       - name: runtime-runc
         release: k8s
@@ -52,6 +55,12 @@ variables:
     options:
       is_ca: yes
       common_name: ca
+
+  - name: tls-sa
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: sa
 
   - name: encryption-key
     type: password
