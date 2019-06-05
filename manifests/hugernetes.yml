@@ -36,10 +36,11 @@ instance_groups:
         properties:
           cluster:
             name: hugernetes
+            dns:  10.128.26.1
           networks:
-            pods:     10.200.250.0/24
-            services: 10.200.251.0/24
-            nodes:    10.200.192.0/24
+            pods:     10.128.25.0/24
+            services: 10.128.26.0/24
+            nodes:    10.128.27.0/24
           encryption:
             key: ((encryption-key))
           tls:
