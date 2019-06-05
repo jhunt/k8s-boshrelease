@@ -9,6 +9,14 @@ description: |
   running and healthy. The kubelet doesn’t manage containers which were not
   created by Kubernetes.
 
+  Because of naming limitations in Kubernetes (the 63-character label limit),
+  kubelet nodes are registered as "$id.k8s", where _$id_ is the UUID of the
+  deployment VM.  This leads to 40-character names (36 or the UUID and 4 for
+  the ".k8s" suffix), which are acceptable to API server.
+
+  This in turn means that we **must** use BOSH-DNS when deploying k8s.
+  Don't forget to add that to your director's runtime-config before deploying.
+
 packages:
   - k8s
   - cfssl
@@ -25,6 +33,8 @@ templates:
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
 
+  # required for k8s naming limits.
+  # don't forget to add the runtime-config
   dns/aliases.json: dns/aliases.json
 
 properties:
