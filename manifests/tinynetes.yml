@@ -23,7 +23,7 @@ instance_groups:
         properties:
           cluster:
             name: tinynetes
-            dns:  10.128.18.1
+            dns:  10.128.18.2
           networks:
             nodes:    10.128.16.0/24
             pods:     10.128.17.0/24

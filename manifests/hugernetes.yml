@@ -36,7 +36,7 @@ instance_groups:
         properties:
           cluster:
             name: hugernetes
-            dns:  10.128.26.1
+            dns:  10.128.26.2
           networks:
             pods:     10.128.25.0/24
             services: 10.128.26.0/24

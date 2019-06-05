@@ -23,7 +23,7 @@ instance_groups:
         properties:
           cluster:
             name: prodernetes
-            dns:  10.128.23.1
+            dns:  10.128.23.2
           networks:
             pods:     10.128.22.0/24
             services: 10.128.23.0/24

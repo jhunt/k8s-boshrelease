@@ -34,7 +34,7 @@ instance_groups:
                 - level: Request
           cluster:
             name: labernetes
-            dns:  10.128.20.1
+            dns:  10.128.20.2
           networks:
             pods:     10.128.19.0/24
             services: 10.128.20.0/24
