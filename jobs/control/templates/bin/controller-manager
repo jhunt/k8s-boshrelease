@@ -56,7 +56,11 @@ case $1 in
     echo $$ > $PIDFILE
     exec kube-controller-manager \
            --address=0.0.0.0 \
-           --cluster-cidr=10.200.0.0/16 \
+           --allocate-node-cidrs=true \
+           --cluster-cidr=<%= p('networks.pods') %> \
+           --cidr-allocator-type=RangeAllocator \
+           --node-cidr-mask-size=<%= p('networks.podmask').gsub(/^\//, '') %> \
+           --cidr-allocator-type=RangeAllocator \
            --cluster-name=<%= p('cluster.name') %> \
            --cluster-signing-cert-file=$JOB_DIR/tls/ca/cert.pem \
            --cluster-signing-key-file=$JOB_DIR/tls/ca/key.pem \

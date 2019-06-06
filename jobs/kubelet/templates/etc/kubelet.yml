@@ -18,8 +18,6 @@ clusterDNS:
   - <%= link('api').p('cluster.dns') %>
 resolvConf: /etc/resolv.conf
 
-podCIDR: <%= link('api').p('networks.pods') %>
-
 runtimeRequestTimeout: 15m
 
 tlsCertFile:       /var/vcap/data/k8s/certs/kubelet/cert.pem

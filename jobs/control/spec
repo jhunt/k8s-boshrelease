@@ -135,8 +135,25 @@ properties:
 
   networks.pods:
     description: |
-      Network CIDR range to use for Pod IP allocation.
+      Network CIDR range to use for Pod IP allocation, across the entire cluster.
+      This must be large enough to allocate enough contiguous network ranges (see
+      `networks.podmask`) to the number of nodes you have deployed.
+
+      We recommend that you allocate at least a `/21` (~2k IPs across 8 nodes),
+      but for large production deployments, a `/16` gives you ~65k IPs across 256 nodes).
+
       This must NOT overlap with networks.services.
+
+  networks.podmask:
+    default: /24
+    description: |
+      The network mask (i.e. /24) to use for each allocation given out to the
+      Kubernetes nodes, which they will use for allocating pod IPs.  This MUST be
+      smaller than the netmask chosen for `networks.pods`.
+
+      Very few environment will want to raise this to anything larger than a /24,
+      but smaller lab environments may want to use smaller networks (larger masks),
+      like `/26` (64 pods per node) or `/28` (16 pods per node).
 
   networks.nodes:
     description: |
