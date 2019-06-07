@@ -53,14 +53,7 @@ instance_groups:
       - name: lb
         release: k8s
         properties:
-          port: 443
-          autoconfigure: static
-          backend:
-            ips:
-              - 10.128.16.131
-              - 10.128.16.132
-              - 10.128.16.133
-            port: 6443
+          autoconfigure: api
 
       - name: runtime-runc
         release: k8s

@@ -1,9 +1,33 @@
 name: prodernetes
 
 instance_groups:
+  - name:      lb
+    instances: 2
+    azs:       [z1,z2,z3]
+    azs: [z1]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 2048
+
+    stemcell: default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: lb
+        release: k8s
+        properties:
+          autoconfigure: api
+          vrrp:
+            id: 240
+            ip: 10.128.16.240
+
   - name:      control
     instances: 3
     azs:       [z1,z2,z3]
+    azs: [z1]
     vm_resources:
       cpu: 2
       ram: 2048
@@ -26,7 +50,7 @@ instance_groups:
               - 10.128.22.1
           cluster:
             name: prodernetes
-            dns:  10.128.23.2
+            dns:  10.128.22.2
           networks:
             nodes:    10.128.16.0/24
             services: 10.128.22.0/24
@@ -49,10 +73,14 @@ instance_groups:
   - name:      node
     instances: 5
     azs:       [z1,z2,z3]
-    vm_type:   large
-    stemcell:  default
+    azs: [z1]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 20_000
+    persistent_disk: 20_000
 
-    persistent_disk_type: default
+    stemcell:  default
 
     networks:
       - name: default
@@ -66,6 +94,8 @@ instance_groups:
         release: k8s
       - name: kubelet
         release: k8s
+        properties:
+          apiserver: 10.128.16.240
       - name: nfs
         release: k8s
 

@@ -22,7 +22,12 @@ instance_groups:
   - name:      control
     instances: 3
     azs:       [z1,z2,z3]
-    vm_type:   large
+    azs: [z1]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 8192
+
     stemcell:  default
 
     persistent_disk_type: default
@@ -62,10 +67,14 @@ instance_groups:
   - name:      node
     instances: 5
     azs:       [z1,z2,z3]
-    vm_type:   large
-    stemcell:  default
+    azs: [z1]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 20_000
+    persistent_disk: 20_000
 
-    persistent_disk_type: default
+    stemcell:  default
 
     networks:
       - name: default
