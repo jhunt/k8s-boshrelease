@@ -1,0 +1,27 @@
+---
+name: net-flannel
+description: |
+  A CNI network plugin allows multiple nodes and their runtimes to properly allocate
+  non-colliding IP addresses in a flat, globally addressable model.  This can be done
+  via overlay/underlay networks, SDN solutions, and BPF/IPtables work.
+
+  This job provides the flannel CNI configuration for Kubernetes.
+
+packages: []
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+templates:
+  k8s-addons/flannel.yml:             k8s-addons/flannel.yml
+
+  run/flannel/.keep:                  run/flannel/.keep
+  etc/cni/net.d/10-flannel.conflist:  etc/cni/net.d/10-flannel.conflist
+
+properties:
+  debug:
+    description: Enables verbose debugging, suitable for troubleshooting.
+    default:     false
+
+# vim:ft=yaml

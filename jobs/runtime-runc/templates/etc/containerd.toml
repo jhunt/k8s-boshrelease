@@ -15,7 +15,7 @@
         runtime_engine = "/var/vcap/packages/runtime-runc/bin/runsc"
         runtime_root = "/var/vcap/data/k8s/runtime-runc"
     [plugins.cri.cni]
-      conf_dir = "/var/vcap/jobs/runtime-runc/etc/cni/net.d"
+      conf_dir = "/var/vcap/jobs/net-<%= p('cni') %>/etc/cni/net.d"
       bin_dir = "/var/vcap/packages/containerd/bin"
 
 

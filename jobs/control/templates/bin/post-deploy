@@ -81,10 +81,17 @@ echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
 echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
         apply -f $JOB_DIR/k8s/kube-proxy.yml
-<% end %>
 
 echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
         apply -f $JOB_DIR/k8s/kube-dns.yml
+
+for yml in /var/vcap/jobs/*/k8s-addons/*.yml; do
+  name=${yml%%.yml};          name=${name##*/}
+   job=${yml%%/k8s-addons/*};  job=${job##*/}
+  echo "[$(date)] $BIN/$$: applying k8s-addon $name (from $job) configuration..."
+  kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig apply -f $yml
+done
+<% end %>
 
 echo "[$(date)] $BIN/$$: complete."

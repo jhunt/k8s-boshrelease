@@ -40,6 +40,10 @@ instance_groups:
 
       - name: runtime-runc
         release: k8s
+        properties:
+          cni: flannel
+      - name: net-flannel
+        release: k8s
       - name: kubelet
         release: k8s
       - name: nfs
