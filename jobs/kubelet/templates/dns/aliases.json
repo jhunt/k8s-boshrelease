@@ -1,3 +1,0 @@
-{
-  "_.k8s": ["_.<%= spec.name %>.default.<%= spec.deployment %>.bosh"]
-}

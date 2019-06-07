@@ -16,6 +16,7 @@ description: |
 
   This in turn means that we **must** use BOSH-DNS when deploying k8s.
   Don't forget to add that to your director's runtime-config before deploying.
+  The `control' job provides bosh-dns aliases to wire all that up.
 
 packages:
   - k8s
@@ -32,10 +33,6 @@ templates:
 
   bin/kubelet:     bin/kubelet
   etc/kubelet.yml: etc/kubelet.yml
-
-  # required for k8s naming limits.
-  # don't forget to add the runtime-config
-  dns/aliases.json: dns/aliases.json
 
 properties:
   debug:

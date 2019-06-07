@@ -85,6 +85,10 @@ templates:
   bin/scheduler:     bin/scheduler
   etc/scheduler.yml: etc/scheduler.yml
 
+  # required for k8s naming limits.
+  # don't forget to add the runtime-config
+  dns/aliases.json: dns/aliases.json
+
 properties:
   debug.api:
     default:     false
@@ -160,6 +164,14 @@ properties:
   networks.nodes:
     description: |
       Network CIDR range that the Kubernetes nodes are deployed into.
+
+  kubelet.instance-groups:
+    default: [node]
+    description: |
+      The names of the BOSH instance_groups that play the role of the Kubernetes runtime
+      kubelet.  This is required for wiring up DNS aliases to make both BOSH and Kubernetes
+      happy.  You can specify multiple instance_groups names in case you have deployed a
+      non-homogenous environment of virtual machine sizes / stemcells / etc.
 
   images.kube-proxy:
     default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0

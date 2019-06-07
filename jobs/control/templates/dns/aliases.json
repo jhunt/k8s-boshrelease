@@ -1,0 +1,3 @@
+{
+  "_.k8s": <%= p('kubelet.instance_groups', ['node']).map { |node| "_.#{node}.default.#{spec.deployment}.bosh" }.to_json %>
+}
