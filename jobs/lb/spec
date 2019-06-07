@@ -65,8 +65,9 @@ properties:
   port:
     description: |
       The TCP port to bind the front-end (listening) end of the load balancer to.
-      This property is required, and due to the flexible nature of the job (via the
-      `autoconfigure` property), no sane default can be assumed.
+      This property is required if `autoconfigure` is set to "static" (the default).
+      Otherwise, a default will be chosen based on whether the backend is the API
+      or etcd.
 
   vrrp.ip:
     description: |
