@@ -34,13 +34,16 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          apiserver:
+            additional-sans:
+              - 10.128.23.1
           cluster:
             name: hugernetes
-            dns:  10.128.26.2
+            dns:  10.128.23.2
           networks:
-            pods:     10.128.25.0/24
-            services: 10.128.26.0/24
-            nodes:    10.128.27.0/24
+            nodes:    10.128.16.0/24
+            services: 10.128.23.0/24
+            pods:     10.128.32.0/21
           encryption:
             key: ((encryption-key))
           tls:

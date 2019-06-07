@@ -21,13 +21,16 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          apiserver:
+            additional-sans:
+              - 10.128.22.1
           cluster:
             name: prodernetes
             dns:  10.128.23.2
           networks:
-            pods:     10.128.22.0/24
-            services: 10.128.23.0/24
-            nodes:    10.128.24.0/24
+            nodes:    10.128.16.0/24
+            services: 10.128.22.0/24
+            pods:     10.128.24.0/21
           encryption:
             key: ((encryption-key))
           tls:

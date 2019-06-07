@@ -21,13 +21,16 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          apiserver:
+            additional-sans:
+              - 10.128.17.1
           cluster:
             name: tinynetes
-            dns:  10.128.18.2
+            dns:  10.128.17.2
           networks:
             nodes:    10.128.16.0/24
-            pods:     10.128.17.0/24
-            services: 10.128.18.0/24
+            services: 10.128.17.0/24
+            pods:     10.128.18.0/24
           encryption:
             key: ((encryption-key))
           tls:
