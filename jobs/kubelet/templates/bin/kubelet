@@ -14,6 +14,16 @@ DAT_DIR=/var/vcap/data/k8s/$JOB
 PIDFILE=$RUN_DIR/$BIN.pid
 exec >>$LOG_DIR/$BIN.log 2>&1
 
+<%
+
+def slugify(s)
+  return s.gsub('(deployment)', spec.deployment)
+          .gsub('(name)',       spec.name)
+          .gsub('(id)',         spec.id)
+end
+
+%>
+
 # set kube-* binaries in our path
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 
@@ -62,7 +72,7 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
-    exec kubelet \
+    exec kubelet <% p('labels', {}).each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
            --config=$JOB_DIR/etc/kubelet.yml \
            --container-runtime=remote \
            --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock \

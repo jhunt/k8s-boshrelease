@@ -52,6 +52,13 @@ properties:
       Note: for large, highly-available clusters, where the kubelets are not necessarily
       co-located with the API server nodes, you *must* set this property.
 
+  labels:
+    description: |
+      Additional node labels, in `key: value` format, to apply to this kubelet.
+      The special strings '(deployment)', '(name)', and '(id)' will be replaced with the
+      (potentially node-specific) values: the deployment name, the instance group name,
+      and the instance group UUID, respectively.
+
   kubelet.flags:
     default: []
     description: |
