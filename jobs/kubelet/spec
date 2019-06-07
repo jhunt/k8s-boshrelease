@@ -39,8 +39,8 @@ templates:
 
 properties:
   debug:
-    description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting.
 
   apiserver:
     default: '127.0.0.1:6443'
@@ -53,6 +53,7 @@ properties:
       co-located with the API server nodes, you *must* set this property.
 
   kubelet.flags:
+    default: []
     description: |
       A list of additional flags to pass to the kubelet daemon.  These flags are
       appended to the command-line after the hard-coded default flags.  Use this option
@@ -60,6 +61,5 @@ properties:
 
       Each item in the list should have a single key (the flag, minus the trailing `--`)
       whose value will be used as the flag value.
-    default: []
 
 # vim:ft=yaml

@@ -87,27 +87,27 @@ templates:
 
 properties:
   debug.api:
-    description: Enables verbose debugging, suitable for troubleshooting the API Server.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting the API Server.
 
   debug.controller-manager:
-    description: Enables verbose debugging, suitable for troubleshooting the Controller Manager.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting the Controller Manager.
 
   debug.scheduler:
-    description: Enables verbose debugging, suitable for troubleshooting the Scheduler.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting the Scheduler.
 
   cluster.name:
+    default: my-unnamed-k8s-cluster
     description: |
       The name of this cluster.  Cluster names should be lower case, and may
       only consist of alphanumeric characters, periods (.), hyphens (-) and
       underscores (_).  They must start with a letter.
-    default: my-unnamed-k8s-cluster
 
   cluster.ip:
+    default:     ''
     description: A public IP for this cluster, for routing internal traffic.
-    default: ''
 
   cluster.dns:
     description: |
@@ -118,12 +118,14 @@ properties:
       the service spec definition.  Choose wisely.
 
   cluster.domain:
+    default:     k8s.(deployment).local
     description: The global DNS suffix for this Kubernetes cluster.
-    default: k8s.(deployment).local
 
   coalesce:
-    description: How long (in seconds) to wait for the Kubernetes cluster to coalesce into a functioning unit.
     default: 300
+    description: |
+      How long (in seconds) to wait for the Kubernetes cluster to coalesce into
+      a functioning unit.
 
   encryption.key:
     description: A random key to use for encrypting secrets and other data at-rest.
@@ -157,20 +159,20 @@ properties:
 
   networks.nodes:
     description: |
-      Network CIDR range that the Kubernetes nodes use.
+      Network CIDR range that the Kubernetes nodes are deployed into.
 
   images.kube-proxy:
+    default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
     description: |
       Where to pull the k8s BOSH release Docker image for kube-proxy.
       If you need to run in an air-gapped network, or just want to inspect the contents
       of your components manually, you can rebuild this image and push it into a private
       registry.
-    default: docker.io/huntprod/k8s-bosh-kube-proxy:1.12.0
 
   apiserver.additional-sans:
+    default: []
     description: |
       A list of extra X.509 subject alternate names to add into the API server certificate.
-    default: []
 
   apiserver.audit-policy:
     description: |
@@ -178,6 +180,7 @@ properties:
       Logs will be stord in /var/vcap/sys/log/k8s/control/audit.log.
 
   apiserver.flags:
+    default: []
     description: |
       A list of additional flags to pass to the kube-apiserver daemon.  These flags are
       appended to the command-line after the hard-coded default flags.  Use this option
@@ -185,9 +188,9 @@ properties:
 
       Each item in the list should have a single key (the flag, minus the trailing `--`)
       whose value will be used as the flag value.
-    default: []
 
   controller-manager.flags:
+    default: []
     description: |
       A list of additional flags to pass to the kube-controller-manager.  These flags are
       appended to the command-line after the hard-coded default flags.  Use this option
@@ -195,9 +198,9 @@ properties:
 
       Each item in the list should have a single key (the flag, minus the trailing `--`)
       whose value will be used as the flag value.
-    default: []
 
   scheduler.flags:
+    default: []
     description: |
       A list of additional flags to pass to the kube-scheduler.  These flags are
       appended to the command-line after the hard-coded default flags.  Use this option
@@ -205,7 +208,6 @@ properties:
 
       Each item in the list should have a single key (the flag, minus the trailing `--`)
       whose value will be used as the flag value.
-    default: []
 
   tls.ca.certificate:
     description: |

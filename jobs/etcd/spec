@@ -29,11 +29,11 @@ packages:
 
 properties:
   debug:
-    description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting.
 
   port:
-    description: TCP port to bind etcd processes to.
     default:     2379
+    description: TCP port to bind etcd processes to.
 
 # vim:ft=yaml

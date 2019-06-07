@@ -27,8 +27,8 @@ templates:
 
 properties:
   debug:
-    description: Enables verbose debugging, suitable for troubleshooting.
     default:     false
+    description: Enables verbose debugging, suitable for troubleshooting.
 
   autoconfigure:
     description: |

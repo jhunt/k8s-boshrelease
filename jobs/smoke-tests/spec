@@ -26,24 +26,26 @@ templates:
 
 properties:
   timeout.deploy:
+    default:     20
     description: How long (in seconds) to wait for the test replica set to deploy a pod.
-    default: 20
 
   timeout.startup:
+    default:     90
     description: How long (in seconds) to wait for the test pod to boot up.
-    default: 90
 
   image:
+    default: docker.io/huntprod/k8s-bosh-smoke-test:1.12.0
     description: |
       Where to pull the k8s BOSH release Docker image for smoke tests.
       If you need to run in an air-gapped network, or just want to inspect the contents
       of your components manually, you can rebuild this image and push it into a private
       registry.
-    default: docker.io/huntprod/k8s-bosh-smoke-test:1.12.0
 
   namespace.prefix:
+    default: smoke-tests
     description: |
       The smoke-test errand does its work inside of a single Kubernetes
       namespace, which gets created anew on each run, and torn down after.
       You can set a prefix for the automatically generated named here.
-    default: smoke-tests
+
+# vim:ft=yaml

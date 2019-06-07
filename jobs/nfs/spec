@@ -15,3 +15,5 @@ templates:
   bin/post-stop: bin/post-stop
 
 properties: {}
+
+# vim:ft=yaml
