@@ -2,6 +2,6 @@
 set -eu
 
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
-tar -xf containerd/crictl-v1.12.0-linux-amd64.tar.gz        -C ${BOSH_INSTALL_TARGET}/bin
-tar -xf containerd/cni-plugins-amd64-v0.7.4.tgz             -C ${BOSH_INSTALL_TARGET}/bin
-tar -xf containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz -C ${BOSH_INSTALL_TARGET}/
+tar -xf containerd/crictl-v1.14.0-linux-amd64.tar.gz   -C ${BOSH_INSTALL_TARGET}/bin
+tar -xf containerd/cni-plugins-linux-amd64-v0.8.1.tgz  -C ${BOSH_INSTALL_TARGET}/bin
+tar -xf containerd/containerd-1.2.6.linux-amd64.tar.gz -C ${BOSH_INSTALL_TARGET}/

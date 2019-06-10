@@ -1,7 +1,7 @@
 k8s BOSH Release
 ================
 
-This is a BOSH release for spinning Kubernetes 1.12.0, using BOSH
+This is a BOSH release for spinning Kubernetes 1.14.0, using BOSH
 to orchestrate the "physical" nodes that comprise the various
 roles of a Kubernetes cluster (master and worker).
 

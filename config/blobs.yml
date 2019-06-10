@@ -6,54 +6,50 @@ cfssl/cfssljson_linux-amd64:
   size: 2277873
   object_id: b67600f7-c1b2-4fe9-5d02-b7c09a37fc1f
   sha: a9766e7eef71a39a5d2ca94061c8a6004fcdd524
-containerd/cni-plugins-amd64-v0.6.0.tgz:
-  size: 15385105
-  object_id: 2411b613-75e5-4fbf-5359-c124da576741
-  sha: d595d3ded6499a64e8dac02466e2f5f2ce257c9f
-containerd/cni-plugins-amd64-v0.7.4.tgz:
-  size: 17108774
-  object_id: fc82c730-0009-4d54-451c-8ca2ab020f2f
-  sha: 1830ee323cfd360615a6c9efc0ff28c622a6f087
-containerd/containerd-1.2.0-rc.0.linux-amd64.tar.gz:
-  size: 28888838
-  object_id: c0a5f196-421c-465d-7f00-5ff15a2b00a1
-  sha: 085fbdd840a6853e67cba24f9ff098adf4312a12
-containerd/crictl-v1.12.0-linux-amd64.tar.gz:
-  size: 7411209
-  object_id: 7ce8b775-cec2-4d62-5fdb-181a39050606
-  sha: 45a9c65cc52a13e76e07fbc64ddcf3b646cd8c82
-etcd/etcd-v3.3.9-linux-amd64.tar.gz:
-  size: 11254519
-  object_id: 8984528c-bb87-4c31-5672-cb314a566f8e
-  sha: 47b708b774832b7e1edb89eafa755e47c8d70b50
+containerd/cni-plugins-linux-amd64-v0.8.1.tgz:
+  size: 36646402
+  object_id: dca431ba-6ed8-4aa5-45b7-9f66b7191713
+  sha: 662d4c4a3234ca36f5dd594878fa48b7a365df76
+containerd/containerd-1.2.6.linux-amd64.tar.gz:
+  size: 31885375
+  object_id: d57ec5c7-ce01-4e6c-4f0b-94cc74aeb150
+  sha: ff3cdd148b2387c73935ad3032b075def98784b3
+containerd/crictl-v1.14.0-linux-amd64.tar.gz:
+  size: 12046561
+  object_id: 48172c70-dfe0-4f62-511f-540341affb01
+  sha: 425d2b713cce726e3beecf9b3002111ffa06b6cb
+etcd/etcd-v3.3.13-linux-amd64.tar.gz:
+  size: 10423953
+  object_id: f433cc51-01a9-4d93-5476-513a53945de1
+  sha: edb7a4bb97dc6480833288d1c5ad7ec4156881ae
 jq/jq:
   size: 3953824
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 192766426
-  object_id: 5bee7d5c-c3fa-408d-7bb9-fe3add0c6efa
-  sha: eb4202a5bb50e9cf6c83579c722db98a782b1a02
+  size: 167464288
+  object_id: 726eeb9d-5039-49db-5ae0-9ec8dcac6ca2
+  sha: 38c28337f437fcea44aa4edfac170741df6f05c1
 k8s/kube-controller-manager:
-  size: 162936572
-  object_id: 05156e6f-65be-456d-4842-64d99bb00bd8
-  sha: 0fe53225f0e00abf7879541719e5b185c313b540
+  size: 115497504
+  object_id: 355085d8-0f33-4f72-6c2b-2bed0f4f3794
+  sha: 607faf1c1ff9f5da1543131906afbfa6b201c03d
 k8s/kube-proxy:
-  size: 50436059
-  object_id: 12030142-e7b7-4529-5848-e6d23f20cd6f
-  sha: 91c3e6797e8494377bacab2877b3a7361fa5c44d
+  size: 36681344
+  object_id: 3013bac6-be58-4589-7d9f-ed2203c0c824
+  sha: 18f8bacdfcf3720c60e2377229f4390ca7d2f1cb
 k8s/kube-scheduler:
-  size: 57180560
-  object_id: c6c7a435-5c68-4be4-52c7-8b38e2731e20
-  sha: 30e558f44c7b3cb9483a55014338aacbd6c99771
+  size: 39254208
+  object_id: c78d3fa7-6508-4562-712a-02cf2d4e87a4
+  sha: 63725c587f829be8dd1a77b2b703a0acf3d7bf73
 k8s/kubectl:
-  size: 57343669
-  object_id: fe5bd6e1-e985-4d10-7e84-372ac148cda1
-  sha: 85904f6caa295eaeef10e1b59a5e9f823e7b4825
+  size: 43103040
+  object_id: 7d1af527-080a-47f8-6ea3-2f5a77fee6fc
+  sha: 7e3a3ea663153f900cbd52900a39c91fa9f334be
 k8s/kubelet:
-  size: 176726400
-  object_id: 376f6529-7840-4f9c-62b2-ea0f8c0cb137
-  sha: 2948b9afd0e8e3181d18b83f87533afd6e5f4970
+  size: 127850432
+  object_id: 2b2dc1d5-c735-4705-6c19-0dfc9f59bbb3
+  sha: c3b736fd0f003765c12d99f2c995a8369e6241f4
 lb/haproxy-1.8.20.tar.gz:
   size: 2083917
   object_id: e8d85367-c1af-4467-625a-71da406dab87
