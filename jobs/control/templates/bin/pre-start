@@ -98,12 +98,6 @@ gencert system:kube-controller-manager \
         system:kube-controller-manager \
         controller-manager
 
-echo "[$(date)] $BIN/$$: issuing the Proxy certificate"
-gencert system:kube-proxy \
-        system:node-proxier \
-        system:kube-proxy \
-        proxy
-
 popd >/dev/null 2>&1
 
 echo "[$(date)] $BIN/$$: removing temporary directory $TMP_DIR..."

@@ -57,24 +57,6 @@ kubectl config set-context default \
     --kubeconfig=$DAT_DIR/admin.kubeconfig
 kubectl config use-context default --kubeconfig=$DAT_DIR/admin.kubeconfig
 
-echo "[$(date)] $BIN/$$: refreshing our proxy kubeconfig..."
-mkdir -p $DAT_DIR
-kubectl config set-cluster <%= p('cluster.name') %> \
-    --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
-    --embed-certs=true \
-    --server=https://<%= spec.ip %>:6443 \
-    --kubeconfig=$DAT_DIR/proxy.kubeconfig
-kubectl config set-credentials system:kube-proxy \
-    --client-certificate=$CERTS_DIR/proxy/cert.pem \
-    --client-key=$CERTS_DIR/proxy/key.pem \
-    --embed-certs=true \
-    --kubeconfig=$DAT_DIR/proxy.kubeconfig
-kubectl config set-context default \
-    --cluster=<%= p('cluster.name') %> \
-    --user=system:kube-proxy \
-    --kubeconfig=$DAT_DIR/proxy.kubeconfig
-kubectl config use-context default --kubeconfig=$DAT_DIR/proxy.kubeconfig
-
 <% if !spec.bootstrap %>
 echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
 <% else %>
