@@ -13,6 +13,17 @@ k8s-bosh-%: images/%/Dockerfile
 update:
 	./utils/update-from-upstream
 
+release:
+	@echo "Checking that VERSION was defined in the calling environment"
+	@test -n "$(VERSION)"
+	@echo "OK.  VERSION=$(VERSION)"
+	git stash
+	bosh create-release --final --tarball=releases/k8s-$(VERSION).tgz --name k8s --version $(VERSION)
+	git add releases/k8s .final_builds
+	git commit -m "Release v$(VERSION)"
+	git tag v$(VERSION)
+	git stash pop
+
 certs:
 	# etcd
 	./utils/certify-me ca api jobs/etcd/templates/tls/ca
