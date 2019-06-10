@@ -22,6 +22,14 @@ def slugify(s)
           .gsub('(id)',         spec.id)
 end
 
+labels = p('labels', [])
+taints = p('taints', {})
+
+if p('master')
+  labels['node-role.kubernetes.io/master'] = ''
+  taints.push('node-role.kubernetes.io/master=true:NoSchedule')
+end
+
 %>
 
 # set kube-* binaries in our path
@@ -72,7 +80,7 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
-    exec kubelet <% p('labels', {}).each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
+    exec kubelet <% labels.each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
            --config=$JOB_DIR/etc/kubelet.yml \
            --container-runtime=remote \
            --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock \
@@ -80,7 +88,7 @@ case $1 in
            --kubeconfig=$DAT_DIR/kubeconfig \
            --network-plugin=cni \
            --register-node=true \
-           --register-with-taints=<%= p('taints', []).join(',') %> \
+           --register-with-taints=<%= taints.join(',') %> \
            --hostname-override=<%= spec.id %>.k8s \
            --root-dir=/var/vcap/store/kubelet/ \
            --v=2 <% p('kubelet.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
