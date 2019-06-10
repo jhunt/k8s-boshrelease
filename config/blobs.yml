@@ -56,9 +56,11 @@ k8s/kubelet:
   sha: 2948b9afd0e8e3181d18b83f87533afd6e5f4970
 lb/haproxy-1.8.20.tar.gz:
   size: 2083917
+  object_id: e8d85367-c1af-4467-625a-71da406dab87
   sha: 7aa627e4ae0b2ee603d5525436c7f4d13b8e2f5e
 lb/keepalived-2.0.16.tar.gz:
   size: 983376
+  object_id: 11420b07-06b6-4a0a-6c1e-820dd546cf8c
   sha: ff85a4fd121564c616de9f41c79b02eaab9aff59
 nfs-trusty-debs/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb:
   size: 126342
