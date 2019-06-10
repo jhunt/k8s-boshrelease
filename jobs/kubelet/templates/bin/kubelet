@@ -80,6 +80,7 @@ case $1 in
            --kubeconfig=$DAT_DIR/kubeconfig \
            --network-plugin=cni \
            --register-node=true \
+           --register-with-taints=<%= p('taints', []).join(',') %> \
            --hostname-override=<%= spec.id %>.k8s \
            --root-dir=/var/vcap/store/kubelet/ \
            --v=2 <% p('kubelet.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>

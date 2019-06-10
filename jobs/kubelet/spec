@@ -56,6 +56,12 @@ properties:
       (potentially node-specific) values: the deployment name, the instance group name,
       and the instance group UUID, respectively.
 
+  taints:
+    description: |
+      Additional node taints, in `key=value:effect` format, to apply to this kubelet.
+      For example, to prevent scheduling non-control-plane pods on the master nodes,
+      you could add the taint 'node-role.kubernetes.io/master=true:NoSchedule'.
+
   kubelet.flags:
     default: []
     description: |
