@@ -56,6 +56,9 @@ properties:
       control plane work) or a regular worker node.  This sets up some base labels and
       taints, without requiring you to think too much about it.
 
+      This property only takes effect on the initial deploy.  To manage taints and labels
+      after deployment, please refer to the `kubectl' command-line help.
+
   labels:
     default: {}
     description: |
@@ -64,12 +67,18 @@ properties:
       (potentially node-specific) values: the deployment name, the instance group name,
       and the instance group UUID, respectively.
 
+      This property only takes effect on the initial deploy.  To manage taints and labels
+      after deployment, please refer to the `kubectl' command-line help.
+
   taints:
     default: []
     description: |
       Additional node taints, in `key=value:effect` format, to apply to this kubelet.
       For example, to prevent scheduling non-control-plane pods on the master nodes,
       you could add the taint 'node-role.kubernetes.io/master=true:NoSchedule'.
+
+      This property only takes effect on the initial deploy.  To manage taints and labels
+      after deployment, please refer to the `kubectl' command-line help.
 
   kubelet.flags:
     default: []
