@@ -100,7 +100,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.2.2
+        image: <%= p('images.kube-dns') %>
         imagePullPolicy: IfNotPresent
         resources:
           limits:
