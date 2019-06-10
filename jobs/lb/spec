@@ -2,10 +2,9 @@
 name: lb
 description: |
   A TCP-level load balancer, for highly-available cluster topologies.
-  This is a general-purpose bit of infrastructure, which can be used
-  wherever you need to put multiple instances of a single service
-  (like the API server, or etcd) behind a single network address, and
-  lack IaaS support for automatic load balancing.
+  This bit of infrastructure fronts the Kubernetes API server (provided
+  by the `control' job), providing a single network address for IaaS
+  providers who lack automatic load balancing.
 
 packages:
   - haproxy
@@ -14,9 +13,6 @@ packages:
 consumes:
   - name: api
     type: k8s-apiserver
-
-  - name: etcd
-    type: k8s-etcd
 
 templates:
   bin/haproxy:      bin/haproxy
@@ -30,44 +26,10 @@ properties:
     default:     false
     description: Enables verbose debugging, suitable for troubleshooting.
 
-  autoconfigure:
-    description: |
-      How backend autoconfiguration is done.  This job optionally consumes one of
-      several links to determine the BOSH-assigned IP addresses of various components
-      of a Kubernetes deployment.
-
-      Valid values are:
-
-        - "static" (the default), which will require a list of backend node
-          IPs in the `backend.ips` manifest property
-
-        - "etcd", which will consume a BOSH link named 'etcd' to find node IPs.
-
-        - "api", which will consume a BOSH link named 'api' to find node IPs.
-
-  backend.ips:
-    description: |
-      A list of that (static) backend IPs that this load balancer should balance traffic
-      for.  These addresses must be specified without any ports, schemes, protocols, or
-      network masks.  DNS names are strongly discouraged.
-
-      This property is only checked if `autoconfigure` is set to "static" (the default),
-      in which case it is required to be both present and non-empty.
-
-  backend.port:
-    description: |
-      The TCP port to route traffic to, for static autoconfiguration.  As a consequence,
-      this job can only load-balance nodes that are all binding the same public TCP port.
-
-      This property is only checked if `autoconfigure` is set to "static" (the default),
-      in which case it is required.  Otherwise, it is ignored.
-
   port:
+    default: 443
     description: |
-      The TCP port to bind the front-end (listening) end of the load balancer to.
-      This property is required if `autoconfigure` is set to "static" (the default).
-      Otherwise, a default will be chosen based on whether the backend is the API
-      or etcd.
+      The TCP port on which to bind the front-end listener for the load balancer.
 
   vrrp.ip:
     description: |
