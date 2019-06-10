@@ -9,9 +9,7 @@ instance_groups:
       cpu: 2
       ram: 2048
       ephemeral_disk_size: 2048
-
     stemcell: default
-
     networks:
       - name: default
 
@@ -19,7 +17,6 @@ instance_groups:
       - name: lb
         release: k8s
         properties:
-          autoconfigure: api
           vrrp:
             id: 240
             ip: 10.128.16.240
@@ -33,9 +30,7 @@ instance_groups:
       ram: 2048
       ephemeral_disk_size: 20_000
     persistent_disk: 20_000
-
     stemcell:  default
-
     networks:
       - name: default
 
@@ -95,19 +90,17 @@ instance_groups:
       ram: 2048
       ephemeral_disk_size: 20_000
     persistent_disk: 20_000
-
     stemcell:  default
-
     networks:
       - name: default
 
     jobs:
+      - name: net-flannel
+        release: k8s
       - name: runtime-runc
         release: k8s
         properties:
           cni: flannel
-      - name: net-flannel
-        release: k8s
       - name: kubelet
         release: k8s
         properties:

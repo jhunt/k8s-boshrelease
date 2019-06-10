@@ -52,8 +52,6 @@ instance_groups:
 
       - name: lb
         release: k8s
-        properties:
-          autoconfigure: api
 
       - name: runtime-runc
         release: k8s

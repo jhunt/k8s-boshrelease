@@ -19,6 +19,27 @@ instance_groups:
       - name: etcd
         release: k8s
 
+
+
+  - name:      lb
+    instances: 2
+    azs:       [z1,z2,z3]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 2048
+    stemcell: default
+    networks:
+      - name: default
+
+    jobs:
+      - name: lb
+        release: k8s
+        properties:
+          vrrp:
+            id: 241
+            ip: 10.128.16.241
+
   - name:      control
     instances: 3
     azs:       [z1,z2,z3]
@@ -27,11 +48,8 @@ instance_groups:
       cpu: 2
       ram: 2048
       ephemeral_disk_size: 8192
-
+    persistent_disk: 20_000
     stemcell:  default
-
-    persistent_disk_type: default
-
     networks:
       - name: default
 
@@ -42,6 +60,7 @@ instance_groups:
           apiserver:
             additional-sans:
               - 10.128.23.1
+              - 10.128.16.241
           cluster:
             name: hugernetes
             dns:  10.128.23.2
@@ -58,6 +77,17 @@ instance_groups:
             sa:
               certificate: ((tls-sa.certificate))
               key:         ((tls-sa.private_key))
+      - name: net-flannel
+        release: k8s
+      - name: runtime-runc
+        release: k8s
+        properties:
+          cni: flannel
+      - name: kubelet
+        release: k8s
+        properties:
+          apiserver: 10.128.16.241
+          master: true
 
       - name: jumpbox
         release: k8s
@@ -73,22 +103,21 @@ instance_groups:
       ram: 2048
       ephemeral_disk_size: 20_000
     persistent_disk: 20_000
-
     stemcell:  default
-
     networks:
       - name: default
 
     jobs:
+      - name: net-flannel
+        release: k8s
       - name: runtime-runc
         release: k8s
         properties:
           cni: flannel
-      - name: net-flannel
-        release: k8s
       - name: kubelet
         release: k8s
-
+        property:
+          apiserver: 10.128.16.241
       - name: nfs
         release: k8s
 
