@@ -166,11 +166,12 @@ properties:
       Network CIDR range that the Kubernetes nodes are deployed into.
 
   kubelet.instance-groups:
-    default: [node]
+    default: [node.default]
     description: |
-      The names of the BOSH instance_groups that play the role of the Kubernetes runtime
-      kubelet.  This is required for wiring up DNS aliases to make both BOSH and Kubernetes
-      happy.  You can specify multiple instance_groups names in case you have deployed a
+      The names of the BOSH instance_groups (and their BOSH network names) that
+      play the role of the Kubernetes runtime kubelet.  This is required for
+      wiring up DNS aliases to make both BOSH and Kubernetes happy.  You can
+      specify multiple instance_groups names in case you have deployed a
       non-homogenous environment of virtual machine sizes / stemcells / etc.
 
   images.kube-proxy:
