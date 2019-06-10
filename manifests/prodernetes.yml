@@ -45,9 +45,14 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          kubelet:
+            instance-groups:
+              - node.default
+              - control.default
           apiserver:
             additional-sans:
               - 10.128.22.1
+              - 10.128.16.240
           cluster:
             name: prodernetes
             dns:  10.128.22.2
@@ -64,6 +69,17 @@ instance_groups:
             sa:
               certificate: ((tls-sa.certificate))
               key:         ((tls-sa.private_key))
+      - name: net-flannel
+        release: k8s
+      - name: runtime-runc
+        release: k8s
+        properties:
+          cni: flannel
+      - name: kubelet
+        release: k8s
+        properties:
+          apiserver: 10.128.16.240
+          master: true
 
       - name: jumpbox
         release: k8s
