@@ -1,7 +1,7 @@
 DOCKER_PREFIX ?= huntprod/
 DOCKERS :=
 DOCKERS += k8s-bosh-kube-proxy
-DOCKERS += k8s-bosh-smoke-tests
+DOCKERS += k8s-bosh-smoke-test
 
 default:
 	@echo "please choose a make target..."
