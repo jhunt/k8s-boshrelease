@@ -90,7 +90,7 @@ echo "[$(date)] $BIN/$$: refreshing our proxy kubeconfig..."
 kubectl config set-cluster <%= link('api').p('cluster.name') %> \
     --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
     --embed-certs=true \
-    --server=https://<%= spec.ip %>:6443 \
+    --server=https://<%= p('apiserver') %> \
     --kubeconfig=$DAT_DIR/proxy.kubeconfig
 kubectl config set-credentials system:kube-proxy \
     --client-certificate=$CERTS_DIR/proxy/cert.pem \
