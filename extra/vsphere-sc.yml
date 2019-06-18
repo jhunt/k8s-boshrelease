@@ -1,0 +1,16 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: vsphere
+  annotations:
+    storageclass.kubernetes.io/is-default-class:   "true"
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume
+
+provisioner:       kubernetes.io/vsphere-volume
+reclaimPolicy:     Delete
+volumeBindingMode: Immediate
+
+parameters:
+  storagePolicyName: k8s-sp
+  datastore:         iSCSI-1
