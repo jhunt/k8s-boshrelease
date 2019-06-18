@@ -78,6 +78,9 @@ case $1 in
     kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
     echo
 
+    echo "[$(date)] $BIN/$$: setting hostname to <%= spec.id %>.k8s..."
+    hostname <%= spec.id %>.k8s
+
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
     exec kubelet <% labels.each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
