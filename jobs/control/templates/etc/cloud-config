@@ -1,0 +1,23 @@
+<%
+  type = p('cloud-provider.type')
+
+  if type == "vsphere"
+%>[Global]
+user = "<%= p('cloud-provider.vsphere.username') %>"
+password = "<%= p('cloud-provider.vsphere.password') %>"
+server = "<%= p('cloud-provider.vsphere.ip') %>"
+port = "443"
+insecure-flag = "<% if p('cloud-provider.vsphere.verify-tls') %>0<% else %>1<% end %>"
+datacenter = "<%= p('cloud-provider.vsphere.datacenter') %>"
+datastore = "<%= p('cloud-provider.vsphere.datastore') %>"
+working-dir = "<%= p('cloud-provider.vsphere.folder') %>"
+
+[Workspace]
+server = "<%= p('cloud-provider.vsphere.ip') %>"
+folder = "<%= p('cloud-provider.vsphere.folder') %>"
+
+[Disk]
+scsicontrollertype = "<%= p('cloud-provider.vsphere.controller-type') %>"
+<%
+  end
+%>

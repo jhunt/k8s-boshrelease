@@ -77,6 +77,7 @@ templates:
   bin/api:              bin/api
   etc/encryption.yml:   etc/encryption.yml
   etc/audit-policy.yml: etc/audit-policy.yml
+  etc/cloud-config:     etc/cloud-config
 
   # kube-controller-manager
   bin/controller-manager: bin/controller-manager
@@ -267,5 +268,80 @@ properties:
 
       This key is used by the controller-manager to sign generated Bearer tokens,
       so that the apiserver can validate them (using tls.sa.certificate).
+
+  cloud-provider.type:
+    description: |
+      The type of in-tree Kubernetes cloud provider to configure for this cluster.
+      The only valid value, currently, is "vsphere".  Leaving this unset will skip
+      all cloud-provider configuration.
+
+  cloud-provider.vsphere.ip:
+    description: |
+      The IP address (or fully-qualified domain name) of the vSphere vCenter.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.username:
+    description: |
+      The username (possible in user@domain format) of the account to log into
+      vSphere vCenter.  This account must have appropriate rights and privileges
+      to provision volumes (and shadow VMs, by necessity).
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.password:
+    description: |
+      The password of the account used to log into vSphere vCenter.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.verify-tls:
+    default: true
+    description: |
+      Whether or not to verify the TLS certificate presented by the vSphere
+      vCenter, when logging in or interacting with the vCenter API.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere".
+
+  cloud-provider.vsphere.datacenter:
+    description: |
+      The name of the Data Center to provision shadow VMs (and their volumes).
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.datastore:
+    description: |
+      The name of the Data Store to provision volumes in.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.network:
+    description: |
+      The name of the Virtual Machine Network to provision shadow VMs to.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.folder:
+    description: |
+      The (slash-separated) path of a folder in the vCenter / datastore in which
+      to store shadow VMs and provisioned volumes.  This folder **must** exist
+      a priori; Kubernetes will not create it.
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere",
+      in which case it is required.
+
+  cloud-provider.vsphere.controller-type:
+    default: pvscsi
+    description: |
+      The vSphere disk controller type for provisioning disks; almost always set
+      to "pvscsi" (the default).
+
+      This parameter is only used if `cloud-provider.type` is set to "vsphere".
 
 # vim:ft=yaml

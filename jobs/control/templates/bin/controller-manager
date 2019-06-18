@@ -60,7 +60,7 @@ case $1 in
            --cluster-cidr=<%= p('networks.pods') %> \
            --cidr-allocator-type=RangeAllocator \
            --node-cidr-mask-size=<%= p('networks.podmask').gsub(/^\//, '') %> \
-           --cidr-allocator-type=RangeAllocator \
+           <% if p('cloud-provider.type', '') != '' %>--cloud-provider=<%= p('cloud-provider.type') %> --cloud-config=/var/vcap/jobs/control/etc/cloud-config <% end %>\
            --cluster-name=<%= p('cluster.name') %> \
            --cluster-signing-cert-file=$JOB_DIR/tls/ca/cert.pem \
            --cluster-signing-key-file=$JOB_DIR/tls/ca/key.pem \
