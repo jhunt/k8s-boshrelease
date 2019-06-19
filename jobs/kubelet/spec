@@ -21,6 +21,7 @@ description: |
 packages:
   - k8s
   - cfssl
+  - ipvsadm
 
 consumes:
   - name: api

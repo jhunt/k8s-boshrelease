@@ -22,6 +22,18 @@ etcd/etcd-v3.3.13-linux-amd64.tar.gz:
   size: 10423953
   object_id: f433cc51-01a9-4d93-5476-513a53945de1
   sha: edb7a4bb97dc6480833288d1c5ad7ec4156881ae
+ipvsadm/ipvsadm-1.29.tar.gz:
+  size: 47622
+  object_id: 9570b7be-344b-4b3a-717d-4a6ad040a16c
+  sha: ec2ab7537d9bfa0de6c5bb69730da37099270cc8
+ipvsadm/libnl-3.2.25.tar.gz:
+  size: 832513
+  object_id: 1f18b038-be2a-403d-7a21-674e93b6e98f
+  sha: b7a4981f7edf7398256d35fd3c0b87bc84ae27d1
+ipvsadm/popt-1.16.tar.gz:
+  size: 702769
+  object_id: 17412e51-fc04-42c8-487f-d5d0ef7ed922
+  sha: cfe94a15a2404db85858a81ff8de27c8ff3e235e
 jq/jq:
   size: 3953824
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
