@@ -72,6 +72,7 @@ templates:
   bin/post-deploy:    bin/post-deploy
   k8s/kube-proxy.yml: k8s/kube-proxy.yml
   k8s/kube-dns.yml:   k8s/kube-dns.yml
+  k8s/dashboard.yml:  k8s/dashboard.yml
 
   # kube-apiserver
   bin/api:              bin/api
@@ -343,5 +344,22 @@ properties:
       to "pvscsi" (the default).
 
       This parameter is only used if `cloud-provider.type` is set to "vsphere".
+
+  dashboard.enabled:
+    default: false
+    description: |
+      Whether or not to enable the Kubernetes Dashboard UI on this cluster.
+      If set to 'true', a service account (with suitable access) will be
+      created as part of the deployment of the BOSH release.
+
+  dashboard.cluster-admin:
+    default: false
+    description: |
+      Whether or not to grant the `kubernetes-dashboard` service account
+      full access to the Kubernetes cluster (i.e. `cluster-admin` role) or a
+      minimal, more controlled set of access permissions.
+
+      Make sure you understand the security implications of enabling this
+      before you do so.
 
 # vim:ft=yaml

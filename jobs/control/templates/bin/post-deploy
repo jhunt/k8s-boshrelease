@@ -68,6 +68,14 @@ echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
 kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
         apply -f $JOB_DIR/k8s/kube-dns.yml
 
+<% if p('dashboard.enabled') %>
+echo "[$(date)] $BIN/$$: applying kubernetes-dashboard configuration..."
+kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
+        apply -f $JOB_DIR/k8s/dashboard.yml
+<% else %>
+echo "[$(date)] $BIN/$$: SKIPPING kubernetes-dashboard configuration..."
+<% end %>
+
 (shopt -s nullglob
 for yml in /var/vcap/jobs/*/k8s-addons/*.yml; do
   name=${yml%%.yml};          name=${name##*/}
