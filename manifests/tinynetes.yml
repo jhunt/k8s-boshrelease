@@ -21,6 +21,12 @@ instance_groups:
       - name: control
         release: k8s
         properties:
+          kubelet:
+            instance-groups: [k8s.default]
+          dashboard:
+            enabled: true
+            cluster-admin: true
+
           apiserver:
             additional-sans:
               - 10.128.17.1
