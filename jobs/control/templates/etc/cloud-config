@@ -1,5 +1,5 @@
 <%
-  type = p('cloud-provider.type')
+  type = p('cloud-provider.type', '')
 
   if type == "vsphere"
 %>[Global]
