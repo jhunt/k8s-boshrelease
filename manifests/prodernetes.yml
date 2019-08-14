@@ -44,15 +44,15 @@ instance_groups:
               - control.default
           apiserver:
             additional-sans:
-              - 10.128.22.1
+              - 10.245.0.1
               - 10.128.16.240
           cluster:
             name: prodernetes
-            dns:  10.128.22.2
+            dns:  10.245.0.2
           networks:
             nodes:    10.128.16.0/24
-            services: 10.128.22.0/24
-            pods:     10.128.24.0/21
+            services: 10.245.0.0/24
+            pods:     10.244.0.0/16
           encryption:
             key: ((encryption-key))
           tls:
