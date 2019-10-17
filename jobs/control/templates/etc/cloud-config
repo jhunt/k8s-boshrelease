@@ -10,7 +10,7 @@ port = "443"
 insecure-flag = "<% if p('cloud-provider.vsphere.verify-tls') %>0<% else %>1<% end %>"
 datacenter = "<%= p('cloud-provider.vsphere.datacenter') %>"
 datastore = "<%= p('cloud-provider.vsphere.datastore') %>"
-working-dir = "<%= p('cloud-provider.vsphere.folder') %>"
+working-dir = "/<%= p('cloud-provider.vsphere.datacenter') %>/vm/<%= p('cloud-provider.vsphere.folder') %>"
 
 [Workspace]
 server = "<%= p('cloud-provider.vsphere.ip') %>"

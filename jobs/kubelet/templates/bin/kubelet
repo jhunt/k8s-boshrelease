@@ -34,12 +34,18 @@ end
 
 # set kube-* binaries in our path
 export PATH=$PATH:/var/vcap/packages/k8s/bin
+export PATH=$PATH:/var/vcap/packages/jq/bin
 
 case $1 in
   start)
     mkdir -p $RUN_DIR
 
     # FIXME: wait for containerd to be up and running
+
+    KUBELET_OPTIONS=
+    if grep -q vsphere /var/vcap/bosh/etc/infrastructure; then
+      KUBELET_OPTIONS="$KUBELET_OPTIONS --provider-id=$(tr A-Z a-z < /sys/class/dmi/id/product_uuid)"
+    fi
 
     echo "[$(date)] $BIN/$$: starting up..."
     if [[ -f $PIDFILE ]]; then
@@ -94,6 +100,7 @@ case $1 in
            --register-with-taints=<%= taints.join(',') %> \
            --hostname-override=<%= spec.id %>.k8s \
            --root-dir=/var/vcap/store/kubelet/ \
+           $KUBELET_OPTIONS \
            --v=2 <% p('kubelet.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
     echo "[$(date)] $BIN/$$: exec failed!"
     exit 42

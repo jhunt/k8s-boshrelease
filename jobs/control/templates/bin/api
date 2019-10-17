@@ -53,6 +53,7 @@ case $1 in
            --allow-privileged=true \
            --apiserver-count=3 \
            --audit-log-maxage=30 \
+           <% if p('cloud-provider.type', '') != '' %>--cloud-provider=<%= p('cloud-provider.type') %> --cloud-config=/var/vcap/jobs/control/etc/cloud-config <% end %>\
            --audit-log-maxbackup=3 \
            --audit-log-maxsize=100 \
            --audit-log-path=$LOG_DIR/audit.log \
