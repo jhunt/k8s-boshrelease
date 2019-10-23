@@ -8,6 +8,8 @@ instance_groups:
       cpu: 2
       ram: 2048
       ephemeral_disk_size: 20_000
+    vm_extensions:
+      - kubelet
     persistent_disk: 20_000
     stemcell:  default
     networks:
