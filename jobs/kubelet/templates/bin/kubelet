@@ -42,12 +42,8 @@ case $1 in
 
     # FIXME: wait for containerd to be up and running
 
-    KUBELET_OPTIONS=
-    if grep -q vsphere /var/vcap/bosh/etc/infrastructure; then
-      KUBELET_OPTIONS="$KUBELET_OPTIONS --provider-id=$(tr A-Z a-z < /sys/class/dmi/id/product_uuid)"
-    fi
-
     echo "[$(date)] $BIN/$$: starting up..."
+
     if [[ -f $PIDFILE ]]; then
       PID=$(head -1 $PIDFILE)
       if [[ -n "$PID" ]]; then
@@ -84,8 +80,28 @@ case $1 in
     kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
     echo
 
-    echo "[$(date)] $BIN/$$: setting hostname to <%= spec.id %>.k8s..."
-    hostname <%= spec.id %>.k8s
+    NODENAME="<%= spec.id %>.k8s"
+    echo "[$(date)] $BIN/$$: setting hostname to $NODENAME..."
+    hostname $NODENAME
+
+    PROVIDER_ID=
+    if grep -q vsphere /var/vcap/bosh/etc/infrastructure; then
+      PROVIDER_ID=$(tr A-Z a-z < /sys/class/dmi/id/product_uuid)
+      echo "[$(date)] $BIN/$$: it looks like this is vsphere; detected providerID is '$PROVIDER_ID'"
+    fi
+
+    KUBELET_OPTIONS=
+    if [[ -n $PROVIDER_ID ]]; then
+      KUBELET_OPTIONS="$KUBELET_OPTIONS --provider-id=$PROVIDER_ID"
+    fi
+
+    if test -n $PROVIDER_ID && kubectl get node $NODENAME >/dev/null 2>&1; then
+      OLD_PROVIDER_ID=$(kubectl get node $NODENAME -o jsonpath --template '{.spec.providerID}')
+      if [[ $PROVIDER_ID != $OLD_PROVIDER_ID ]]; then
+        echo "[$(date)] $BIN/$$: node $NODENAME providerID changed from $OLD_PROVIDER_ID -> $PROVIDER_ID; deleting node..."
+        kubectl delete node $NODENAME
+      fi
+    fi
 
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
@@ -100,6 +116,7 @@ case $1 in
            --register-with-taints=<%= taints.join(',') %> \
            --hostname-override=<%= spec.id %>.k8s \
            --root-dir=/var/vcap/store/kubelet/ \
+           <% if link('cloud-provider').p('cloud-provider.type', '') != '' %>--cloud-provider=<%= link('cloud-provider').p('cloud-provider.type') %> --cloud-config=/var/vcap/jobs/kubelet/etc/cloud-config <% end %>\
            $KUBELET_OPTIONS \
            --v=2 <% p('kubelet.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
     echo "[$(date)] $BIN/$$: exec failed!"

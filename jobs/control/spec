@@ -56,6 +56,20 @@ provides:
       - tls.ca.certificate
       - tls.ca.key
 
+  - name: cloud-provider
+    type: k8s-cloud-provider
+    properties:
+      - cloud-provider.type
+      - cloud-provider.vsphere.ip
+      - cloud-provider.vsphere.username
+      - cloud-provider.vsphere.password
+      - cloud-provider.vsphere.verify-tls
+      - cloud-provider.vsphere.datacenter
+      - cloud-provider.vsphere.datastore
+      - cloud-provider.vsphere.network
+      - cloud-provider.vsphere.folder
+      - cloud-provider.vsphere.controller-type
+
 consumes:
   - name: etcd
     type: k8s-etcd

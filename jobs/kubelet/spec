@@ -27,13 +27,17 @@ consumes:
   - name: api
     type: k8s-apiserver
 
-templates:
-  bin/pre-start:   bin/pre-start
-  tls/ca/cert.pem: tls/ca/cert.pem
-  tls/ca/key.pem:  tls/ca/key.pem
+  - name: cloud-provider
+    type: k8s-cloud-provider
 
-  bin/kubelet:     bin/kubelet
-  etc/kubelet.yml: etc/kubelet.yml
+templates:
+  bin/pre-start:    bin/pre-start
+  tls/ca/cert.pem:  tls/ca/cert.pem
+  tls/ca/key.pem:   tls/ca/key.pem
+
+  bin/kubelet:      bin/kubelet
+  etc/kubelet.yml:  etc/kubelet.yml
+  etc/cloud-config: etc/cloud-config
 
 properties:
   debug:
