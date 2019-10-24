@@ -33,6 +33,7 @@ case $1 in
       fi
       rm -f $PIDFILE
     fi
+    kill -9 $(pgrep kube-controller-manager | grep -v $$) || true
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR

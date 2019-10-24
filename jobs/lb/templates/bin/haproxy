@@ -31,6 +31,7 @@ case $1 in
       fi
       rm -f $PIDFILE
     fi
+    kill -9 $(pgrep haproxy | grep -v $$) || true
 
     echo "[$(date)] $BIN/$$: starting up haproxy..."
     echo $$ > $PIDFILE

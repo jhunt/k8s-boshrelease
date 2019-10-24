@@ -46,6 +46,7 @@ case $1 in
       fi
       rm -f $PIDFILE
     fi
+    kill -9 $(pgrep kube-api-server | grep -v $$) || true
 
     echo $$ > $PIDFILE
     exec kube-apiserver \

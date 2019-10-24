@@ -55,6 +55,7 @@ case $1 in
       fi
       rm -f $PIDFILE
     fi
+    kill -9 $(pgrep kubelet | grep -v $$) || true
 
     echo "[$(date)] $BIN/$$: turning off swap..."
     swapoff -a
