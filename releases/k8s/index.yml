@@ -13,4 +13,6 @@ builds:
     version: 1.14.0-build.1
   bd54ff74-0384-4064-4aeb-008f3c94601b:
     version: 1.14.0-build.4
+  c0a12c5e-5fc6-47f9-5aa2-5b83fd859aa6:
+    version: 1.15.5-build.1
 format-version: "2"
