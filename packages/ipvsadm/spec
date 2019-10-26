@@ -5,4 +5,4 @@ dependencies: []
 files:
   - ipvsadm/popt-1.16.tar.gz
   - ipvsadm/libnl-3.2.25.tar.gz
-  - ipvsadm/ipvsadm-1.29.tar.gz
+  - ipvsadm/ipvsadm-1.30.tar.gz

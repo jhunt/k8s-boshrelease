@@ -22,10 +22,10 @@ etcd/etcd-v3.3.13-linux-amd64.tar.gz:
   size: 10423953
   object_id: f433cc51-01a9-4d93-5476-513a53945de1
   sha: edb7a4bb97dc6480833288d1c5ad7ec4156881ae
-ipvsadm/ipvsadm-1.29.tar.gz:
-  size: 47622
-  object_id: 9570b7be-344b-4b3a-717d-4a6ad040a16c
-  sha: ec2ab7537d9bfa0de6c5bb69730da37099270cc8
+ipvsadm/ipvsadm-1.30.tar.gz:
+  size: 48183
+  object_id: 19736942-a2cc-4464-6364-07dce0f01cd4
+  sha: e739a8a10f8fe855bb589c194d2776be35d3fba2
 ipvsadm/libnl-3.2.25.tar.gz:
   size: 832513
   object_id: 1f18b038-be2a-403d-7a21-674e93b6e98f
@@ -39,33 +39,33 @@ jq/jq:
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 167464288
-  object_id: 726eeb9d-5039-49db-5ae0-9ec8dcac6ca2
-  sha: 38c28337f437fcea44aa4edfac170741df6f05c1
+  size: 164571520
+  object_id: a09e8bde-fd18-444e-68ed-6cdb3136f5bb
+  sha: f7b470dd6a78bf09a73671e83afbe2ea084b9a12
 k8s/kube-controller-manager:
-  size: 115497504
-  object_id: 355085d8-0f33-4f72-6c2b-2bed0f4f3794
-  sha: 607faf1c1ff9f5da1543131906afbfa6b201c03d
+  size: 116462560
+  object_id: 40cb1285-da59-41d0-609b-3ca064a974bf
+  sha: a36384acfc89dacd5b43888f9dc41abba1a209dc
 k8s/kube-proxy:
-  size: 36681344
-  object_id: 3013bac6-be58-4589-7d9f-ed2203c0c824
-  sha: 18f8bacdfcf3720c60e2377229f4390ca7d2f1cb
+  size: 36991584
+  object_id: 1611d049-9261-45c8-44e0-ee6ed408284e
+  sha: 4c5987ce25debea16cbf2e6343f586b784d9a9c3
 k8s/kube-scheduler:
-  size: 39254208
-  object_id: c78d3fa7-6508-4562-712a-02cf2d4e87a4
-  sha: 63725c587f829be8dd1a77b2b703a0acf3d7bf73
+  size: 38790240
+  object_id: 2ed213a5-1a8d-48d9-4cf5-333d282818be
+  sha: 6c60e3354958e3a2a3724ac0f8fe81e8bf300a52
 k8s/kubectl:
-  size: 43103040
-  object_id: 7d1af527-080a-47f8-6ea3-2f5a77fee6fc
-  sha: 7e3a3ea663153f900cbd52900a39c91fa9f334be
+  size: 42993696
+  object_id: fe3d9568-7f67-4a27-7d63-c6fed0f5841a
+  sha: ed25c54577b90d5753d6a86a8543d28d1e55e164
 k8s/kubelet:
-  size: 127850432
-  object_id: 2b2dc1d5-c735-4705-6c19-0dfc9f59bbb3
-  sha: c3b736fd0f003765c12d99f2c995a8369e6241f4
-lb/haproxy-1.8.20.tar.gz:
-  size: 2083917
-  object_id: e8d85367-c1af-4467-625a-71da406dab87
-  sha: 7aa627e4ae0b2ee603d5525436c7f4d13b8e2f5e
+  size: 119686160
+  object_id: 7004a9b5-31cf-47ec-5b06-84dcc642daaa
+  sha: bfb8bde9b529dc93679ec1f4548e2833a47a87c3
+lb/haproxy-1.8.22.tar.gz:
+  size: 2100471
+  object_id: 07252afc-ee4c-4e4c-46ab-ac189707b6fb
+  sha: 628227995cae7119438b405179ba95520ce5256a
 lb/keepalived-2.0.16.tar.gz:
   size: 983376
   object_id: 11420b07-06b6-4a0a-6c1e-820dd546cf8c
@@ -126,7 +126,7 @@ runtime-runc/runsc:
   size: 17472381
   object_id: c78897f1-97cf-4109-62bd-1f1881680b55
   sha: 6470e7362519aab8f6a297b224a92f4e14a2997e
-socat/socat-1.7.3.2.tar.bz2:
-  size: 493324
-  object_id: 4e7d984f-039a-4c19-56b5-5c2255408de6
-  sha: 94e0003607fc1bf3af534f70831cf70bb944ab5d
+socat/socat-1.7.3.3.tar.bz2:
+  size: 489901
+  object_id: 0123eb8d-0367-4f2b-5981-bd3e1f5826ce
+  sha: 504afb0f2ae5d3582448cfc6e2b676370b0b9f81

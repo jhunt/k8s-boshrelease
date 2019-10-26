@@ -3,8 +3,8 @@ set -eu
 
 CPUS=$(grep -c ^processor /proc/cpuinfo)
 
-tar -xjf socat/socat-1.7.3.2.tar.bz2
-cd socat-1.7.3.2
+tar -xjf socat/socat-1.7.3.3.tar.bz2
+cd socat-1.7.3.3
 ./configure --prefix ${BOSH_INSTALL_TARGET}
 make -j$CPUS
 make install
