@@ -1,0 +1,4 @@
+# bosh update-cloud-config <(bosh cloud-config) -o manifests/cloud-config/kubelet-empty.yml
+- type: replace
+  path: /vm_extensions/name=kubelet?/cloud_properties
+  value: {}
