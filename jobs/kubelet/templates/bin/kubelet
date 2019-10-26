@@ -117,12 +117,19 @@ case $1 in
     export KUBECONFIG=$DAT_DIR/automaton.kubeconfig
     echo
 
+    echo "[$(date)] $BIN/$$: checking up on our node definition to determine our old providerID..."
+    kubectl get node $NODENAME || true
+    echo
+
     if test -n $PROVIDER_ID && kubectl get node $NODENAME >/dev/null 2>&1; then
       OLD_PROVIDER_ID=$(kubectl get node $NODENAME -o jsonpath --template '{.spec.providerID}')
+      echo "[$(date)] $BIN/$$: detected our prior providerID (from k8s api) to be '$OLD_PROVIDER_ID'"
       if [[ $PROVIDER_ID != $OLD_PROVIDER_ID ]]; then
         echo "[$(date)] $BIN/$$: node $NODENAME providerID changed from $OLD_PROVIDER_ID -> $PROVIDER_ID; deleting node..."
         kubectl delete node $NODENAME
       fi
+    else
+      echo "[$(date)] $BIN/$$: unable to determine if we need to update providerID; skipping..."
     fi
 
     echo "[$(date)] $BIN/$$: starting up kubelet..."
