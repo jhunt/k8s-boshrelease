@@ -26,7 +26,6 @@ labels = p('labels', [])
 taints = p('taints', {})
 
 if p('master')
-  labels['node-role.kubernetes.io/master'] = ''
   taints.push('node-role.kubernetes.io/master=true:NoSchedule')
 end
 

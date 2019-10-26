@@ -39,29 +39,29 @@ jq/jq:
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 164571520
-  object_id: a09e8bde-fd18-444e-68ed-6cdb3136f5bb
-  sha: f7b470dd6a78bf09a73671e83afbe2ea084b9a12
+  size: 174761792
+  object_id: b9ecc410-1548-499f-6779-cb37992e4911
+  sha: 543bc7f7d08aa6da705b5bb33238c2a4bd5e42d0
 k8s/kube-controller-manager:
-  size: 116462560
-  object_id: 40cb1285-da59-41d0-609b-3ca064a974bf
-  sha: a36384acfc89dacd5b43888f9dc41abba1a209dc
+  size: 120996736
+  object_id: e78fd68e-fd87-4274-6a53-b79d75a58749
+  sha: 5a5f2fdd2955bc61291dccb24dd82083d2f506da
 k8s/kube-proxy:
-  size: 36991584
-  object_id: 1611d049-9261-45c8-44e0-ee6ed408284e
-  sha: 4c5987ce25debea16cbf2e6343f586b784d9a9c3
+  size: 40644320
+  object_id: 22dba2de-4fb9-44ec-4657-61a042d7b07a
+  sha: c26b0261fb7e28c4ce6d31fe26e72981e2b63746
 k8s/kube-scheduler:
-  size: 38790240
-  object_id: 2ed213a5-1a8d-48d9-4cf5-333d282818be
-  sha: 6c60e3354958e3a2a3724ac0f8fe81e8bf300a52
+  size: 44948480
+  object_id: 649df113-305b-4bf2-5eb7-b8040bf7e691
+  sha: 24edf747654d6fc51c60834917c1605feb84f1aa
 k8s/kubectl:
-  size: 42993696
-  object_id: fe3d9568-7f67-4a27-7d63-c6fed0f5841a
-  sha: ed25c54577b90d5753d6a86a8543d28d1e55e164
+  size: 46681472
+  object_id: f92f4637-2387-4247-55e3-cf6f929882f1
+  sha: 4333f62a22122f274478caa65dcfb465fe04a4b4
 k8s/kubelet:
-  size: 119686160
-  object_id: 7004a9b5-31cf-47ec-5b06-84dcc642daaa
-  sha: bfb8bde9b529dc93679ec1f4548e2833a47a87c3
+  size: 123129136
+  object_id: 83a5d4a1-8b1d-40d8-7b86-62efb843540b
+  sha: 10bbc54e28305f54d58bd2ddf4d19f5bdb814d78
 lb/haproxy-1.8.22.tar.gz:
   size: 2100471
   object_id: 07252afc-ee4c-4e4c-46ab-ac189707b6fb

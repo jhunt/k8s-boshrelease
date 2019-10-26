@@ -76,7 +76,7 @@ data:
 
 ---
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: kube-system
   name:      kube-flannel-ds
@@ -85,6 +85,11 @@ metadata:
     app:  flannel
 
 spec:
+  selector:
+    matchLabels:
+      tier: node
+      app:  flannel
+
   template:
     metadata:
       labels:
