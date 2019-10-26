@@ -37,21 +37,23 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR
+    rm -f $DAT_DIR/kubeconfig # legacy
+    rm -f $DAT_DIR/controller-manager.kubeconfig
     kubectl config set-cluster <%= p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \
         --server=https://127.0.0.1:6443 \
-        --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/controller-manager.kubeconfig
     kubectl config set-credentials system:kube-controller-manager \
         --client-certificate=$CERTS_DIR/controller-manager/cert.pem \
         --client-key=$CERTS_DIR/controller-manager/key.pem \
         --embed-certs=true \
-        --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/controller-manager.kubeconfig
     kubectl config set-context default \
         --cluster=<%= p('cluster.name') %> \
         --user=system:kube-controller-manager \
-        --kubeconfig=$DAT_DIR/kubeconfig
-    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/controller-manager.kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/controller-manager.kubeconfig
 
     echo "[$(date)] $BIN/$$: starting up kube-controller-manager..."
     echo $$ > $PIDFILE
@@ -65,7 +67,7 @@ case $1 in
            --cluster-name=<%= p('cluster.name') %> \
            --cluster-signing-cert-file=$JOB_DIR/tls/ca/cert.pem \
            --cluster-signing-key-file=$JOB_DIR/tls/ca/key.pem \
-           --kubeconfig=$DAT_DIR/kubeconfig \
+           --kubeconfig=$DAT_DIR/controller-manager.kubeconfig \
            --leader-elect=true \
            --root-ca-file=$JOB_DIR/tls/ca/cert.pem \
            --service-account-private-key-file=$JOB_DIR/tls/sa/key.pem \

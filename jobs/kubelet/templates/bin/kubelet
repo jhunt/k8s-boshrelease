@@ -63,21 +63,24 @@ case $1 in
 
     echo "[$(date)] $BIN/$$: refreshing our kubeconfig..."
     mkdir -p $DAT_DIR
+    rm -f $DAT_DIR/kubeconfig # legacy
+    rm -f $DAT_DIR/automaton.kubeconfig
+    rm -f $DAT_DIR/kubelet.kubeconfig
     kubectl config set-cluster <%= link('api').p('cluster.name') %> \
         --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
         --embed-certs=true \
         --server=https://<%= p('apiserver') %> \
-        --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/kubelet.kubeconfig
     kubectl config set-credentials system:nodes:node \
         --client-certificate=$CERTS_DIR/kubelet/cert.pem \
         --client-key=$CERTS_DIR/kubelet/key.pem \
         --embed-certs=true \
-        --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/kubelet.kubeconfig
     kubectl config set-context default \
         --cluster=<%= link('api').p('cluster.name') %> \
         --user=system:nodes:node \
-        --kubeconfig=$DAT_DIR/kubeconfig
-    kubectl config use-context default --kubeconfig=$DAT_DIR/kubeconfig
+        --kubeconfig=$DAT_DIR/kubelet.kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/kubelet.kubeconfig
     echo
 
     NODENAME="<%= spec.id %>.k8s"
@@ -95,6 +98,25 @@ case $1 in
       KUBELET_OPTIONS="$KUBELET_OPTIONS --provider-id=$PROVIDER_ID"
     fi
 
+    echo "[$(date)] $BIN/$$: setting up our automaton kubeconfig (for updating node providerIDs)..."
+    kubectl config set-cluster <%= link('api').p('cluster.name') %> \
+        --certificate-authority=$JOB_DIR/tls/ca/cert.pem \
+        --embed-certs=true \
+        --server=https://<%= p('apiserver') %> \
+        --kubeconfig=$DAT_DIR/automaton.kubeconfig
+    kubectl config set-credentials automaton \
+        --client-certificate=$CERTS_DIR/automaton/cert.pem \
+        --client-key=$CERTS_DIR/automaton/key.pem \
+        --embed-certs=true \
+        --kubeconfig=$DAT_DIR/automaton.kubeconfig
+    kubectl config set-context default \
+        --cluster=<%= link('api').p('cluster.name') %> \
+        --user=automaton \
+        --kubeconfig=$DAT_DIR/automaton.kubeconfig
+    kubectl config use-context default --kubeconfig=$DAT_DIR/automaton.kubeconfig
+    export KUBECONFIG=$DAT_DIR/automaton.kubeconfig
+    echo
+
     if test -n $PROVIDER_ID && kubectl get node $NODENAME >/dev/null 2>&1; then
       OLD_PROVIDER_ID=$(kubectl get node $NODENAME -o jsonpath --template '{.spec.providerID}')
       if [[ $PROVIDER_ID != $OLD_PROVIDER_ID ]]; then
@@ -110,7 +132,7 @@ case $1 in
            --container-runtime=remote \
            --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock \
            --image-pull-progress-deadline=2m \
-           --kubeconfig=$DAT_DIR/kubeconfig \
+           --kubeconfig=$DAT_DIR/kubelet.kubeconfig \
            --network-plugin=cni \
            --register-node=true \
            --register-with-taints=<%= taints.join(',') %> \

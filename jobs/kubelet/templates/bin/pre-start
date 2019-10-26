@@ -78,6 +78,12 @@ gencert "$ID" \
         127.0.0.1,<%= spec.ip %>,<%= spec.id %>.k8s \
         kubelet
 
+echo "[$(date)] $BIN/$$: issuing the Automaton Client certificate"
+gencert automaton \
+        system:masters \
+        system:masters \
+        automaton
+
 echo "[$(date)] $BIN/$$: issuing the Proxy certificate"
 gencert system:kube-proxy \
         system:node-proxier \
