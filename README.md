@@ -55,6 +55,37 @@ These are found in the `manifests/` directory, and can be deployed
 without further pre-processing (no Spruce... yet).
 
 
+Deployment Dependency
+---------------------
+
+In order to perform activites on the pods which require DNS lookups, such as `kubectl exec` or `kubectl pods`, BOSH DNS must be deployed.  The easiest way of doing this is by adding BOSH DNS to your Runtime Config. An example of a Runtime Config with BOSH DNS can be found [here at bosh.io](https://github.com/cloudfoundry/bosh-deployment/blob/master/runtime-configs/dns.yml).
+
+
+Post Deployment
+---------------
+
+Once Kubernetes is deployed you will likely want to connect to it with `kubectl` from a jumpbox or laptop but you need a configuration for that.  Fortunately there is a jumpbox script which generates the configuration.  From one of the `control` instances run the following as `root`:
+
+```
+. /var/vcap/jobs/jumpbox/envrc
+```
+
+This will generate a long-lived cluster cert, user client cert and client key and make these available in an environment variable named `KUBECONFIG`.  From this `control` node you are now authenticated and `kubectl` is also added to the `PATH` for the current BOSH SSH session.  
+
+Get the contents of this variable on the control instance by running:
+
+```
+cat $KUBECONFIG
+```
+
+On your jumpbox or anywhere else you need a `kubectl` configuration file, write out the contents to a file (such as `my-bosh-deployed-k8s-config-file.yaml`) and then source the file similar to:
+
+```
+export KUBECONFIG=$PWD/my-bosh-deployed-k8s-config-file.yaml
+```
+
+
+
 Contributing
 ------------
 
