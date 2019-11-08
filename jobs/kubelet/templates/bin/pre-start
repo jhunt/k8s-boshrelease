@@ -8,6 +8,7 @@ JOB_DIR=/var/vcap/jobs/$JOB
 CERTS_DIR=/var/vcap/data/k8s/certs
 DAT_DIR=/var/vcap/data/k8s
 TMP_DIR=$DAT_DIR/tmp/$JOB
+NODENAME=$($JOB_DIR/bin/nodename)
 
 # put cfssl in our path
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
@@ -71,11 +72,11 @@ EOF
   echo
 }
 
-ID="system:node:<%= spec.id %>.k8s"
+ID="system:node:$NODENAME"
 echo "[$(date)] $BIN/$$: issuing the Kubelet certificate for [$ID]"
 gencert "$ID" \
         system:nodes \
-        127.0.0.1,<%= spec.ip %>,<%= spec.id %>.k8s \
+        127.0.0.1,<%= spec.ip %>,$NODENAME \
         kubelet
 
 echo "[$(date)] $BIN/$$: issuing the Automaton Client certificate"

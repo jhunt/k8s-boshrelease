@@ -83,8 +83,7 @@ case $1 in
     kubectl config use-context default --kubeconfig=$DAT_DIR/kubelet.kubeconfig
     echo
 
-    NODENAME="<%= spec.id %>.k8s"
-    echo "[$(date)] $BIN/$$: setting hostname to $NODENAME..."
+    NODENAME=$($JOB_DIR/bin/nodename)
     hostname $NODENAME
 
     PROVIDER_ID=
@@ -132,6 +131,7 @@ case $1 in
       echo "[$(date)] $BIN/$$: unable to determine if we need to update providerID; skipping..."
     fi
 
+    <% cpi = link('cloud-provider').p('cloud-provider.type', '') -%>
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
     exec kubelet <% labels.each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
@@ -143,9 +143,10 @@ case $1 in
            --network-plugin=cni \
            --register-node=true \
            --register-with-taints=<%= taints.join(',') %> \
-           --hostname-override=<%= spec.id %>.k8s \
+           --hostname-override=$NODENAME \
            --root-dir=/var/vcap/store/kubelet/ \
-           <% if link('cloud-provider').p('cloud-provider.type', '') != '' %>--cloud-provider=<%= link('cloud-provider').p('cloud-provider.type') %> --cloud-config=/var/vcap/jobs/kubelet/etc/cloud-config <% end %>\
+           <% if cpi != '' %>--cloud-provider=<%= cpi %> <% end %>\
+           <% if cpi == 'vsphere' %>--cloud-config=/var/vcap/jobs/kubelet/etc/cloud-config <% end %>\
            $KUBELET_OPTIONS \
            --v=2 <% p('kubelet.flags', []).each do |kv| %><% kv.each do |flag,value| %>--<%= flag %>="<%= value.to_s.gsub(/"/, '\\"') %>" <% end %><% end %>
     echo "[$(date)] $BIN/$$: exec failed!"

@@ -31,6 +31,8 @@ consumes:
     type: k8s-cloud-provider
 
 templates:
+  bin/nodename:     bin/nodename
+
   bin/pre-start:    bin/pre-start
   tls/ca/cert.pem:  tls/ca/cert.pem
   tls/ca/key.pem:   tls/ca/key.pem
