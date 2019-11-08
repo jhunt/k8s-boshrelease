@@ -25,7 +25,7 @@ instance_groups:
             flags:
               - audit-log-maxage: 5
             additional-sans:
-              - 10.128.19.1
+              - 10.245.0.1
             audit-policy:
               apiVersion: audit.k8s.io/v1
               kind: Policy
@@ -33,12 +33,6 @@ instance_groups:
                 - level: Request
           cluster:
             name: labernetes
-            dns:  10.128.19.2
-          networks:
-            nodes:    10.128.16.0/24
-            services: 10.128.19.0/24
-            pods:     10.128.20.0/23
-            podmask:  /25
           encryption:
             key: ((encryption-key))
           tls:

@@ -36,7 +36,9 @@ instance_groups:
         properties:
           vrrp:
             id: 241
-            ip: 10.128.16.241
+            ip: ((virtual-ip))
+
+
 
   - name:      control
     instances: 3
@@ -62,15 +64,10 @@ instance_groups:
               - control.default
           apiserver:
             additional-sans:
-              - 10.128.23.1
-              - 10.128.16.241
+              - 10.245.0.1
+              - ((virtual-ip))
           cluster:
             name: hugernetes
-            dns:  10.128.23.2
-          networks:
-            nodes:    10.128.16.0/24
-            services: 10.128.23.0/24
-            pods:     10.128.32.0/21
           encryption:
             key: ((encryption-key))
           tls:
@@ -89,13 +86,15 @@ instance_groups:
       - name: kubelet
         release: k8s
         properties:
-          apiserver: 10.128.16.241
+          apiserver: ((virtual-ip))
           master: true
 
       - name: jumpbox
         release: k8s
       - name: smoke-tests
         release: k8s
+
+
 
   - name:      node
     instances: 5
@@ -121,11 +120,13 @@ instance_groups:
       - name: kubelet
         release: k8s
         properties:
-          apiserver: 10.128.16.241
+          apiserver: ((virtual-ip))
       - name: nfs
         release: k8s
 
 variables:
+  - name: virtual-ip
+
   - name: tls-ca
     type: certificate
     options:

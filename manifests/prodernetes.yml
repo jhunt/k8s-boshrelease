@@ -18,7 +18,7 @@ instance_groups:
         properties:
           vrrp:
             id: 240
-            ip: 10.128.16.240
+            ip: ((virtual-ip))
 
   - name:      control
     instances: 3
@@ -47,14 +47,9 @@ instance_groups:
           apiserver:
             additional-sans:
               - 10.245.0.1
-              - 10.128.16.240
+              - ((virtual-ip))
           cluster:
             name: prodernetes
-            dns:  10.245.0.2
-          networks:
-            nodes:    10.128.16.0/24
-            services: 10.245.0.0/24
-            pods:     10.244.0.0/16
           encryption:
             key: ((encryption-key))
           tls:
@@ -73,7 +68,7 @@ instance_groups:
       - name: kubelet
         release: k8s
         properties:
-          apiserver: 10.128.16.240
+          apiserver: ((virtual-ip))
           master: true
 
       - name: jumpbox
@@ -105,11 +100,13 @@ instance_groups:
       - name: kubelet
         release: k8s
         properties:
-          apiserver: 10.128.16.240
+          apiserver: ((virtual-ip))
       - name: nfs
         release: k8s
 
 variables:
+  - name: virtual-ip
+
   - name: tls-ca
     type: certificate
     options:

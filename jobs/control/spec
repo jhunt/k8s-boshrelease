@@ -130,6 +130,7 @@ properties:
     description: A public IP for this cluster, for routing internal traffic.
 
   cluster.dns:
+    default: 10.245.0.2
     description: |
       A Service IP address (in networks.services) to host Core DNS services on.
 
@@ -151,11 +152,13 @@ properties:
     description: A random key to use for encrypting secrets and other data at-rest.
 
   networks.services:
+    default: 10.245.0.0/24
     description: |
       Network CIDR range to use for Service IP allocation.
       This must NOT overlap with networks.pods.
 
   networks.pods:
+    default: 10.244.0.0/16
     description: |
       Network CIDR range to use for Pod IP allocation, across the entire cluster.
       This must be large enough to allocate enough contiguous network ranges (see
@@ -179,7 +182,14 @@ properties:
 
   networks.nodes:
     description: |
-      Network CIDR range that the Kubernetes nodes are deployed into.
+      Network CIDR range that the Kubernetes nodes are deployed into.  This is used
+      by the IPVS-mode kube-proxy container to (a) set up the virtual servers for
+      NodePort backhaul routing, and (b) to bind the static ports on the node itself
+      so that NodePort services can be access at $NODE-IP:$NODE-PORT.
+
+      This is optional.  If you leave it blank, the kube-proxy will bind on ALL
+      interfaces.  If you want to specify multiple ranges (or single /32 addresses),
+      use a YAML list, instead of a string.
 
   kubelet.instance-groups:
     default: [node.default]
