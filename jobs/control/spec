@@ -191,7 +191,7 @@ properties:
       non-homogenous environment of virtual machine sizes / stemcells / etc.
 
   images.kube-proxy:
-    default: docker.io/huntprod/k8s-bosh-kube-proxy:1.14.0
+    default: docker.io/huntprod/k8s-bosh-kube-proxy:1.16.2
     description: |
       Where to pull the k8s BOSH release Docker image for kube-proxy.
       If you need to run in an air-gapped network, or just want to inspect the contents

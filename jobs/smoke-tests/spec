@@ -34,7 +34,7 @@ properties:
     description: How long (in seconds) to wait for the test pod to boot up.
 
   image:
-    default: docker.io/huntprod/k8s-bosh-smoke-test:1.14.0
+    default: docker.io/huntprod/k8s-bosh-smoke-test:1.16.2
     description: |
       Where to pull the k8s BOSH release Docker image for smoke tests.
       If you need to run in an air-gapped network, or just want to inspect the contents
