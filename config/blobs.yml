@@ -18,10 +18,10 @@ containerd/crictl-v1.14.0-linux-amd64.tar.gz:
   size: 12046561
   object_id: 48172c70-dfe0-4f62-511f-540341affb01
   sha: 425d2b713cce726e3beecf9b3002111ffa06b6cb
-etcd/etcd-v3.3.13-linux-amd64.tar.gz:
-  size: 10423953
-  object_id: f433cc51-01a9-4d93-5476-513a53945de1
-  sha: edb7a4bb97dc6480833288d1c5ad7ec4156881ae
+etcd/etcd-v3.3.14-linux-amd64.tar.gz:
+  size: 14166291
+  object_id: c6bb6d59-5f62-456f-5439-3b4b371af5eb
+  sha: 15aa6d9f1f869f341e81a7b6463d9bcf7e8eaf7a
 ipvsadm/ipvsadm-1.30.tar.gz:
   size: 48183
   object_id: 19736942-a2cc-4464-6364-07dce0f01cd4
