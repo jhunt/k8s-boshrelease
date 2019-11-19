@@ -24,7 +24,7 @@ popd
 # http://www.linuxvirtualserver.org/software/ipvs.html
 tar -xzf ipvsadm/ipvsadm-1.30.tar.gz
 pushd ipvsadm-1.30
-make -j$CPUS CFLAGS="-fPIC -static" all
+make CFLAGS="-fPIC -static" all
 mv ipvsadm ${BOSH_INSTALL_TARGET}/bin
 chmod 0755 ${BOSH_INSTALL_TARGET}/bin
 popd
