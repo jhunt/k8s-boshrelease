@@ -2,3 +2,4 @@
 set -ex
 
 cp -a ${BOSH_COMPILE_TARGET}/nfs-*-debs ${BOSH_INSTALL_TARGET}/
+cp -a ${BOSH_COMPILE_TARGET}/nfs-*-rpms ${BOSH_INSTALL_TARGET}/

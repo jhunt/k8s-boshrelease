@@ -2,6 +2,30 @@
 set -eu
 exec 2>&1
 
-echo "[$(date)] $$: shutting down NFS..."
-/etc/init.d/nfs-kernel-server stop
-echo "[$(date)] $$: complete."
+
+os=$(cat /var/vcap/bosh/etc/operating_system)
+case "$os" in
+ubuntu)
+  echo "[$(date)] $$: shutting down NFS..."
+  /etc/init.d/nfs-kernel-server stop
+  exit 0
+  ;;
+
+centos)
+  echo "[$(date)] $$: shutting down NFS..."
+  systemctl stop rpcidmapd   || true
+  systemctl stop rpc-statd   || true
+  systemctl stop nfslock     || true
+  systemctl stop nfs-idmapd  || true
+  systemctl stop nfs-idmap   || true
+  systemctl stop nfs-utils   || true
+  systemctl stop nfs-server  || true
+  systemctl stop nfs         || true
+  echo "[$(date)] $$: complete."
+  ;;
+
+*)
+  echo "This BOSH Stemcell ('$os' os) is not supported!"
+  exit 1
+  ;;
+esac

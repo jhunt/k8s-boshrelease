@@ -8,7 +8,7 @@ description: |
   and sets up rpcbind / idmap; it does NOT configure any exports.
 
 packages:
-  - nfs-debs
+  - nfs-packages
 
 templates:
   bin/pre-start: bin/pre-start

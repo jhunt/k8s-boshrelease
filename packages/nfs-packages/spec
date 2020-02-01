@@ -1,5 +1,5 @@
 ---
-name: nfs-debs
+name: nfs-packages
 dependencies: []
 files:
   - nfs-trusty-debs/libkeyutils1_1.5.6-1_amd64.deb
@@ -17,3 +17,17 @@ files:
   - nfs-xenial-debs/nfs-common_1.2.8-9ubuntu12_amd64.deb
   - nfs-xenial-debs/nfs-kernel-server_1.2.8-9ubuntu12_amd64.deb
 
+  # centos-7
+  - nfs-c7-rpms/libnfsidmap-0.25-19.el7.x86_64.rpm
+  - nfs-c7-rpms/libevent-2.0.21-4.el7.x86_64.rpm
+  - nfs-c7-rpms/rpcbind-0.2.0-48.el7.x86_64.rpm
+  - nfs-c7-rpms/quota-4.01-19.el7.x86_64.rpm
+  - nfs-c7-rpms/libbasicobjects-0.1.1-32.el7.x86_64.rpm
+  - nfs-c7-rpms/libcollection-0.7.0-32.el7.x86_64.rpm
+  - nfs-c7-rpms/libref_array-0.1.5-32.el7.x86_64.rpm
+  - nfs-c7-rpms/libpath_utils-0.2.1-32.el7.x86_64.rpm
+  - nfs-c7-rpms/libini_config-1.3.1-32.el7.x86_64.rpm
+  - nfs-c7-rpms/libverto-libevent-0.2.5-4.el7.x86_64.rpm
+  - nfs-c7-rpms/gssproxy-0.7.0-26.el7.x86_64.rpm
+  - nfs-c7-rpms/keyutils-1.5.8-3.el7.x86_64.rpm
+  - nfs-c7-rpms/nfs-utils-1.3.0-0.65.el7.x86_64.rpm

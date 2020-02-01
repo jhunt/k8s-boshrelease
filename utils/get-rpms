@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+mkdir -p nfs-c7-rpms
+pushd nfs-c7-rpms >/dev/null 2>&1
+for each in \
+  libnfsidmap-0.25-19 \
+  libevent-2.0.21-4 \
+  rpcbind-0.2.0-48 \
+  quota-4.01-19 \
+  libbasicobjects-0.1.1-32 \
+  libcollection-0.7.0-32 \
+  libref_array-0.1.5-32 \
+  libpath_utils-0.2.1-32 \
+  libini_config-1.3.1-32 \
+  libverto-libevent-0.2.5-4 \
+  gssproxy-0.7.0-26 \
+  keyutils-1.5.8-3 \
+  nfs-utils-1.3.0-0.65
+do
+  pkg=$each.el7.x86_64.rpm
+  echo ">> getting $pkg..."
+  curl -sL -C - -o $pkg http://mirror.centos.org/centos/7/os/x86_64/Packages/$pkg
+done
+popd >/dev/null 2>&1

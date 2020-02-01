@@ -70,6 +70,58 @@ lb/keepalived-2.0.16.tar.gz:
   size: 983376
   object_id: 11420b07-06b6-4a0a-6c1e-820dd546cf8c
   sha: ff85a4fd121564c616de9f41c79b02eaab9aff59
+nfs-c7-rpms/gssproxy-0.7.0-26.el7.x86_64.rpm:
+  size: 112488
+  object_id: 0d84a3ba-c65d-46dd-65df-7667855286de
+  sha: sha256:f76e9698b24159ac3969c7d1f60a76d55acb8438d3cec633784dd4c6345696a0
+nfs-c7-rpms/keyutils-1.5.8-3.el7.x86_64.rpm:
+  size: 54856
+  object_id: db95d016-ad16-4aad-5c74-d025908cb3da
+  sha: sha256:ea4b62eb78f2b76321b1f4bd66a699a4e25fa7fa6b421008fbecc549f18857e4
+nfs-c7-rpms/libbasicobjects-0.1.1-32.el7.x86_64.rpm:
+  size: 26268
+  object_id: 0a9c91c6-55e3-4696-72bf-cf62e3aa808b
+  sha: sha256:e31425945dc2b82c6a8e81053da5811bb09a18d1927609b0ce1a9f1ee017c3a0
+nfs-c7-rpms/libcollection-0.7.0-32.el7.x86_64.rpm:
+  size: 42604
+  object_id: 700fbcd5-9f88-4b47-5dc8-4b5863ab9436
+  sha: sha256:b41779c27434eb4e60f7d7512e6de3c3a1113142fac946b76b263afdb4e19f12
+nfs-c7-rpms/libevent-2.0.21-4.el7.x86_64.rpm:
+  size: 219068
+  object_id: 5049b240-f962-46d1-74c2-c79598214809
+  sha: sha256:ea69be98106a9d142ba5027de326e85086bd31c22e764fbc7287207dd60bb542
+nfs-c7-rpms/libini_config-1.3.1-32.el7.x86_64.rpm:
+  size: 65172
+  object_id: 744e341d-5a50-4ea4-587b-13576f147870
+  sha: sha256:1a9c9e36bf4d39e9b2113040c68c9a8afd687e41eb4b0162f6dc01ea3a249190
+nfs-c7-rpms/libnfsidmap-0.25-19.el7.x86_64.rpm:
+  size: 51000
+  object_id: eccf3bfe-fd64-41d3-619a-e4a5d3a40e74
+  sha: sha256:c46b277ede93c8a726c8369aed90722bcbaeaabff72d42701a3ef2941e835c7d
+nfs-c7-rpms/libpath_utils-0.2.1-32.el7.x86_64.rpm:
+  size: 28960
+  object_id: 4203bb76-0371-4331-52f5-8a9174ac1b68
+  sha: sha256:2dc53732b8228e11664ee52d7e7ed81f77846662d810f044cfe3ee8e672c306f
+nfs-c7-rpms/libref_array-0.1.5-32.el7.x86_64.rpm:
+  size: 27700
+  object_id: 3c12d508-4f4d-4f80-67f6-170c33579d02
+  sha: sha256:30ef379dc9e1e3de38d37800f40abfb04722d3e2b764f7822c4b879da10933cd
+nfs-c7-rpms/libverto-libevent-0.2.5-4.el7.x86_64.rpm:
+  size: 9108
+  object_id: c4d0af9c-a4fc-4ae7-7cab-dbbbbca44437
+  sha: sha256:a85824d374912a3f06e5e8e592d66d604b9387f1ae5fd281af8cc297ebf47d0a
+nfs-c7-rpms/nfs-utils-1.3.0-0.65.el7.x86_64.rpm:
+  size: 421648
+  object_id: db2027a2-5ae0-42ce-6cd3-ca2a6a5acc31
+  sha: sha256:3702c649b9da4231732bbcd9996be8b13846870b5ccc9a25c2fa473568acd89c
+nfs-c7-rpms/quota-4.01-19.el7.x86_64.rpm:
+  size: 182932
+  object_id: 9aa4f1aa-541b-4f04-714b-a6483989990c
+  sha: sha256:292a888e6ae42efd943340f7712df3ac5288c9627adb246d2a6a6fe79379c943
+nfs-c7-rpms/rpcbind-0.2.0-48.el7.x86_64.rpm:
+  size: 61400
+  object_id: bcf35362-8131-45d0-71ff-1020833d8d3e
+  sha: sha256:30491f6d238cf8ac2e468df1a982740dc5e0b63438aba5841a562cce7587a6e6
 nfs-trusty-debs/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.2_amd64.deb:
   size: 126342
   object_id: 690fc181-a47d-44cd-4382-0f75814d968c
