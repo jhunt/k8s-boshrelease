@@ -67,18 +67,18 @@ kubectl config set-cluster <%= link('api').p('cluster.name') %> \
   --server=https://<%= apiserver %>:6443 \
   --kubeconfig=$KUBECONFIG
 
-kubectl config set-credentials admin \
+kubectl config set-credentials admin@<%= link('api').p('cluster.name') %> \
   --client-certificate=$DAT_DIR/jumpbox.pem \
   --client-key=$DAT_DIR/jumpbox-key.pem \
   --embed-certs=true \
   --kubeconfig=$KUBECONFIG
 
-kubectl config set-context default \
+kubectl config set-context <%= link('api').p('cluster.name') %> \
   --cluster=<%= link('api').p('cluster.name') %> \
-  --user=admin \
+  --user=admin@<%= link('api').p('cluster.name') %> \
   --kubeconfig=$KUBECONFIG
 
-kubectl config use-context default \
+kubectl config use-context <%= link('api').p('cluster.name') %> \
   --kubeconfig=$KUBECONFIG
 
 echo
