@@ -19,7 +19,7 @@ export PATH=$PATH:/var/vcap/packages/k8s/bin
 echo "[$(date)] $BIN/$$: regenerating certificates..."
 rm -rf $TMP_DIR
 mkdir -p $CERTS_DIR $DAT_DIR $TMP_DIR
-pushd $TMP_DIR 2>/dev/null 2>&1
+pushd $TMP_DIR >/dev/null 2>&1
 
 echo "[$(date)] $BIN/$$: configuring ca parameters"
 cat > ca.json <<EOF
