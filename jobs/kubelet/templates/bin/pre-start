@@ -16,6 +16,29 @@ export PATH=$PATH:/var/vcap/packages/cfssl/bin
 # put kube-* in our path
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 
+echo "[$(date)] $BIN/$$: setting up system trusted certificate authority..."
+case "$(cat /var/vcap/bosh/etc/operating_system)" in
+ubuntu)
+  # N.B.: Ubuntu's `update-ca-certificates` only recognized the `.crt` extension...
+  echo "[$(date)] $BIN/$$: detected ubuntu stemcell: copying to /usr/local/share/ca-certificates/ ..."
+  cp -v $JOB_DIR/tls/ca/cert.pem /usr/local/share/ca-certificates/k8s-boshrelease.crt
+  echo "[$(date)] $BIN/$$: detected ubuntu stemcell: running update-ca-certificates ..."
+  update-ca-certificates
+  ;;
+
+centos)
+  echo "[$(date)] $BIN/$$: detected centos stemcell: copying to /etc/pki/ca-trust/source/anchors/ ..."
+  cp -v $JOB_DIR/tls/ca/cert.pem /etc/pki/ca-trust/source/anchors/k8s-boshrelease.crt
+  echo "[$(date)] $BIN/$$: detected centos stemcell: running update-ca-trust ..."
+  update-ca-trust
+  ;;
+
+*)
+  echo "[$(date)] $BIN/$$: unrecognized stemcell: $(cat /var/vcap/bosh/etc/operating_system)"
+  ;;
+esac
+echo
+
 echo "[$(date)] $BIN/$$: regenerating certificates..."
 rm -rf $TMP_DIR
 mkdir -p $CERTS_DIR $DAT_DIR $TMP_DIR
