@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-VERSION=${VERSION:-1.14.0}
+VERSION=${VERSION:-1.17.2}
 
 rm -rf tmp; mkdir tmp
 for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
@@ -9,34 +9,42 @@ for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
   bosh add-blob tmp/$x k8s/$x
 done
 
-what=containerd-1.2.6.linux-amd64.tar.gz
-curl -Lo tmp/${what} https://github.com/containerd/containerd/releases/download/v1.2.6/${what}
+v=1.3.2
+what=containerd-${v}.linux-amd64.tar.gz
+curl -Lo tmp/${what} https://github.com/containerd/containerd/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
 
-what=cni-plugins-linux-amd64-v0.8.1.tgz
-curl -Lo tmp/${what} https://github.com/containernetworking/plugins/releases/download/v0.8.1/${what}
+v=0.8.5
+what=cni-plugins-linux-amd64-v${v}.tgz
+curl -Lo tmp/${what} https://github.com/containernetworking/plugins/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
 
-what=crictl-v1.14.0-linux-amd64.tar.gz
-curl -Lo tmp/${what} https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.14.0/${what}
+v=1.17.0
+what=crictl-v${v}-linux-amd64.tar.gz
+curl -Lo tmp/${what} https://github.com/kubernetes-sigs/cri-tools/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
 
+v=1.0.0-rc10
 what=runc
-curl -Lo tmp/${what} https://github.com/opencontainers/runc/releases/download/v1.0.0-rc8/runc.amd64
+curl -Lo tmp/${what} https://github.com/opencontainers/runc/releases/download/v${v}/runc.amd64
 bosh add-blob tmp/${what} runtime-runc/${what}
 
+v=
 what=runsc
 curl -Lo tmp/${what} https://storage.googleapis.com/kubernetes-the-hard-way/runsc-50c283b9f56bb7200938d9e207355f05f79f0d17
 bosh add-blob tmp/${what} runtime-runc/${what}
 
-what=etcd-v3.3.13-linux-amd64.tar.gz
-curl -Lo tmp/${what} https://github.com/coreos/etcd/releases/download/v3.3.13/${what}
+v=3.3.13
+what=etcd-v${v}-linux-amd64.tar.gz
+curl -Lo tmp/${what} https://github.com/coreos/etcd/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} etcd/${what}
 
+v=
 what=cfssl_linux-amd64
 curl -Lo tmp/${what} https://pkg.cfssl.org/R1.2/${what}
 bosh add-blob tmp/${what} cfssl/${what}
 
+v=
 what=cfssljson_linux-amd64
 curl -Lo tmp/${what} https://pkg.cfssl.org/R1.2/${what}
 bosh add-blob tmp/${what} cfssl/${what}
