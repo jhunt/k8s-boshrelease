@@ -65,7 +65,7 @@ data:
       syncPeriod: 30s
     kind: KubeProxyConfiguration
     metricsBindAddress: 127.0.0.1:10249
-    mode: "ipvs"
+    mode: "<%= p('cluster.proxy-mode') %>"
     nodePortAddresses: <%= nodenets.to_json %>
     oomScoreAdj: -999
     portRange: ""
