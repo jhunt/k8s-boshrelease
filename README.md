@@ -89,13 +89,11 @@ export KUBECONFIG=$PWD/my-bosh-deployed-k8s-config-file.yaml
 Contributing
 ------------
 
-I am not currently accepting unrequested PR's or other
-contributions to this repository.  As I said, this is a personal
-project, for exploring the world of Kubernetes through the lens of
-a BOSH director.
-
 If you find this, and manage to get it to work for you, great!
 I'd love to hear from you, of your successes and struggles.
+
+If you find a bug, or something doesn't work quite right, please
+open an issue in the GitHub tracker!
 
 [kthw]: https://github.com/kelseyhightower/kubernetes-the-hard-way
 [kubo]: https://github.com/cloudfoundry-incubator/kubo-release
