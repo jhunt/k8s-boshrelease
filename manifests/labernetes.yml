@@ -56,7 +56,6 @@ instance_groups:
         release: k8s
         properties:
           labels:
-            node-role.kubernetes.io/master: ""
             bosh/deployment:     '(deployment)'
             bosh/instance-group: '(name)'
             bosh/instance-id:    '(id)'
