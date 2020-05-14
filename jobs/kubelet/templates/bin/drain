@@ -1,0 +1,39 @@
+#!/bin/bash
+<% if p('drain') %>
+set -eu
+exec 3>&1
+exec 1>&2
+
+JOB=kubelet
+BIN=drain
+JOB_DIR=/var/vcap/jobs/$JOB
+DAT_DIR=/var/vcap/data/k8s/$JOB
+NODENAME=$($JOB_DIR/bin/nodename)
+
+# put kube-* in our path
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+export KUBECONFIG=$DAT_DIR/automaton.kubeconfig
+
+if pgrep -x kubelet; then
+  echo "[$(date)] $BIN/$$: [$NODENAME] currently running the following pods:"
+  kubectl get pod -A
+  echo "[$(date)] $BIN/$$: [$NODENAME] draining this kubernetes node"
+  kubectl drain $NODENAME
+  echo "[$(date)] $BIN/$$: [$NODENAME] drain complete; the following pods remain:"
+  kubectl get pod -A
+  echo "[$(date)] $BIN/$$: [$NODENAME] drain script exiting 0."
+else
+  echo "[$(date)] $BIN/$$: [$NODENAME] kubelet not running; skipping drain..."
+fi
+
+# BOSH expects a literal '0' printed on stdout, to indicate
+# that the drain was successful.  Since we can't print anything
+# else to stdout, we redirect fd 3 to the terminal, and redirect
+# fd 1 off to stderr (1>&2).. Printing to &3 is "stdout" for BOSH.
+echo >&3 "0"
+exit 0
+<% else %>
+# skipping drain...
+echo "0"
+exit 0
+<% end %>

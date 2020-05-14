@@ -41,10 +41,20 @@ templates:
   etc/kubelet.yml:  etc/kubelet.yml
   etc/cloud-config: etc/cloud-config
 
+  bin/drain:        bin/drain
+
 properties:
   debug:
     default:     false
     description: Enables verbose debugging, suitable for troubleshooting.
+
+  drain:
+    default: true
+    description: |
+      This kubelet job now has the ability to issue a `kubectl drain` as a BOSH drain script,
+      ensuring that pods are evicted before a kubelet node is shut down or restarted.  If for
+      whatever reason you want the legacy behavior, you can set this to false, and BOSH will
+      **not** drain off the kubelet before shutting down the process.
 
   apiserver:
     default: '127.0.0.1:6443'
