@@ -1,0 +1,50 @@
+#!/bin/bash
+set -eu
+<%
+
+def slugify(s)
+  return s.gsub('(deployment)', spec.deployment)
+          .gsub('(name)',       spec.name)
+          .gsub('(id)',         spec.id)
+end
+-%>
+
+#
+# Add ex post facto labels (like node-role.kubernetes.io/master)
+# since it is verboten to specify those in the --node-labels flag
+# of kubelet.
+#
+
+JOB=kubelet
+BIN=post-deploy
+LOG_DIR=/var/vcap/sys/log/$JOB
+JOB_DIR=/var/vcap/jobs/$JOB
+DAT_DIR=/var/vcap/data/k8s/$JOB
+exec >>$LOG_DIR/$BIN.log 2>&1
+
+NODENAME=$($JOB_DIR/bin/nodename)
+
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+export KUBECONFIG=$DAT_DIR/automaton.kubeconfig
+
+##################################################
+#
+# (deployment) = '<%= slugify('(deployment)') %>'
+# (name)       = '<%= slugify('(name)') %>'
+# (id)         = '<%= slugify('(id)') %>'
+#
+##################################################
+
+<%
+
+labels = p('labels', [])
+if p('master') && !labels.has_key?('node-role.kubernetes.io/master')
+  labels['node-role.kubernetes.io/master'] = ''
+end
+
+%>
+<% labels.each do |label, value| %>
+# label '<%= label %>=<%= value %>'
+kubectl label --overwrite node $NODENAME "<%= slugify(label) %>=<%= slugify(value) %>"
+
+<% end %>

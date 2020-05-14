@@ -16,13 +16,6 @@ exec >>$LOG_DIR/$BIN.log 2>&1
 
 <%
 
-def slugify(s)
-  return s.gsub('(deployment)', spec.deployment)
-          .gsub('(name)',       spec.name)
-          .gsub('(id)',         spec.id)
-end
-
-labels = p('labels', [])
 taints = p('taints', {})
 
 if p('master')
@@ -134,7 +127,7 @@ case $1 in
     <% cpi = link('cloud-provider').p('cloud-provider.type', '') -%>
     echo "[$(date)] $BIN/$$: starting up kubelet..."
     echo $$ > $PIDFILE
-    exec kubelet <% labels.each do |label, value| %>--node-labels "<%= slugify(label) %>=<%= slugify(value) %>" <% end %>\
+    exec kubelet \
            --config=$JOB_DIR/etc/kubelet.yml \
            --container-runtime=remote \
            --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock \

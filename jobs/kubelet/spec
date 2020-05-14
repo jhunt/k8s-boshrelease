@@ -41,6 +41,8 @@ templates:
   etc/kubelet.yml:  etc/kubelet.yml
   etc/cloud-config: etc/cloud-config
 
+  bin/post-deploy:  bin/post-deploy
+
   bin/drain:        bin/drain
 
 properties:
@@ -84,8 +86,9 @@ properties:
       (potentially node-specific) values: the deployment name, the instance group name,
       and the instance group UUID, respectively.
 
-      This property only takes effect on the initial deploy.  To manage taints and labels
-      after deployment, please refer to the `kubectl' command-line help.
+      This is an _additive_ property; it only ever creates or updates node labels.
+      If you remove a label and re-deploy, you will see no effect.  To remove labels
+      that you no longer want or need, please refer to the `kubectl' command-line help.
 
   taints:
     default: []
