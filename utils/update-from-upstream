@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-VERSION=${VERSION:-1.17.2}
+VERSION=${VERSION:-1.18.0}
 
 rm -rf tmp; mkdir tmp
 for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
@@ -9,17 +9,17 @@ for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
   bosh add-blob tmp/$x k8s/$x
 done
 
-v=1.3.2
+v=1.3.4
 what=containerd-${v}.linux-amd64.tar.gz
 curl -Lo tmp/${what} https://github.com/containerd/containerd/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
 
-v=0.8.5
+v=0.8.6
 what=cni-plugins-linux-amd64-v${v}.tgz
 curl -Lo tmp/${what} https://github.com/containernetworking/plugins/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
 
-v=1.17.0
+v=1.18.0
 what=crictl-v${v}-linux-amd64.tar.gz
 curl -Lo tmp/${what} https://github.com/kubernetes-sigs/cri-tools/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} containerd/${what}
@@ -34,7 +34,7 @@ what=runsc
 curl -Lo tmp/${what} https://storage.googleapis.com/kubernetes-the-hard-way/runsc-50c283b9f56bb7200938d9e207355f05f79f0d17
 bosh add-blob tmp/${what} runtime-runc/${what}
 
-v=3.3.13
+v=3.4.7
 what=etcd-v${v}-linux-amd64.tar.gz
 curl -Lo tmp/${what} https://github.com/coreos/etcd/releases/download/v${v}/${what}
 bosh add-blob tmp/${what} etcd/${what}
