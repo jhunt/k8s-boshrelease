@@ -22,7 +22,7 @@ release:
 	git add releases/k8s .final_builds
 	git commit -m "Release v$(VERSION)"
 	git tag v$(VERSION)
-	git stash pop
+	git stash pop || true
 
 certs:
 	# etcd
