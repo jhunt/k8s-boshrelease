@@ -20,7 +20,7 @@ if pgrep -x kubelet; then
   echo "[$(date)] $BIN/$$: [$NODENAME] currently running the following pods:"
   kubectl get pod -A
   echo "[$(date)] $BIN/$$: [$NODENAME] draining this kubernetes node"
-  kubectl drain $NODENAME
+  kubectl drain --ignore-daemonsets $NODENAME
   echo "[$(date)] $BIN/$$: [$NODENAME] drain complete; the following pods remain:"
   kubectl get pod -A
   echo "[$(date)] $BIN/$$: [$NODENAME] drain script exiting 0."
