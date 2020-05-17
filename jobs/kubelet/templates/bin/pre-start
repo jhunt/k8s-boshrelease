@@ -10,25 +10,58 @@ DAT_DIR=/var/vcap/data/k8s
 TMP_DIR=$DAT_DIR/tmp/$JOB
 NODENAME=$($JOB_DIR/bin/nodename)
 
+# an arbitrary file name prefix, to avoid collision
+CERT_PREFIX=k8s-0118-999-881-999-119-725-3-cert
+
 # put cfssl in our path
 export PATH=$PATH:/var/vcap/packages/cfssl/bin
 
 # put kube-* in our path
 export PATH=$PATH:/var/vcap/packages/k8s/bin
 
-echo "[$(date)] $BIN/$$: setting up system trusted certificate authority..."
+<%
+
+  trusted = [link('api').p('tls.trusted', [])]
+  cm = link('api').p('cert-manager.ca.certificate', '')
+  if cm.strip != "" then
+    trusted.push(cm)
+  end
+  trusted.flatten!
+
+%>
+echo "[$(date)] $BIN/$$: setting up system trusted certificate authorities..."
 case "$(cat /var/vcap/bosh/etc/operating_system)" in
 ubuntu)
-  # N.B.: Ubuntu's `update-ca-certificates` only recognized the `.crt` extension...
-  echo "[$(date)] $BIN/$$: detected ubuntu stemcell: copying to /usr/local/share/ca-certificates/ ..."
+  # N.B.: Ubuntu's `update-ca-certificates` only recognizes the `.crt` extension...
+  echo "[$(date)] $BIN/$$: detected ubuntu stemcell: copying cluster ca certificate to /usr/local/share/ca-certificates/ ..."
   cp -v $JOB_DIR/tls/ca/cert.pem /usr/local/share/ca-certificates/k8s-boshrelease.crt
+
+  echo "[$(date)] $BIN/$$: detected ubuntu stemcell: installing <%= trusted.size %> auxiliary trusted certificate(s) to /usr/local/share/ca-certificates/ ..."
+  rm -f /usr/local/share/ca-certificates/$CERT_PREFIX*.crt
+  <% trusted.each_with_index do |pem, n| %>
+  cat <<EOF > /usr/local/share/ca-certificates/${CERT_PREFIX}<%= n %>.crt
+<%= pem %>
+EOF
+
+  <%- end %>
+
   echo "[$(date)] $BIN/$$: detected ubuntu stemcell: running update-ca-certificates ..."
   update-ca-certificates
   ;;
 
 centos)
-  echo "[$(date)] $BIN/$$: detected centos stemcell: copying to /etc/pki/ca-trust/source/anchors/ ..."
+  echo "[$(date)] $BIN/$$: detected centos stemcell: copying cluster ca certificate to /etc/pki/ca-trust/source/anchors/ ..."
   cp -v $JOB_DIR/tls/ca/cert.pem /etc/pki/ca-trust/source/anchors/k8s-boshrelease.crt
+
+  echo "[$(date)] $BIN/$$: detected centos stemcell: installing <%= trusted.size %> auxiliary trusted certificate(s) to /etc/pki/ca-trust/source/anchors/ ..."
+  rm -f /etc/pki/ca-trust/source/anchors/$CERT_PREFIX*.crt
+  <% trusted.each_with_index do |pem, n| %>
+  cat <<EOF >/etc/pki/ca-trust/source/anchors/${CERT_PREFIX}<%= n %>.crt
+<%= pem %>
+EOF
+
+  <%- end %>
+
   echo "[$(date)] $BIN/$$: detected centos stemcell: running update-ca-trust ..."
   update-ca-trust
   ;;

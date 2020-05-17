@@ -55,6 +55,7 @@ provides:
       - networks.nodes
       - tls.ca.certificate
       - tls.ca.key
+      - tls.trusted
 
   - name: cloud-provider
     type: k8s-cloud-provider
@@ -306,6 +307,18 @@ properties:
 
       This key is used by the controller-manager to sign generated Bearer tokens,
       so that the apiserver can validate them (using tls.sa.certificate).
+
+  tls.trusted:
+    default: []
+    description: |
+      A YAML list of trusted Certificate Authority certificates, in PEM format.
+      These will be added to the system bundle so that they will be used as a trust
+      source for X.509 PKI by system components like controller-manager and kubelet.
+
+      Note that you do not have to explicitly list `cert-manager.ca.certificate` or
+      `tls.ca.certificate`.  This is intended primarily for the use case where you
+      cannot (or have not) told the deploying BOSH director about trusted CAs, but
+      still need to trust additional CAs on-box.
 
   cloud-provider.type:
     description: |
