@@ -1,0 +1,23 @@
+#!/bin/bash
+set -eu
+
+#
+# Uncordon this node, so that it can participate in Pod
+# scheduling again.  Since we cordon off in the BOSH drain
+# script via `kubectl drain`, we need to do this here,
+# rather than in post-deploy.
+#
+
+JOB=kubelet
+BIN=post-start
+LOG_DIR=/var/vcap/sys/log/$JOB
+JOB_DIR=/var/vcap/jobs/$JOB
+DAT_DIR=/var/vcap/data/k8s/$JOB
+exec >>$LOG_DIR/$BIN.log 2>&1
+
+NODENAME=$($JOB_DIR/bin/nodename)
+
+export PATH=$PATH:/var/vcap/packages/k8s/bin
+export KUBECONFIG=$DAT_DIR/automaton.kubeconfig
+
+kubectl uncordon $NODENAME || true
