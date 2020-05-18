@@ -56,22 +56,20 @@ kubectl config set-context default \
     --user=admin \
     --kubeconfig=$DAT_DIR/admin.kubeconfig
 kubectl config use-context default --kubeconfig=$DAT_DIR/admin.kubeconfig
+export KUBECONFIG=$DAT_DIR/admin.kubeconfig
 
 <% if !spec.bootstrap %>
 echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
 <% else %>
 echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
-kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/k8s/kube-proxy.yml
+kubectl apply -f $JOB_DIR/k8s/kube-proxy.yml
 
 echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
-kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/k8s/kube-dns.yml
+kubectl apply -f $JOB_DIR/k8s/kube-dns.yml
 
 <% if p('dashboard.enabled') %>
 echo "[$(date)] $BIN/$$: applying kubernetes-dashboard configuration..."
-kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig \
-        apply -f $JOB_DIR/k8s/dashboard.yml
+kubectl apply -f $JOB_DIR/k8s/dashboard.yml
 <% else %>
 echo "[$(date)] $BIN/$$: SKIPPING kubernetes-dashboard configuration..."
 <% end %>
@@ -81,7 +79,7 @@ for yml in /var/vcap/jobs/*/k8s-addons/*.yml; do
   name=${yml%%.yml};          name=${name##*/}
    job=${yml%%/k8s-addons/*};  job=${job##*/}
   echo "[$(date)] $BIN/$$: applying k8s-addon $name (from $job) configuration..."
-  kubectl --kubeconfig=$DAT_DIR/admin.kubeconfig apply -f $yml
+  kubectl apply -f $yml
 done)
 <% end %>
 
