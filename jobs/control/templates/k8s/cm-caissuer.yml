@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+  labels:
+    certmanager.k8s.io/disable-validation: "true"
+
+<% if p('cert-manager.ca.key', '').strip != "" && p('cert-manager.ca.certificate', '').strip != "" %>
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: cert-manager
+  name:      cluster-internal-ca
+stringData:
+  ca.crt: |
+<%= p('cert-manager.ca.certificate', '').gsub(/^/, '    ') %>
+  ca.key: |
+<%= p('cert-manager.ca.key', '').gsub(/^/, '    ') %>
+
+---
+apiVersion: cert-manager.io/v1alpha3
+kind: ClusterIssuer
+metadata:
+  namespace: cert-manager
+  name:      internal-ca
+spec:
+  ca:
+    secretName: cluster-internal-ca
+<% end %>

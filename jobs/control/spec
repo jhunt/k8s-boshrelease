@@ -55,6 +55,8 @@ provides:
       - networks.nodes
       - tls.ca.certificate
       - tls.ca.key
+      - cert-manager.ca.certificate
+      - cert-manager.ca.key
       - tls.trusted
 
   - name: cloud-provider
@@ -84,10 +86,12 @@ templates:
   tls/sa/key.pem:  tls/sa/key.pem
 
   # kube-in-kube
-  bin/post-deploy:    bin/post-deploy
-  k8s/kube-proxy.yml: k8s/kube-proxy.yml
-  k8s/kube-dns.yml:   k8s/kube-dns.yml
-  k8s/dashboard.yml:  k8s/dashboard.yml
+  bin/post-deploy:      bin/post-deploy
+  k8s/kube-proxy.yml:   k8s/kube-proxy.yml
+  k8s/kube-dns.yml:     k8s/kube-dns.yml
+  k8s/cert-manager.yml: k8s/cert-manager.yml
+  k8s/cm-caissuer.yml:  k8s/cm-caissuer.yml
+  k8s/dashboard.yml:    k8s/dashboard.yml
 
   # kube-apiserver
   bin/api:              bin/api
@@ -412,4 +416,25 @@ properties:
       Make sure you understand the security implications of enabling this
       before you do so.
 
+  cert-manager.enabled:
+    default: false
+    description: |
+      Whether or not to install cert-manager (https://cert-manager.io/) on the newly
+      created cluster.
+
+  cert-manager.ca.certificate:
+    description: |
+      An X.509 Certificate Authority for cert-manager to issuer locally-trusted
+      certificates.  This allows webhooks to be deployed with valid certificates,
+      without requiring amore heavy-handed approach like ACME / Let's Encrypt, or
+      manually specifying trusted CAs in BOSH or the `tls.trusted` property.
+
+  cert-manager.ca.key:
+    default: ''
+    description: |
+      The cert-manager X.509 Certificate Authority's RSA private key, in PEM format.
+
+      If present, this will be put in a Kubernetes secret named `cluster-trusted-ca`,
+      under the 'cert-manager' Kubernetes namespace.  This can then be referenced
+      from an Issuer object.
 # vim:ft=yaml
