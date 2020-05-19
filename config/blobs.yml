@@ -39,29 +39,29 @@ jq/jq:
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 120627200
-  object_id: 17f41dc9-3258-4260-489f-d58202df15c3
-  sha: sha256:75eeed1f7d75babd380e1b0ba209db40ce0ef7639243f2637ed3b09b5e5bc8f9
+  size: 120664064
+  object_id: 9ab73e5b-5463-4e4a-521d-67be55e0c664
+  sha: sha256:dd3cac4251812952db82a197c34b0390376583b1f7b04bf561b71c5c28bcdc47
 k8s/kube-controller-manager:
-  size: 110030848
-  object_id: d5f2dff3-05ef-48de-6c2f-542faf91c5cb
-  sha: sha256:fb695d0256690dc63013c94c53296f037fb4e4940c22ff7594caf6cc2dc074f4
+  size: 110051328
+  object_id: 33fb9f69-6763-4ebb-6a30-d7f97226af66
+  sha: sha256:eec0e5c29e678ead7ce358d6ec949fc62737213b486f8ba6d3549ae2cc22ef54
 k8s/kube-proxy:
-  size: 38375424
-  object_id: c5dda77e-345d-4b90-62f7-9a523cf5d815
-  sha: sha256:60578753a0c909b3b4f2a7ecadbcb27e879e455850d38b5d4622254926fecf65
+  size: 38379520
+  object_id: a7d3cdb6-6a58-450c-6711-98b4d3e7007e
+  sha: sha256:eb5de7557eab74f709186981ff27f3b935fe09a8fd57bd72e70fca2d5f490508
 k8s/kube-scheduler:
-  size: 42938368
-  object_id: 97251bb5-389c-4176-731c-d90142634c76
-  sha: sha256:52afc035a0c2fd08922001c3111cce77e2971e1d583dc4eeb0cc43acf5f42eee
+  size: 42942464
+  object_id: 45e69b1b-9c65-4de1-6ca5-5f432ab746c3
+  sha: sha256:f48e947da554d8e15742410934c8d7a7d2b62baa8e0e3ab14e8954c3187d2574
 k8s/kubectl:
-  size: 44023808
-  object_id: 04ba4da2-7352-4925-7ce3-df6893012549
-  sha: sha256:bb16739fcad964c197752200ff89d89aad7b118cb1de5725dc53fe924c40e3f7
+  size: 44032000
+  object_id: 6ed02ef8-5f0e-4dd0-4e68-21eceb49f628
+  sha: sha256:6ea8261b503c6c63d616878837dc70b758d4a3aeb9996ade8e83b51aedac9698
 k8s/kubelet:
-  size: 113255096
-  object_id: 1edbdcb7-5e79-4e01-6e5f-7cf0ce8cb9be
-  sha: sha256:3a90e7abf9910aebf9ef5845918c665afd4136a8832604ccfabca2defb35ce0f
+  size: 113275608
+  object_id: 97581347-7ead-40c9-7853-781cd8d3cf60
+  sha: sha256:bc13d29b58300c328f0078c7f72e37e1254c4303277348862af1e7f2b356b9e3
 lb/haproxy-1.8.22.tar.gz:
   size: 2100471
   object_id: 07252afc-ee4c-4e4c-46ab-ac189707b6fb
