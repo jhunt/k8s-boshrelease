@@ -11,6 +11,8 @@ builds:
     version: 1.17.2-build.1
   360f28f6-26d2-4462-723d-ab5129fb256f:
     version: 1.14.0-build.2
+  42608611-a47c-4161-6606-867ea0bb9158:
+    version: 1.18.2-build.1
   545ad3a1-1856-4777-48e4-65ce4e0413e3:
     version: 1.14.0-build.5
   66964d83-ba2e-431b-66f3-2631a128f2a5:
