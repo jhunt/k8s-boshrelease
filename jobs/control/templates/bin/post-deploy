@@ -85,9 +85,9 @@ echo "[$(date)] $BIN/$$: SKIPPING kubernetes-dashboard configuration..."
 <% if p('cert-manager.enabled') %>
 echo "[$(date)] $BIN/$$: applying cert-manager configuration..."
 kubectl apply -f $JOB_DIR/k8s/cert-manager.yml
-kubectl -n cert-manager rollout status deployment/cert-manager
-kubectl -n cert-manager rollout status deployment/cert-manager-cainjector
-kubectl -n cert-manager rollout status deployment/cert-manager-webhook
+kubectl -n cert-manager rollout status --timeout=30s deployment/cert-manager
+kubectl -n cert-manager rollout status --timeout=30s deployment/cert-manager-cainjector
+kubectl -n cert-manager rollout status --timeout=30s deployment/cert-manager-webhook
 kubectl apply -f $JOB_DIR/k8s/cm-caissuer.yml
 <% else %>
 echo "[$(date)] $BIN/$$: SKIPPING cert-manager configuration..."
