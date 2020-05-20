@@ -14,9 +14,9 @@ metadata:
   namespace: cert-manager
   name:      cluster-internal-ca
 stringData:
-  ca.crt: |
+  tls.crt: |
 <%= p('cert-manager.ca.certificate', '').gsub(/^/, '    ') %>
-  ca.key: |
+  tls.key: |
 <%= p('cert-manager.ca.key', '').gsub(/^/, '    ') %>
 
 ---
