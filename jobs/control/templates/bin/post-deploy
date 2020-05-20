@@ -67,6 +67,14 @@ kubectl apply -f $JOB_DIR/k8s/kube-proxy.yml
 echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
 kubectl apply -f $JOB_DIR/k8s/kube-dns.yml
 
+(shopt -s nullglob
+for yml in /var/vcap/jobs/*/k8s-init/*.yml; do
+  name=${yml%%.yml};         name=${name##*/}
+   job=${yml%%/k8s-init/*};  job=${job##*/}
+  echo "[$(date)] $BIN/$$: applying k8s-init $name (from $job) configuration..."
+  kubectl apply -f $yml
+done)
+
 <% if p('dashboard.enabled') %>
 echo "[$(date)] $BIN/$$: applying kubernetes-dashboard configuration..."
 kubectl apply -f $JOB_DIR/k8s/dashboard.yml

@@ -16,7 +16,7 @@ consumes:
 templates:
   bin/pre-start:                      bin/pre-start
 
-  k8s-addons/flannel.yml:             k8s-addons/flannel.yml
+  k8s-init/flannel.yml:               k8s-init/flannel.yml
 
   run/flannel/.keep:                  run/flannel/.keep
   etc/cni/net.d/10-flannel.conflist:  etc/cni/net.d/10-flannel.conflist
