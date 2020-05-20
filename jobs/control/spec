@@ -92,6 +92,7 @@ templates:
   k8s/cert-manager.yml: k8s/cert-manager.yml
   k8s/cm-caissuer.yml:  k8s/cm-caissuer.yml
   k8s/dashboard.yml:    k8s/dashboard.yml
+  k8s/bootstrap.yml:    k8s/bootstrap.yml
 
   # kube-apiserver
   bin/api:              bin/api
@@ -437,4 +438,12 @@ properties:
       If present, this will be put in a Kubernetes secret named `cluster-trusted-ca`,
       under the 'cert-manager' Kubernetes namespace.  This can then be referenced
       from an Issuer object.
+
+  bootstrap:
+    default: ''
+    description: |
+      An optional YAML configuration (as a string) of Kubernetes resources to apply
+      after the cluster has fully deployed.  This is a great place to specify things
+      like Ingress controllers, default StorageClass definitions, etc.
+
 # vim:ft=yaml

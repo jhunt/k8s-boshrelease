@@ -85,6 +85,13 @@ kubectl apply -f $JOB_DIR/k8s/cm-caissuer.yml
 echo "[$(date)] $BIN/$$: SKIPPING cert-manager configuration..."
 <% end %>
 
+<% if p('bootstrap', '') != '' %>
+echo "[$(date)] $BIN/$$: applying user-supplied bootstrap configuration..."
+kubectl apply -f $JOB_DIR/k8s/bootstrap.yml
+<% else %>
+echo "[$(date)] $BIN/$$: no user-supplied bootstrap configuration supplied; SKIPPING..."
+<% end %>
+
 
 (shopt -s nullglob
 for yml in /var/vcap/jobs/*/k8s-addons/*.yml; do

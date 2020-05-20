@@ -1,0 +1,4 @@
+<% if p('bootstrap', '') != '' -%>
+<%= p('bootstrap') %>
+
+<% end -%>
