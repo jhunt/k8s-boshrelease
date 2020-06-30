@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+v=0.15.1
+# check https://cert-manager.io/docs/installation/kubernetes/
+echo ">> updating cert-manager to $v..."
+curl -Lo jobs/control/templates/k8s/cert-manager.yml \
+  https://github.com/jetstack/cert-manager/releases/download/v${v}/cert-manager.yaml
+echo
