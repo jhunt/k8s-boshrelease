@@ -3,6 +3,6 @@ name: containerd
 
 dependencies: []
 files:
-  - containerd/containerd-*.linux-amd64.tar.gz
+  - containerd/containerd-*-linux-amd64.tar.gz
   - containerd/crictl-*-linux-amd64.tar.gz
   - containerd/cni-plugins-linux-amd64-*.tgz

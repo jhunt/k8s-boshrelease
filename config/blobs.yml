@@ -1,27 +1,31 @@
 cfssl/cfssl_linux-amd64:
   size: 10376657
-  object_id: 26751ef9-2b66-4a3f-633f-9aa9a6dbfe0e
+  object_id: 7c4f8fab-655c-40e1-7fe6-428e000a94b9
   sha: sha256:eb34ab2179e0b67c29fd55f52422a94fe751527b06a403a79325fed7cf0145bd
 cfssl/cfssljson_linux-amd64:
   size: 2277873
-  object_id: 2345060b-d074-4139-74b1-cb762c669da0
+  object_id: b969f700-03c6-4b5c-6290-b8d8089efc97
   sha: sha256:1c9e628c3b86c3f2f8af56415d474c9ed4c8f9246630bd21c3418dbe5bf6401e
 containerd/cni-plugins-linux-amd64-v0.8.6.tgz:
   size: 36878412
-  object_id: 6fec36a4-f1c7-41a9-72b5-dac607c008dd
+  object_id: 72c9f3cd-aec2-4dda-574a-b24a3a8ac0d1
   sha: sha256:994fbfcdbb2eedcfa87e48d8edb9bb365f4e2747a7e47658482556c12fd9b2f5
-containerd/containerd-1.3.4.linux-amd64.tar.gz:
-  size: 39944488
-  object_id: 69c03706-e93b-4d9f-4576-ef4e693fd277
-  sha: sha256:61e65c9589e5abfded1daa353e6dfb4b8c2436199bbc5507fc45809a3bb80c1d
+containerd/containerd-1.3.5-linux-amd64.tar.gz:
+  size: 39950520
+  object_id: 742cb1fa-2f84-4665-4d82-884886227d3c
+  sha: sha256:a8ea4eca3655b4a84c13a833ccb1d6c19275b1dbde4e996d35c50564916e8ee7
+containerd/containerd-1.3.5.linux-amd64.tar.gz:
+  size: 9
+  object_id: 8a6285e4-eefc-4526-57b9-571415fb75dc
+  sha: sha256:0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
 containerd/crictl-v1.18.0-linux-amd64.tar.gz:
   size: 12590605
-  object_id: 31a2a90e-2eec-4b35-6a60-b8000b15c4a9
+  object_id: fd2f3b64-df6f-4d7a-4799-18e905d627ba
   sha: sha256:876dd2b3d0d1c2590371f940fb1bf1fbd5f15aebfbe456703ee465d959700f4a
-etcd/etcd-v3.4.7-linux-amd64.tar.gz:
-  size: 17310840
-  object_id: d3d16952-4e15-4453-7515-7bbc7846a6f0
-  sha: sha256:4ad86e663b63feb4855e1f3a647e719d6d79cf6306410c52b7f280fa56f8eb6b
+etcd/etcd-v3.4.9-linux-amd64.tar.gz:
+  size: 17364053
+  object_id: 62d87dd0-3e87-45f2-6b0e-72225258d94a
+  sha: sha256:bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
 ipvsadm/ipvsadm-1.30.tar.gz:
   size: 48183
   object_id: 19736942-a2cc-4464-6364-07dce0f01cd4
@@ -39,29 +43,29 @@ jq/jq:
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 120664064
-  object_id: 9ab73e5b-5463-4e4a-521d-67be55e0c664
-  sha: sha256:dd3cac4251812952db82a197c34b0390376583b1f7b04bf561b71c5c28bcdc47
+  size: 120659968
+  object_id: d08481dd-db94-4a55-7c39-f2c126b2c802
+  sha: sha256:cdb20308a3e98372104131ea26f8dd4c4cd67361eb0e346d0a2b60a807a6f8e6
 k8s/kube-controller-manager:
-  size: 110051328
-  object_id: 33fb9f69-6763-4ebb-6a30-d7f97226af66
-  sha: sha256:eec0e5c29e678ead7ce358d6ec949fc62737213b486f8ba6d3549ae2cc22ef54
+  size: 110059520
+  object_id: 438f3dd1-e914-47aa-61f2-55878858b552
+  sha: sha256:6697a2633b9bc523807e5a5d6e0771db7c2577a75c446ab2b51b36b3dd22ac41
 k8s/kube-proxy:
   size: 38379520
-  object_id: a7d3cdb6-6a58-450c-6711-98b4d3e7007e
-  sha: sha256:eb5de7557eab74f709186981ff27f3b935fe09a8fd57bd72e70fca2d5f490508
+  object_id: 91717a08-a56b-4ac6-44e6-fae1d2fae02a
+  sha: sha256:4cdcdc049822b82ed47911ced7b2024953bbc797296387ab72bfd6629e1f9b6e
 k8s/kube-scheduler:
-  size: 42942464
-  object_id: 45e69b1b-9c65-4de1-6ca5-5f432ab746c3
-  sha: sha256:f48e947da554d8e15742410934c8d7a7d2b62baa8e0e3ab14e8954c3187d2574
+  size: 42946560
+  object_id: 303ede4f-8cd6-49fa-574b-a3c8d6e19b81
+  sha: sha256:5fd39808d5ecff487f033e6ffc391699909f69641dcf86e465279e3a8f73c8b5
 k8s/kubectl:
-  size: 44032000
-  object_id: 6ed02ef8-5f0e-4dd0-4e68-21eceb49f628
-  sha: sha256:6ea8261b503c6c63d616878837dc70b758d4a3aeb9996ade8e83b51aedac9698
+  size: 44027904
+  object_id: ca382c71-b9cf-46c7-64c6-91c9e7242761
+  sha: sha256:69d9b044ffaf544a4d1d4b40272f05d56aaf75d7e3c526d5418d1d3c78249e45
 k8s/kubelet:
-  size: 113275608
-  object_id: 97581347-7ead-40c9-7853-781cd8d3cf60
-  sha: sha256:bc13d29b58300c328f0078c7f72e37e1254c4303277348862af1e7f2b356b9e3
+  size: 113283800
+  object_id: 3e9e46fd-e98e-4b60-52ee-6d4abba01d24
+  sha: sha256:8c328f65d30f0edd0fd4f529b09d6fc588cfb7b524d5c9f181e36de6e494e19c
 lb/haproxy-1.8.22.tar.gz:
   size: 2100471
   object_id: 07252afc-ee4c-4e4c-46ab-ac189707b6fb
@@ -172,11 +176,11 @@ nfs-xenial-debs/rpcbind_0.2.3-0.2_amd64.deb:
   sha: 8fa58cfcb1862c6d337d10496fada5f1a6e94a03
 runtime-runc/runc:
   size: 11293888
-  object_id: 5d8fee29-3072-48aa-4cef-81515d4ca750
+  object_id: e4999510-f224-449e-7aae-6f142bff0608
   sha: sha256:a01afd5ff47d5a2a96bea3a871fb445b432f90c249a8a5d5239b05fe0d5bee4a
 runtime-runc/runsc:
   size: 17472381
-  object_id: 19ed84d8-79af-42ce-542b-28c0ac5e89fe
+  object_id: 5c605fdb-10fa-4f62-6f19-c2786837b18a
   sha: sha256:94384418393531901395fc3744df257d6936f971a0e52a44934efbbf5b3b72d1
 socat/socat-1.7.3.3.tar.bz2:
   size: 489901
