@@ -5,6 +5,9 @@
     raise "The external cluster.dns (#{p('cluster.dns')}) is not in the networks.services range (#{p('networks.services')})"
   end
 
+  # see https://github.com/coredns/deployment/blob/master/kubernetes/coredns.yaml.sed
+  # for full details, and to compare with the below, modified version...
+
 %>---
 apiVersion: v1
 kind: ServiceAccount
@@ -12,7 +15,7 @@ metadata:
   name: coredns
   namespace: kube-system
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
@@ -30,7 +33,7 @@ rules:
   - list
   - watch
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
@@ -56,14 +59,17 @@ data:
   Corefile: |
     .:53 {
         errors
-        health
+        health {
+          lameduck 5s
+        }
+        ready
         kubernetes <%= p('cluster.domain').gsub('(deployment)', spec.deployment) %> in-addr.arpa ip6.arpa {
-          pods verified
-          upstream
           fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
-        proxy . /etc/resolv.conf
+        forward . /etc/resolv.conf {
+          max_concurrent 1000
+        }
         cache 30
         loop
         reload
@@ -79,6 +85,7 @@ metadata:
     k8s-app: kube-dns
     kubernetes.io/name: "CoreDNS"
 spec:
+  # upstream doesn't specify replicas; relies on default (1) + realtime tuning via auto-scaling
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -92,12 +99,24 @@ spec:
       labels:
         k8s-app: kube-dns
     spec:
+      priorityClassName: system-cluster-critical
       serviceAccountName: coredns
       tolerations:
-        - key: node-role.kubernetes.io/master
-          effect: NoSchedule
         - key: "CriticalAddonsOnly"
           operator: "Exists"
+      nodeSelector:
+        kubernetes.io/os: linux
+      affinity:
+         podAntiAffinity:
+           preferredDuringSchedulingIgnoredDuringExecution:
+           - weight: 100
+             podAffinityTerm:
+               labelSelector:
+                 matchExpressions:
+                   - key: k8s-app
+                     operator: In
+                     values: ["kube-dns"]
+               topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
         image: <%= p('images.kube-dns') %>
@@ -140,6 +159,11 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8181
+            scheme: HTTP
       dnsPolicy: Default
       volumes:
         - name: config-volume
@@ -171,4 +195,7 @@ spec:
     protocol: UDP
   - name: dns-tcp
     port: 53
+    protocol: TCP
+  - name: metrics
+    port: 9153
     protocol: TCP
