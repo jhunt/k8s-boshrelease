@@ -7,3 +7,10 @@ echo ">> updating cert-manager to $v..."
 curl -Lo jobs/control/templates/k8s/cert-manager.yml \
   https://github.com/jetstack/cert-manager/releases/download/v${v}/cert-manager.yaml
 echo
+
+v=2.0.3
+# check https://github.com/kubernetes/dashboard/releases
+echo ">> updating dashboard to $v..."
+curl -Lo jobs/control/templates/k8s/dashboard.yml \
+  https://raw.githubusercontent.com/kubernetes/dashboard/v${v}/aio/deploy/recommended.yaml
+echo

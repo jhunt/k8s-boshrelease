@@ -78,6 +78,10 @@ done)
 <% if p('dashboard.enabled') %>
 echo "[$(date)] $BIN/$$: applying kubernetes-dashboard configuration..."
 kubectl apply -f $JOB_DIR/k8s/dashboard.yml
+kubectl delete -f $JOB_DIR/k8s/dashboard-acl.yml || true # might not exist yet...
+<% if p('dashboard.cluster-admin') %>
+kubectl apply -f $JOB_DIR/k8s/dashboard-acl.yml
+<% end %>
 <% else %>
 echo "[$(date)] $BIN/$$: SKIPPING kubernetes-dashboard configuration..."
 <% end %>

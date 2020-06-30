@@ -86,13 +86,14 @@ templates:
   tls/sa/key.pem:  tls/sa/key.pem
 
   # kube-in-kube
-  bin/post-deploy:      bin/post-deploy
-  k8s/kube-proxy.yml:   k8s/kube-proxy.yml
-  k8s/kube-dns.yml:     k8s/kube-dns.yml
-  k8s/cert-manager.yml: k8s/cert-manager.yml
-  k8s/cm-caissuer.yml:  k8s/cm-caissuer.yml
-  k8s/dashboard.yml:    k8s/dashboard.yml
-  k8s/bootstrap.yml:    k8s/bootstrap.yml
+  bin/post-deploy:       bin/post-deploy
+  k8s/kube-proxy.yml:    k8s/kube-proxy.yml
+  k8s/kube-dns.yml:      k8s/kube-dns.yml
+  k8s/cert-manager.yml:  k8s/cert-manager.yml
+  k8s/cm-caissuer.yml:   k8s/cm-caissuer.yml
+  k8s/dashboard.yml:     k8s/dashboard.yml
+  k8s/dashboard-acl.yml: k8s/dashboard-acl.yml
+  k8s/bootstrap.yml:     k8s/bootstrap.yml
 
   # kube-apiserver
   bin/api:              bin/api
