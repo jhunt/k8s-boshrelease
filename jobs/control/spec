@@ -423,6 +423,12 @@ properties:
       Whether or not to install cert-manager (https://cert-manager.io/) on the newly
       created cluster.
 
+  cert-manager.timeout:
+    default: '60s'
+    description: |
+      How long to wait for the cert-manager deployments to finish their rollout
+      and become healthy (according to the Kubernetes API).
+
   cert-manager.ca.certificate:
     description: |
       An X.509 Certificate Authority for cert-manager to issuer locally-trusted
