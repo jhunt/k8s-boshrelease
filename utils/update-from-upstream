@@ -17,6 +17,9 @@ for x in kube-{apiserver,controller-manager,proxy,scheduler} kubectl kubelet; do
   fi
 done
 
+echo ">> rebuilding dockerized k8s components..."
+make dockers VERSION=$VERSION
+
 # check https://github.com/containerd/containerd/releases
 v=1.3.5
 echo ">> updating containerd to $v..."

@@ -8,7 +8,11 @@ default:
 
 dockers: $(DOCKERS)
 k8s-bosh-%: images/%/Dockerfile
-	docker build -t $(DOCKER_PREFIX)$@:1.16.2 images/$*
+	@echo "Checking that VERSION was defined in the calling environment"
+	@test -n "$(VERSION)"
+	@echo "OK.  VERSION=$(VERSION)"
+	docker build --build-arg VERSION=$(VERSION) -t $(DOCKER_PREFIX)$@:$(VERSION) images/$*
+	docker push $(DOCKER_PREFIX)$@:$(VERSION)
 
 update:
 	./utils/update-from-upstream
