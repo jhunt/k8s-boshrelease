@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eu
+exec 2>&1
+
+JOB=net-weave
+BIN=pre-start
+
+echo "[$(date)] $BIN/$$: inserting br_netfilter module"
+modprobe br_netfilter
+
+echo "[$(date)] $BIN/$$: setting sysctls..."
+sysctl net.bridge.bridge-nf-call-arptables=1
+sysctl net.bridge.bridge-nf-call-ip6tables=1
+sysctl net.bridge.bridge-nf-call-iptables=1
+
+echo "[$(date)] $BIN/$$: checking sysctls..."
+sysctl -a | grep bridge-nf-call
+
+echo "[$(date)] $BIN/$$: DONE"
+exit 0

@@ -1,0 +1,28 @@
+---
+name: net-weave
+description: |
+  A CNI network plugin allows multiple nodes and their runtimes to properly allocate
+  non-colliding IP addresses in a flat, globally addressable model.  This can be done
+  via overlay/underlay networks, SDN solutions, and BPF/IPtables work.
+
+  This job provides the weave CNI configuration for Kubernetes.
+
+packages: []
+
+consumes:
+  - name: api
+    type: k8s-apiserver
+
+templates:
+  bin/pre-start:                    bin/pre-start
+
+  k8s-init/weave.yml:               k8s-init/weave.yml
+
+  etc/cni/net.d/10-weave.conflist:  etc/cni/net.d/10-weave.conflist
+
+properties:
+  debug:
+    default:     false
+    description: Enables verbose debugging, suitable for troubleshooting.
+
+# vim:ft=yaml
