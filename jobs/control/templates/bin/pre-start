@@ -16,6 +16,14 @@ rm -rf $TMP_DIR
 mkdir -p $CERTS_DIR $TMP_DIR
 pushd $TMP_DIR >/dev/null 2>&1
 
+echo "[$(date)] $BIN/$$: checking ca certificate validity"
+if openssl verify $JOB_DIR/tls/ca/cert.pem 2>&1 | grep -iq expired; then
+  echo "[$(date)] $BIN/$$: ca certificate has expired:"
+  openssl verify $JOB_DIR/tls/ca/cert.pem
+  exit 1
+fi
+echo "[$(date)] $BIN/$$: ca certificate has is valid"
+
 echo "[$(date)] $BIN/$$: configuring ca parameters"
 cat > ca.json <<EOF
 {
