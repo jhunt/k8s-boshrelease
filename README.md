@@ -103,7 +103,15 @@ If you find this, and manage to get it to work for you, great!
 I'd love to hear from you, of your successes and struggles.
 
 If you find a bug, or something doesn't work quite right, please
-open an issue in the GitHub tracker!
+open an issue in the GitHub tracker!  Remember, we have a
+[code of conduct](CONDUCT.md).
+
+If you are thinking of contributing code, please read the
+[Contribution Guidelines](CONTRIBUTING.md) and follow them.
+Particularly, please _open GitHub isssues and allow your change to
+be discussed before submitting a pull request_.  "Drive-by" PRs
+may be closed without much discussion.
+
 
 [k8s-d]: https://github.com/jhunt/k8s-deployment
 [kubo]:  https://github.com/cloudfoundry-incubator/kubo-release
