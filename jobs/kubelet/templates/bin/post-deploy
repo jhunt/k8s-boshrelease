@@ -43,8 +43,17 @@ if p('master') && !labels.has_key?('node-role.kubernetes.io/master')
 end
 
 %>
+
+echo "[$(date)] $BIN/$$: post-deploy starting up..."
 <% labels.each do |label, value| %>
+echo "[$(date)] $BIN/$$: applying label "'"<%= slugify(label) %>=<%= slugify(value) %>"'
 # label '<%= label %>=<%= value %>'
-kubectl label --overwrite node $NODENAME "<%= slugify(label) %>=<%= slugify(value) %>"
+if kubectl label --overwrite node $NODENAME "<%= slugify(label) %>=<%= slugify(value) %>"; then
+  echo "[$(date)] $BIN/$$: label application succeeded."
+else
+  echo "[$(date)] $BIN/$$: label application failed!"
+fi
 
 <% end %>
+
+echo "[$(date)] $BIN/$$: complete."
