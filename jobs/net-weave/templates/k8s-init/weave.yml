@@ -122,6 +122,11 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
+
+              # disable annoying phone-home feature in weave-net
+            - name: CHECKPOINT_DISABLE
+              value: '1'
+
           image: 'docker.io/weaveworks/weave-kube:2.6.5'
           readinessProbe:
             httpGet:
