@@ -1,3 +1,10 @@
+<%
+
+def attr_set(mirror, k1, k2)
+  return mirror.has_key?(k1) && mirror[k1].has_key?(k2) && mirror[k1].to_s.strip != ''
+end
+
+-%>
 [plugins]
   [plugins.cri]
     [plugins.cri.containerd]
@@ -17,6 +24,43 @@
     [plugins.cri.cni]
       conf_dir = "/var/vcap/jobs/net-<%= p('cni') %>/etc/cni/net.d"
       bin_dir = "/var/vcap/packages/containerd/bin"
+
+  <%- if p('mirrors', {}).length > 0 -%>
+    [plugins.cri.registry]
+    <%- p('mirrors', {}).each do |name, mirror| %>
+      [plugins.cri.registry.mirrors."<%= name %>"]
+        endpoint = ["<%= mirror['url'] %>"]
+  <%- end %>
+
+    <%- if p('mirrors', {}).values.any? { |mirror| mirror.has_key?('tls') || mirror.has_key?('authentication') } -%>
+      [plugins.cri.registry.configs]
+      <%- p('mirrors', {}).each do |name, mirror|
+            if mirror.has_key?('tls') -%>
+        [plugins.cri.registry.configs."<%= name %>".tls]
+<%            if mirror['tls'].has_key?('verify') %>
+          insecure_skip_verify = <%= !mirror['tls']['verify'] %>
+<%            end
+              if attr_set(mirror, 'tls', 'ca') %>
+          ca_file   = "/var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-ca.pem"
+<%            end
+              if attr_set(mirror, 'authentication', 'certificate') %>
+          cert_file = "/var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-certificate.pem"
+<%            end
+              if attr_set(mirror, 'authentication', 'key') %>
+          key_file  = "/var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-key.pem"
+<%            end
+            end
+            if mirror.has_key?('authentication') -%>
+        [plugins.cri.registry.configs."<%= name %>".auth]
+        <%- %w(username password auth identitytoken).each do |key| %>
+          <%- if attr_set(mirror, 'authentication', key) %>
+          <%= key %> = "<%= mirror['authentication'][key] %>"
+<%            end
+            end
+          end
+        end
+      end
+    end -%>
 
 
 # persistent data location

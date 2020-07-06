@@ -1,0 +1,21 @@
+<%
+
+def attr_set(mirror, k1, k2)
+  return mirror.has_key?(k1) && mirror[k1].has_key?(k2) && mirror[k1].to_s.strip != ''
+end
+
+-%>
+<% p('mirrors', {}).each do |name, mirror|
+     if attr_set(mirror, 'tls', 'ca')
+%>====== 0644 /var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-ca.pem
+<%= mirror['tls']['ca'].to_s.strip %>
+<%   end
+     if attr_set(mirror, 'authentication', 'certificate')
+%>====== 0644 /var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-certificate.pem
+<%= mirror['authentication']['certificate'].to_s.strip %>
+<%   end
+     if attr_set(mirror, 'authentication', 'key')
+%>====== 0640 /var/vcap/jobs/runtime-runc/etc/tls/<%= name %>-key.pem
+<%= mirror['authentication']['key'].to_s.strip %>
+<%   end
+   end %>

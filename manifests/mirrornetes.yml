@@ -1,0 +1,365 @@
+#
+# mirrornetes - A Testing Deployment for containerd mirrors
+#
+# This manifest is meant to be used for more aggressive testing
+# of the containerd (runtime-runc) 'mirrors' manifest property.
+# It stands up (via Containers BOSH release) a bunch of different
+# OCI image registries with different TLS and authentication
+# parameters, and provides mirror configurations for them.
+#
+# To test with this manifest, deploy it somewhere and then, from
+# the box, run the following (as root):
+#
+#     bash /var/vcap/jobs/docker/etc/running/prepare
+#
+# This will (a) push a copy of the usptream alpine image from
+# Docker Hub to each of the configured registries, (b) validate
+# that each registry sees it by dumping their catalogs, one after
+# another, and (c) apply a Kubernetes pod spec ("alpines") that
+# attempts to pull each of those copies via containerd's aliases.
+#
+
+name: mirrornetes
+
+instance_groups:
+  - name:      k8s
+    instances: 1
+    azs:       [z1]
+    vm_resources:
+      cpu: 2
+      ram: 2048
+      ephemeral_disk_size: 20_000
+    vm_extensions:
+      - kubelet
+    persistent_disk: 20_000
+
+    stemcell:  default
+
+    networks:
+      - name: default
+
+    jobs:
+      - name: docker
+        release: containers
+        properties:
+          files:
+            tls/registry-tls-ca.pem:          ((registry-tls-ca.certificate))
+            tls/registry-tls-cert.pem:        ((registry-tls-cert.certificate))
+            tls/registry-tls-key.pem:         ((registry-tls-cert.private_key))
+
+            tls/registry-mutual-tls-ca.pem:   ((registry-mutual-tls-ca.certificate))
+            tls/registry-mutual-tls-cert.pem: ((registry-mutual-tls.certificate))
+            tls/registry-mutual-tls-key.pem:  ((registry-mutual-tls.private_key))
+
+            user-auth.db: |
+              foo:$2y$05$viU5Z2JKw0c3jfg4PBrgUujUgkv4O3l2elwVjg/i/hXTUM9gV6WyO
+
+            no-tls.yml: |
+              version: '0.1'
+              http:
+                addr: 0.0.0.0:5000
+                relativeurls: yes
+                secret: its-a-secret-to-everyone
+              storage:
+                filesystem:
+                  rootdirectory: /registry
+
+            tls.yml: |
+              version: '0.1'
+              http:
+                addr: 0.0.0.0:5000
+                relativeurls: yes
+                secret: its-a-secret-to-everyone
+                tls:
+                  certificate: /tls/cert.pem
+                  key:         /tls/key.pem
+              storage:
+                filesystem:
+                  rootdirectory: /registry
+
+            mtls.yml: |
+              version: '0.1'
+              http:
+                addr: 0.0.0.0:5000
+                relativeurls: yes
+                secret: its-a-secret-to-everyone
+                tls:
+                  certificate: /tls/cert.pem
+                  key:         /tls/key.pem
+                  clientcas:
+                    - /tls/client-ca.pem
+              storage:
+                filesystem:
+                  rootdirectory: /registry
+
+            user-auth.yml:
+              version: '0.1'
+              http:
+                addr: 0.0.0.0:5000
+                relativeurls: yes
+                secret: its-a-secret-to-everyone
+                tls:
+                  certificate: /tls/cert.pem
+                  key:         /tls/key.pem
+              auth:
+                htpasswd:
+                  realm: docker
+                  path:  /htpasswd
+              storage:
+                filesystem:
+                  rootdirectory: /registry
+
+            prepare: |
+              #!/bin/bash
+              # this script is for release authors to test
+              source /var/vcap/jobs/jumpbox/envrc
+              source /var/vcap/jobs/docker/envrc
+
+              docker pull alpine
+              docker tag alpine no-tls.mirror.127.0.0.1.netip.cc:5001/alpine
+              docker push no-tls.mirror.127.0.0.1.netip.cc:5001/alpine
+
+              echo "no-tls.mirror.127.0.0.1.netip.cc:5001"
+              curl http://no-tls.mirror.127.0.0.1.netip.cc:5001/v2/_catalog
+              echo; echo
+
+              echo "tls-ca.127.0.0.1.netip.cc:5002"
+              curl https://tls-ca.127.0.0.1.netip.cc:5002/v2/_catalog --cacert /var/vcap/jobs/docker/etc/running/tls/registry-tls-ca.pem
+              echo; echo
+
+              echo "tls-no-verify.127.0.0.1.netip.cc:5002"
+              curl -k https://tls-no-verify.127.0.0.1.netip.cc:5002/v2/_catalog
+              echo; echo
+
+              echo "tls-mutual.127.0.0.1.netip.cc:5003"
+              curl -k https://tls-mutual.127.0.0.1.netip.cc:5003/v2/_catalog --cert /var/vcap/jobs/docker/etc/running/tls/registry-mutual-tls-cert.pem --key /var/vcap/jobs/docker/etc/running/tls/registry-mutual-tls-key.pem
+              echo; echo
+
+              echo "auth-username.127.0.0.1.netip.cc:5004"
+              curl -k https://auth-username.127.0.0.1.netip.cc:5004/v2/_catalog -u foo:bar
+              echo; echo
+
+              echo "applying kubernetes pod test..."
+              kubectl apply -f /var/vcap/jobs/docker/etc/running/k8s.yml
+              echo
+              echo "to watch the container statuses:"
+              echo
+              echo "  source /var/vcap/jobs/jumpbox/envrc"
+              echo "  kubectl describe pod/alpines"
+              echo
+
+
+            k8s.yml: |
+              ---
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: alpines
+              spec:
+                containers:
+                  - name: no-tls
+                    image: no-tls.mirror.127.0.0.1.netip.cc:5001/alpine
+                    command: [sleep, "100000"]
+                  - name: tls-ca
+                    image: tls-ca.127.0.0.1.netip.cc:5002/alpine
+                    command: [sleep, "100000"]
+                  - name: tls-no-verify
+                    image: tls-no-verify.127.0.0.1.netip.cc:5002/alpine
+                    command: [sleep, "100000"]
+                  - name: tls-mutual
+                    image: tls-mutual.127.0.0.1.netip.cc:5003/alpine
+                    command: [sleep, "100000"]
+                  - name: auth-username
+                    image: auth-username.127.0.0.1.netip.cc:5004/alpine
+                    command: [sleep, "100000"]
+
+          recipe:
+            version: '3'
+            services:
+              no-tls:
+                image: registry:2
+                ports: ['5001:5000']
+                volumes:
+                  - /var/vcap/tmp/images:/registry
+
+              tls-ca:
+                image: registry:2
+                ports: ['5002:5000']
+                volumes:
+                  - '$PWD/tls/registry-tls-cert.pem:/tls/cert.pem'
+                  - '$PWD/tls/registry-tls-key.pem:/tls/key.pem'
+                  - '$PWD/tls.yml:/etc/docker/registry/config.yml'
+                  - /var/vcap/tmp/images:/registry
+
+              tls-mutual:
+                image: registry:2
+                ports: ['5003:5000']
+                volumes:
+                  - '$PWD/tls/registry-tls-cert.pem:/tls/cert.pem'
+                  - '$PWD/tls/registry-tls-key.pem:/tls/key.pem'
+                  - '$PWD/tls/registry-mutual-tls-ca.pem:/tls/client-ca.pem'
+                  - '$PWD/mtls.yml:/etc/docker/registry/config.yml'
+                  - /var/vcap/tmp/images:/registry
+
+              auth-username:
+                image: registry:2
+                ports: ['5004:5000']
+                volumes:
+                  - '$PWD/tls/registry-tls-cert.pem:/tls/cert.pem'
+                  - '$PWD/tls/registry-tls-key.pem:/tls/key.pem'
+                  - '$PWD/user-auth.db:/htpasswd'
+                  - '$PWD/user-auth.yml:/etc/docker/registry/config.yml'
+                  - /var/vcap/tmp/images:/registry
+
+
+
+
+      - name: etcd
+        release: k8s
+      - name: control
+        release: k8s
+        properties:
+          kubelet:
+            instance-groups: [k8s.default]
+          dashboard:
+            enabled: true
+            cluster-admin: true
+          cert-manager:
+            enabled: true
+            timeout: 1h
+
+          apiserver:
+            additional-sans:
+              - 10.245.0.1
+          cluster:
+            name: mirrornetes
+          encryption:
+            key: ((encryption-key))
+          tls:
+            ca:
+              certificate: ((tls-ca.certificate))
+              key:         ((tls-ca.private_key))
+            sa:
+              certificate: ((tls-sa.certificate))
+              key:         ((tls-sa.private_key))
+
+      - name: runtime-runc
+        release: k8s
+        properties:
+          cni: flannel
+          mirrors:
+            # a registry running in clear-text
+            no-tls.mirror.127.0.0.1.netip.cc:5001:
+              url: http://no-tls.mirror.127.0.0.1.netip.cc:5001
+
+            # a registry running tls, with a self-signed cert that should NOT be verified
+            tls-no-verify.127.0.0.1.netip.cc:5002:
+              url: https://tls-no-verify.127.0.0.1.netip.cc:5002
+              tls:
+                verify: no
+
+            # a registry running tls, with a CA for validation
+            tls-ca.127.0.0.1.netip.cc:5002:
+              url: https://tls-ca.127.0.0.1.netip.cc:5002
+              tls:
+                ca: ((registry-tls-ca.certificate))
+
+            # a registry that requires clients to present valid X.509 certs
+            tls-mutual.127.0.0.1.netip.cc:5003:
+              url: https://tls-mutual.127.0.0.1.netip.cc:5003
+              tls:
+                ca: ((registry-tls-ca.certificate))
+              authentication:
+                certificate: ((registry-mutual-tls.certificate))
+                key:         ((registry-mutual-tls.private_key))
+
+            # a registry that authenticates users by username+password
+            auth-username.127.0.0.1.netip.cc:5004:
+              url: https://auth-username.127.0.0.1.netip.cc:5004
+              tls:
+                verify: no
+              authentication:
+                username: foo
+                password: bar
+
+      - name: net-flannel
+        release: k8s
+      - name: kubelet
+        release: k8s
+      - name: nfs
+        release: k8s
+
+      - name: jumpbox
+        release: k8s
+      - name: smoke-tests
+        release: k8s
+
+variables:
+  - name: tls-ca
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: ca
+
+  - name: tls-sa
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: sa
+
+  - name: encryption-key
+    type: password
+    options:
+      length: 32
+      include_special: yes
+
+  - name: registry-tls-ca
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: registry-tls-ca
+  - name: registry-tls-cert
+    type: certificate
+    options:
+      ca: registry-tls-ca
+      common_name: registry
+      alternative_names:
+        - tls-ca.127.0.0.1.netip.cc
+        - tls-mutual.127.0.0.1.netip.cc
+        - auth-username.127.0.0.1.netip.cc
+        - 127.0.0.1
+
+  - name: registry-mutual-tls-ca
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: registry-mtls-ca
+  - name: registry-mutual-tls
+    type: certificate
+    options:
+      ca: registry-mutual-tls-ca
+      common_name: registry-mtls
+      extended_key_usage:
+        - client_auth
+
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: true
+  canary_watch_time: 1000-120000
+  update_watch_time: 1000-120000
+
+stemcells:
+  - alias:   default
+    os:      ubuntu-xenial
+    version: latest
+
+releases:
+  - name:    containers
+    version: 1.4.0
+    url:     https://github.com/jhunt/containers-boshrelease/releases/download/v1.4.0/containers-1.4.0.tgz
+    sha1:    e1003507adb70b12a00449b0deadeabe72823875 
+
+  - name:    k8s
+    version: latest

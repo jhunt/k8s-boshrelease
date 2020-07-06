@@ -8,6 +8,7 @@ packages:
   - containerd
   - runtime-runc
   - socat
+  - ttar
 
 consumes:
   - name: api
@@ -16,7 +17,8 @@ consumes:
 templates:
   bin/containerd: bin/containerd
 
-  etc/containerd.toml: etc/containerd.toml
+  etc/containerd.toml:   etc/containerd.toml
+  etc/mirror-creds.ttar: etc/mirror-creds.ttar
 
 properties:
   debug:
@@ -27,5 +29,54 @@ properties:
     description: |
       The name of the CNI plugin used for network IPAM.  For example, if you are using
       the `net-flannel` job on this node, use "flannel" as your `cni` value.
+
+  mirrors:
+    description: |
+      One or more image registry mirrors, to override their upstream canonical location.
+
+      For example, if you would like to restrict your Kubernetes cluster to only running
+      properly scanned images, you might set up a scanning mirror of docker.io (Docker Hub)
+      and only push scanned images to it.  For that to work, containerd needs to know
+      about your wish to divert image requests to an alternate mirror.
+
+      Be careful with this option, as it can break your cluster if you're not careful,
+      are not providing all of the images that your cluster users expect, or are not
+      mirroring core components at the correct version.
+
+      You can also use this to set up your own internal (private) image registries, without
+      requiring cluster users to provide their credentials when wishing to pull images.
+      Use this with caution.
+
+      Each object in the map is keyed by its domain name, and the values represent the
+      mirror / internal registry - "url" (which is required) specifies the HTTP(S) URL of
+      the registry to use; "tls" provides security / X.509 parameters for verifying the
+      endpoint; and "auth" provides (optional) authentication parameters for accessing the
+      registry.
+
+      For TLS configuration, you can supply "ca" as the PEM-encoded Certificate Authority
+      certificate to use when verifying the registry endpoint's public certificate, or
+      "verify" (with the value 'false') to skip TLS verification altogether.
+
+      For authentication (the "auth" key) there are several options:
+
+         - All four attributes supported by CRI upstream are supported.
+           See https://github.com/containerd/cri/blob/master/docs/registry.md#configure-registry-credentials
+           for more details
+
+         - For mutual TLS, where the registry expects clients to present
+           valid, authorized X.509 certificates, you can specify the
+           "certificate" and "key" parameters as the PEM-encoded public
+           X.509 certificate and private key, respectively.
+
+    example: |
+      docker.io:
+        url: https://docker-io-mirror.somewhere.internal
+      images.local:
+        url: https://registry.somewhere.internal
+        tls:
+          verify: no
+        auth:
+          username: a-user
+          password: sekrit
 
 # vim:ft=yaml

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -eu
+
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+cp ttar/ttar ${BOSH_INSTALL_TARGET}/bin/ttar
+chmod 0755 ${BOSH_INSTALL_TARGET}/bin/ttar

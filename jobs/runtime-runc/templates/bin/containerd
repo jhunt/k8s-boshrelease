@@ -18,6 +18,7 @@ exec >>$LOG_DIR/$BIN.log 2>&1
 export PATH=$PATH:/var/vcap/packages/runtime-runc/bin
 export PATH=$PATH:/var/vcap/packages/containerd/bin
 export PATH=$PATH:/var/vcap/packages/socat/bin
+export PATH=$PATH:/var/vcap/packages/ttar/bin
 
 case $1 in
   start)
@@ -44,6 +45,10 @@ case $1 in
 
     ulimit -n 1048576    # open files
     ulimit -u unlimited  # num processes
+
+    # inflate ttar'd certificates / keys
+    mkdir -p $JOB_DIR/etc/tls
+    ttar < $JOB_DIR/etc/mirror-creds.ttar
 
     echo $$ > $PIDFILE
     exec containerd --config $JOB_DIR/etc/containerd.toml --root $STO_DIR
