@@ -127,6 +127,9 @@ spec:
             - name: CHECKPOINT_DISABLE
               value: '1'
 
+            - name: IPALLOC_RANGE
+              value: "<%= link('api').p('networks.pods') %>"
+
           image: 'docker.io/weaveworks/weave-kube:2.6.5'
           readinessProbe:
             httpGet:
