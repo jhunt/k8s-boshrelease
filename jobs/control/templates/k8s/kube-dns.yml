@@ -74,6 +74,7 @@ data:
         loop
         reload
         loadbalance
+<%= (p('coredns.additional-configuration', '').split(/\n/).map { |s| "        #{s}\n" }).join("") %>
     }
 ---
 apiVersion: apps/v1

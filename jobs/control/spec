@@ -446,6 +446,20 @@ properties:
       under the 'cert-manager' Kubernetes namespace.  This can then be referenced
       from an Issuer object.
 
+  coredns.additional-configuration:
+    default: ''
+    description: |
+      Additional configuration to add to the CoreDNS configuration.  This will be
+      properly indented, and must be complete, well-formed, and syntactically valid
+      top-level configuration directives.
+
+      For example, to enable host lookup from bosh-DNS aliases,
+
+          properties:
+            coredns:
+              additional-configuration: |
+                hosts bosh. /etc/hosts/or/something
+
   bootstrap:
     default: ''
     description: |
