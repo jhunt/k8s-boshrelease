@@ -401,6 +401,13 @@ properties:
 
       This parameter is only used if `cloud-provider.type` is set to "vsphere".
 
+  coredns.enabled:
+    default: true
+    description: |
+      Whether or not to enable the coredns on this cluster.
+      If set to 'true', a default coredns will be provided
+      This parameter should be set to false only if you'll plan to install it externally with specific configuration
+
   dashboard.enabled:
     default: false
     description: |

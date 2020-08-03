@@ -64,9 +64,12 @@ echo "[$(date)] $BIN/$$: not bootstrap node; nothing more to do."
 echo "[$(date)] $BIN/$$: applying kube-proxy daemonset configuration..."
 kubectl apply -f $JOB_DIR/k8s/kube-proxy.yml
 
+<% if p('coredns.enabled') %>
 echo "[$(date)] $BIN/$$: applying kube-dns (coredns) configuration..."
 kubectl apply -f $JOB_DIR/k8s/kube-dns.yml
-
+<% else %>
+echo "[$(date)] $BIN/$$: SKIPPING kubernetes-coredns configuration..."
+<% end %>
 (shopt -s nullglob
 for yml in /var/vcap/jobs/*/k8s-init/*.yml; do
   name=${yml%%.yml};         name=${name##*/}
