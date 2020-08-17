@@ -21,7 +21,7 @@ echo ">> rebuilding dockerized k8s components..."
 make dockers VERSION=$VERSION
 
 # check https://github.com/containerd/containerd/releases
-v=1.3.5
+v=1.3.7
 echo ">> updating containerd to $v..."
 what=containerd-${v}-linux-amd64.tar.gz
 curl -Lo tmp/${what} https://github.com/containerd/containerd/releases/download/v${v}/${what}
