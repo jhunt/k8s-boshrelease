@@ -58,7 +58,7 @@ curl -Lo tmp/${what} https://storage.googleapis.com/kubernetes-the-hard-way/runs
 bosh add-blob tmp/${what} runtime-runc/${what}
 
 # check https://github.com/etcd-io/etcd/releases
-v=3.4.9
+v=3.4.10
 echo ">> updating etcd to $v..."
 what=etcd-v${v}-linux-amd64.tar.gz
 curl -Lo tmp/${what} https://github.com/etcd-io/etcd/releases/download/v${v}/${what}
