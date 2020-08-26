@@ -104,8 +104,10 @@ spec:
       serviceAccountName: flannel
 
       tolerations:
-        - operator: Exists
-          effect:   NoSchedule
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
 
       volumes:
         - name: run
