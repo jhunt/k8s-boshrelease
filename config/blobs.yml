@@ -39,29 +39,29 @@ jq/jq:
   object_id: 7a4439f1-9ec7-4d42-56fe-c0b6bb0e9b64
   sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
 k8s/kube-apiserver:
-  size: 120684544
-  object_id: 7f050aae-0d70-4cb2-5b44-43d1abd64c13
-  sha: sha256:fcab24dd3e74438f3bb2badb8d9ddfaff0798eaae5fd6c7cbb709bf549535a1d
+  size: 115245056
+  object_id: 9fe964f8-83e3-43bc-440a-7fa0e699f331
+  sha: sha256:6f13a2b9e3f10ec1a5c4a7280af67fdb799a8244e88c60a1421c5a961785893b
 k8s/kube-controller-manager:
-  size: 110080000
-  object_id: 1d7b2efc-91b8-4caf-69db-646be25b1465
-  sha: sha256:3e3d109334e4cbd90fe75255b02d4909e579d5acb35dd7327a2bbbd9e1ee344f
+  size: 107249664
+  object_id: 4bb83c4a-9b3f-4b92-57ab-1733e8df226f
+  sha: sha256:8f2f75f800c639ab8d5f98a331e38b07c8f4f7ea2ead963c0994af35f79ca5a9
 k8s/kube-proxy:
-  size: 38383616
-  object_id: 0ccef69d-efd6-4394-5570-5d80f0614ca2
-  sha: sha256:d4decc5b69330744cd790279d87bf2d5151b1a8d4a131dc6d787f9d81abd20b7
+  size: 38805504
+  object_id: 32c1242a-e52c-483d-6908-cfdac2f1b13f
+  sha: sha256:9710e8ef84543d2db6551417543f95195913dcde5238caf681689866ad7320a2
 k8s/kube-scheduler:
-  size: 42962944
-  object_id: ad194081-887d-4cd1-597b-7585f1eb7490
-  sha: sha256:2a130b906cd9f25cc126325a60657131d00685c7c159f6f22975119fd07b9f78
+  size: 42123264
+  object_id: dc24333c-3f41-40f9-7ed6-1f1fb28b458c
+  sha: sha256:cb1dc5089975915a56bd4a66dfba429e5dbd61e3e8683979a49e69d8ed78652b
 k8s/kubectl:
-  size: 44040192
-  object_id: b2a5d83c-9848-4e97-74f3-29e484fe291a
-  sha: sha256:a076f5eff0710de94d1eb77bee458ea43b8f4d9572bbb3a3aec1edf0dde0a3e7
+  size: 43003904
+  object_id: 574f4b4a-b951-483d-499f-807711b7343d
+  sha: sha256:79bb0d2f05487ff533999a639c075043c70a0a1ba25c1629eb1eef6ebe3ba70f
 k8s/kubelet:
-  size: 113300248
-  object_id: 59fdc5af-5037-48bc-5692-31f7be665744
-  sha: sha256:a4116675ac52bf80e224fba8ff6db6f2d7aed192bf6fffd5f8e4d5efb4368f31
+  size: 109974472
+  object_id: 92528b7a-1b36-43ee-4979-e679864a4ee1
+  sha: sha256:3f03e5c160a8b658d30b34824a1c00abadbac96e62c4d01bf5c9271a2debc3ab
 lb/haproxy-1.8.22.tar.gz:
   size: 2100471
   object_id: 07252afc-ee4c-4e4c-46ab-ac189707b6fb
@@ -171,9 +171,9 @@ nfs-xenial-debs/rpcbind_0.2.3-0.2_amd64.deb:
   object_id: 1922b993-b271-41e7-5ef6-ee21474ad105
   sha: 8fa58cfcb1862c6d337d10496fada5f1a6e94a03
 runtime-runc/runc:
-  size: 11293888
-  object_id: e4999510-f224-449e-7aae-6f142bff0608
-  sha: sha256:a01afd5ff47d5a2a96bea3a871fb445b432f90c249a8a5d5239b05fe0d5bee4a
+  size: 10661624
+  object_id: 7d1f061d-7ede-4fe7-7d78-1e8e16287993
+  sha: sha256:0fec6929f8675aa7530a7920498e8910365cc9f2867e9a31d2129defd96aa489
 runtime-runc/runsc:
   size: 17472381
   object_id: 5c605fdb-10fa-4f62-6f19-c2786837b18a

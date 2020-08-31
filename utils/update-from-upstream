@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-VERSION=${VERSION:-1.18.8}
+VERSION=${VERSION:-1.19.0}
 
 # check https://github.com/kubernetes/kubernetes/releases
 rm -rf tmp; mkdir tmp
